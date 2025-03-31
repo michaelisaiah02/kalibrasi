@@ -14,7 +14,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('idKaryawan', 'password');
 
         if (Auth::attempt($credentials)) {
             // Login berhasil, redirect ke halaman yang diinginkan
@@ -22,7 +22,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email atau password salah.',
+            'idKaryawan' => 'ID Karyawan atau password salah.',
         ]);
     }
 

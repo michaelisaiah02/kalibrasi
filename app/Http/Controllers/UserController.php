@@ -17,14 +17,14 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $id],
+            'idKaryawan' => ['required', 'number', 'max:5', 'unique:users,idKaryawan,' . $id],
             'role' => ['required', 'in:admin,user'],
         ]);
 
         $user = User::findOrFail($id);
         $user->update([
             'name' => $validated['name'],
-            'email' => $validated['email'],
+            'idKaryawan' => $validated['idKaryawan'],
             'role' => $validated['role'],
         ]);
 
