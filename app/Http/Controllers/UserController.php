@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -10,7 +9,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('edit-user', compact('user'));
+        return view('admin.edit-user', compact('user'));
     }
 
     public function update(Request $request, $id)
@@ -18,6 +17,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'idKaryawan' => ['required', 'number', 'max:5', 'unique:users,idKaryawan,' . $id],
+            'password' => ['required', 'string', 'min:5'],
             'role' => ['required', 'in:admin,user'],
         ]);
 
@@ -25,6 +25,7 @@ class UserController extends Controller
         $user->update([
             'name' => $validated['name'],
             'idKaryawan' => $validated['idKaryawan'],
+            'password' => $validated['password'] ? bcrypt($validated['password']) : $user->password,
             'role' => $validated['role'],
         ]);
 

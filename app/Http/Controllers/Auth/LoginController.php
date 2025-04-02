@@ -22,7 +22,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'idKaryawan' => 'ID Karyawan atau password salah.',
+            'error' => 'ID Karyawan atau password salah.',
         ]);
     }
 

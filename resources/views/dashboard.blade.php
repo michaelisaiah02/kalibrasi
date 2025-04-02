@@ -1,47 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <h3 class="text-center">DASHBOARD</h3>
-            <!-- Tampilkan data sesuai dengan kebutuhan -->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $user)
-                        <tr>
-                            <td>{{ $user->id }}</td>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->role }}</td>
-                            <td>
-                                @if (Auth::user()->role === 'admin')
-                                    <a href="/edit-user/{{ $user->id }}" class="btn btn-primary btn-sm">Edit</a>
-                                    <form action="/delete-user/{{ $user->id }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">Hapus</button>
-                                    </form>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <div class="container">
+        <div class="row justify-content-around my-5">
+            <div class="col-md-auto">
+                <a href="{{ route('input') }}">
+                    <div class="card border-0" style="width: 30rem;">
+                        <img src="{{ asset('icon/input.svg') }}" class="mx-auto my-5 icon" alt="Input" width="100">
+                        <div class="card-body mx-auto w-100">
+                            <button class="btn btn-primary py-3 px-5 w-100 rounded-4"
+                                style="font-size: 3.5rem">INPUT</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-auto">
+                <a href="{{ route('report') }}">
+                    <div class="card border-0" style="width: 30rem;">
+                        <img src="{{ asset('icon/report.svg') }}" class="mx-auto my-5 icon" alt="Report" width="100">
+                        <div class="card-body mx-auto w-100">
+                            <button class="btn btn-primary py-3 px-5 w-100 rounded-4"
+                                style="font-size: 3.5rem">REPORT</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
+        <form action="{{ route('logout') }}" method="post" class="row justify-content-center">
+            <div class="col-3">
+                @csrf
+                <button type="submit" class="btn btn-primary text-center mt-3 mx-auto fs-2 w-100">LOG OUT</button>
+            </div>
+        </form>
     </div>
-</div>
-@endsection
-
-@section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    </div>
 @endsection

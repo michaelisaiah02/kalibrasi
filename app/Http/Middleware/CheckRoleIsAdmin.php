@@ -5,8 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
-class CheckRole
+class CheckRoleIsAdmin
 {
     /**
      * Handle an incoming request.
@@ -15,12 +16,9 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check())
-            return redirect()->route('login');
-
-        if (in_array(Auth::user()->role, $roles))
-            return $next($request);
-
-        return redirect()->back();
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->back()->with('error', 'anda bukan admin');
+        }
+        return $next($request);
     }
 }
