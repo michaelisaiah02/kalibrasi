@@ -1,17 +1,20 @@
 @extends('layouts.app')
 
-@section('content')
+@section('styles')
     {{-- <style>
-    body {
-        background-image: url("image/coba.jpeg");
-        background-size: 100%;
-        background-repeat: no-repeat;
-    }
-</style> --}}
+        body {
+            background-image: url("image/coba.jpeg");
+            background-size: 100%;
+            background-repeat: no-repeat;
+        }
+    </style> --}}
+@endsection
+
+@section('content')
     <div class="container" style="margin-top: 30vh">
         <div class="row justify-content-center">
             <div class="col-auto">
-                <div class="card p-3 bg-primary bg-opacity-50 shadow-sm border-0" style="width: 50rem;">
+                <div class="card p-3 bg-primary bg-opacity-50 shadow-sm border-0 rounded-5" style="width: 50rem;">
                     <div class="card-body">
                         <!-- Form login -->
                         <form action="{{ route('login') }}" method="POST" id="loginForm">

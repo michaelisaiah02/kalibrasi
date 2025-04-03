@@ -26,10 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/input', function () {
-        return view('input');
+        return view('input.menu');
     })->name('input');
     Route::get('/report', function () {
-        return view('report');
+        return view('report.menu');
     })->name('report');
 });
 

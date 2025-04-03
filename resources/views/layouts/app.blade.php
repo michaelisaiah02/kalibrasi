@@ -11,7 +11,7 @@
 
 <body>
     <nav
-        class="navbar navbar-expand-lg navbar-light @if (request()->is('login')) bg-transparent @else bg-primary text-light @endif mb-4 px-3">
+        class="navbar navbar-expand-lg navbar-light rounded-bottom-pill @if (request()->is('login')) bg-transparent px-3 @else mx-5 px-5 pb-5 bg-primary text-light @endif">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('image/logo-pt.png') }}" alt="Logo" width="96" height="96"
@@ -20,6 +20,9 @@
             <div class="row text-center">
                 <h1>K A L I B R A S I</h1>
                 <h2>PT. CATURINDO AGUNGJAYA RUBBER</h2>
+                @if (!request()->is('login') && !request()->is('dashboard'))
+                    <button id="title"></button>
+                @endif
             </div>
             <a class="navbar-brand" href="#">
                 <img src="{{ asset('image/logo-rice.png') }}" alt="Logo" width="96" height="96"
