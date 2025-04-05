@@ -7,31 +7,140 @@
     <title>Kalibrasi</title>
     @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
     @yield('styles')
+    @if (!request()->is('login'))
+        <style>
+            #navbar-kalibrasi {
+                border-bottom-left-radius: 200px;
+                border-bottom-right-radius: 200px;
+            }
+
+            #title-section {
+                height: 11.2rem
+            }
+
+            .pt-car {
+                transform: translateY(-35px);
+            }
+        </style>
+    @endif
 </head>
 
 <body>
-    <nav
-        class="navbar navbar-expand-lg navbar-light rounded-bottom-pill @if (request()->is('login')) bg-transparent px-3 @else mx-5 px-5 pb-5 bg-primary text-light @endif">
+    <nav class="navbar navbar-expand-lg navbar-light @if (request()->is('login')) bg-transparent px-3 @else mx-5 px-5 pb-3 bg-primary text-light @endif"
+        id="navbar-kalibrasi">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('image/logo-pt.png') }}" alt="Logo" width="96" height="96"
+            <a class="navbar-brand pt-car" href="/">
+                <img src="{{ asset('image/logo-pt.png') }}" alt="Logo" width="72" height="83.5"
                     class="d-inline-block align-top">
             </a>
-            <div class="row text-center">
-                <h1>K A L I B R A S I</h1>
-                <h2>PT. CATURINDO AGUNGJAYA RUBBER</h2>
-                @if (!request()->is('login') && !request()->is('dashboard'))
-                    <button id="title"></button>
+            <div class="row text-center justify-content-center" id="title-section">
+                <p class="fw-medium p-0 m-0" id="kalibrasi" style="font-size: 3.667rem">K A L I B R A S I</p>
+                <h1 style="font-size: 2.042rem">PT. CATURINDO AGUNGJAYA RUBBER</h1>
+                @if (!request()->is('login'))
+                    <button id="title" class="btn btn-lg btn-outline-light w-50 fw-medium fs-2 p-0 my-auto"
+                        disabled>
+                        &nbsp;
+                        @if (!request()->is('dashboard'))
+                            {{ $title }}
+                        @endif
+                    </button>
                 @endif
             </div>
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('image/logo-rice.png') }}" alt="Logo" width="96" height="96"
+            <a class="navbar-brand pt-car" href="/">
+                <img src="{{ asset('image/logo-rice.png') }}" alt="Logo" width="71" height="85.4"
                     class="d-inline-block align-top">
             </a>
         </div>
     </nav>
+    <!-- Modal Auto Logout -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true"
+        data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Sesi Berakhir</h5>
+                </div>
+                <div class="modal-body">
+                    Sesi berakhir, silahkan login kembali.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary"
+                        onclick="localStorage.removeItem('forceLogout'); document.getElementById('auto-logout-form').submit();">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form Logout -->
+    <form id="auto-logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
     @yield('content')
     @yield('scripts')
+    @auth
+        <script type="module">
+            let idleTime = 0;
+            const maxIdleTime = 5 * 60 * 1000;
+            const idleStartDelay = 5 * 1000;
+
+            let idleTimeout;
+            let idleInterval;
+
+            function resetIdleTimer() {
+                // Kalau sebelumnya sudah ditandai harus logout, jangan izinkan reset
+                if (localStorage.getItem('forceLogout') === 'true') return;
+
+                clearTimeout(idleTimeout);
+                clearInterval(idleInterval);
+                idleTime = 0;
+
+                idleTimeout = setTimeout(startIdleCounter, idleStartDelay);
+            }
+
+            function startIdleCounter() {
+                idleInterval = setInterval(() => {
+                    idleTime += 1000;
+                    console.log(`Idle time: ${idleTime / 1000}s`);
+
+                    if (idleTime >= maxIdleTime) {
+                        localStorage.setItem('forceLogout', 'true');
+                        showLogoutModal();
+                    }
+                }, 1000);
+            }
+
+            function showLogoutModal() {
+                // Hentikan semua timer
+                clearInterval(idleInterval);
+                clearTimeout(idleTimeout);
+                if (document.getElementById('logoutModal').classList.contains('show')) return;
+                const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+                logoutModal.show();
+
+                setTimeout(() => {
+                    localStorage.removeItem('forceLogout');
+                    document.getElementById('auto-logout-form').submit();
+                }, 30 * 1000); // kasih delay 5 detik biar user tahu
+            }
+
+            // Cek saat halaman diload
+            window.addEventListener('load', () => {
+                if (localStorage.getItem('forceLogout') === 'true') {
+                    showLogoutModal();
+                } else {
+                    idleTimeout = setTimeout(startIdleCounter, idleStartDelay);
+                }
+            });
+
+            // Reset idle kalau user aktif
+            ['mousemove', 'keydown', 'click', 'scroll'].forEach(event => {
+                document.addEventListener(event, resetIdleTimer);
+            });
+        </script>
+
+    @endauth
 </body>
 
 </html>

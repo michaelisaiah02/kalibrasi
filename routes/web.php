@@ -28,8 +28,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/input', function () {
         return view('input.menu');
     })->name('input');
+    Route::get('/new-alat-ukur', function () {
+        return view('input.new-alat-ukur');
+    })->name('new-alat-ukur');
     Route::get('/report', function () {
-        return view('report.menu');
+        return view('report.menu', ['title' => 'Report']);
     })->name('report');
 });
 
