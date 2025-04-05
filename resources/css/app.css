@@ -1,5 +1,6 @@
 /* @import 'tailwindcss'; */
 @import 'bootstrap-icons';
+@import '../../node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css';
 
 img.icon {
     transition: .3s;
@@ -8,4 +9,33 @@ img.icon {
 
 img.icon:hover {
     transform: scale(1.3);
+}
+
+@media only screen and (max-width: 1080px) {
+  p {
+    font-size: 1rem;
+  }
+  img {
+    width: 30px; height: 40.5px;
+  }
+  .btn1 {
+    font-size: 1.5rem;
+  }
+  .btn2 {
+    font-size: 1rem;
+  }
+}
+@media only screen and (min-width: 1081px) {
+  p {
+    font-size: 2.267rem;
+  }
+  img {
+    width: 85px; height: 100.5px;
+  }
+  .btn1 {
+    font-size: 2.3rem !important;
+  }
+  .btn2 {
+    font-size: 1.5rem !important;
+  }
 }

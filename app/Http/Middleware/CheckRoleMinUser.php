@@ -4,10 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
-class CheckRoleIsAdmin
+class CheckRoleMinUser
 {
     /**
      * Handle an incoming request.
@@ -16,8 +16,8 @@ class CheckRoleIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role !== 'admin') {
-            return redirect()->back()->with('error', 'Khusus admin!');
+        if (Auth::user()->role !== 'user' && Auth::user()->role !== 'admin') {
+            return redirect()->back()->with('error', 'Tamu hanya bisa lihat!');
         }
         return $next($request);
     }

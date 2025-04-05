@@ -16,67 +16,88 @@
 @endsection
 
 @section('content')
+    {{-- @dd($error) --}}
     <div class="container">
-        <div class="row justify-content-around my-3">
-            <div class="col-md-auto">
-                <div class="card border-0" style="width: 30rem;">
-                    <img src="{{ asset('icon/input.svg') }}" class="mx-auto my-4 icon menu-btn" alt="Input" width="96"
+        <div class="row justify-content-md-around justify-content-center my-3">
+            <div class="col-md-5">
+                <div class="card border-0">
+                    <img src="{{ asset('icon/input.svg') }}" class="mx-auto my-4 icon menu-btn" alt="Input"
                         data-target="menu-input" id="img-input">
-                    <div class="card-body mx-auto w-100" id="btn-input">
-                        <button class="btn btn-primary py-3 px-5 w-100 rounded-4 menu-btn" style="font-size: 3.3rem"
+                    <div class="card-body mx-auto" id="btn-input">
+                        <button class="btn btn-primary py-3 px-5 rounded-4 menu-btn btn1"
                             data-target="menu-input">INPUT</button>
                     </div>
-                    <div class="menu-input menu-section d-none">
-                        <a class="btn btn-primary py-3 px-5 mb-5 w-100 rounded-4" style="font-size: 2.5rem"
-                            href="{{ route('new-alat-ukur') }}">NEW ALAT
+                    <div class="menu-input menu-section row d-none mx-1 mx-md-0">
+                        <a class="btn btn-primary py-3 my-3 rounded-4 btn1 d-block"
+                            href="{{ route('input.new.alat.ukur') }}">NEW
+                            ALAT
                             UKUR</a>
-                        <button class="btn btn-primary py-3 px-5 w-100 rounded-4" style="font-size: 2.5rem">DATA
+                        <button class="btn btn-primary py-3 rounded-4 btn1">DATA
                             PERBAIKAN</button>
                     </div>
-                    <div class="menu-report menu-section d-none">
-                        <button class="btn btn-primary py-3 px-5 mb-5 w-100 rounded-4"
-                            style="font-size: 2.22rem">KEBERTERIMAAN & SERTIFIKAT</button>
+                    <div class="menu-report menu-section row d-none mx-1 mx-md-0">
+                        <button class="btn btn-primary py-3 rounded-4 btn1">KEBERTERIMAAN &
+                            SERTIFIKAT</button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-auto">
-                <div class="card border-0" style="width: 30rem;">
+            <div class="col-md-5">
+                <div class="card border-0">
                     <img src="{{ asset('icon/report.svg') }}" class="mx-auto my-4 icon menu-btn" alt="Report"
-                        width="96" data-target="menu-report" id="img-report">
-                    <div class="card-body mx-auto w-100" id="btn-report">
-                        <button class="btn btn-primary py-3 px-5 w-100 rounded-4 menu-btn" style="font-size: 3.3rem"
+                        data-target="menu-report" id="img-report">
+                    <div class="card-body mx-auto" id="btn-report">
+                        <button class="btn btn-primary py-3 px-5 rounded-4 menu-btn btn1"
                             data-target="menu-report">REPORT</button>
                     </div>
-                    <div class="menu-input menu-section d-none">
-                        <button class="btn btn-primary py-3 px-5 mb-5 w-100 rounded-4" style="font-size: 2.5rem">DATA
+                    <div class="menu-input menu-section row d-none mx-1 mx-md-0">
+                        <button class="btn btn-primary py-3 my-3 rounded-4 btn1">DATA
                             KALIBRASI</button>
-                        <button class="btn btn-primary py-3 px-5 w-100 rounded-4" style="font-size: 1.25rem">MASTER STANDAR
-                            KEBERTERIMAAN KALIBRASI</button>
+                        <button class="btn btn-primary py-3 rounded-4 btn1">STD
+                            KEBERTERIMAAN</button>
                     </div>
-                    <div class="menu-report menu-section d-none">
-                        <button class="btn btn-primary py-3 px-5 mb-5 w-100 rounded-4" style="font-size: 2.22rem">SCHEDULE
-                            KALIBRASI & MASTERLIS KALIBRASI</button>
+                    <div class="menu-report menu-section row d-none mx-1 mx-md-0">
+                        <button class="btn btn-primary py-3 mb-5 rounded-4 btn1">SCHEDULE
+                            & MASTERLIST KALIBRASI</button>
                     </div>
                 </div>
             </div>
         </div>
-        <form id="btn-logout" action="{{ route('logout') }}" method="post">
+        <form id="btn-logout" action="{{ route('logout') }}" method="post" class="d-flex justify-content-center">
             @csrf
-            <button type="submit" class="btn btn-primary text-center rounded-3 px-5"
-                style="font-size: 1.5rem; position: absolute; top: 85%;
-  left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">LOG
+            <button type="submit" class="btn btn-primary text-center rounded-3 px-5 btn2">LOG
                 OUT</button>
         </form>
         <div id="btn-back" class="row justify-content-end d-none">
             <div class="col-auto">
-                <button type="button" class="btn btn-primary text-decoration-underline shadow-lg menu-btn px-5"
-                    style="position: absolute; bottom: 12px; right: 20px;">Back</button>
+                <button type="button"
+                    class="btn btn-primary text-decoration-underline shadow-lg menu-btn px-5 btn2">Back</button>
             </div>
         </div>
     </div>
+    @if (session()->has('error'))
+        <div class="toast-container p-3 bottom-0 end-0">
+            <div id="error" class="toast align-items-center text-bg-warning border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        {{ session()->get('error') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    @endif
 @endsection
 
 @section('scripts')
+    @session('error')
+        <script type="module">
+            const toastLiveExample = document.getElementById('error')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastBootstrap.show()
+        </script>
+    @endsession
     <script type="module">
         $(document).ready(function() {
             $(".menu-btn").click(function() {

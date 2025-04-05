@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalibrasi</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
     @yield('styles')
     @if (!request()->is('login'))
@@ -28,16 +29,15 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light @if (request()->is('login')) bg-transparent px-3 @else mx-5 px-5 pb-3 bg-primary text-light @endif"
         id="navbar-kalibrasi">
-        <div class="container-fluid">
-            <a class="navbar-brand pt-car" href="/">
-                <img src="{{ asset('image/logo-pt.png') }}" alt="Logo" width="72" height="83.5"
-                    class="d-inline-block align-top">
+        <div class="container-fluid justify-content-center">
+            <a class="navbar-brand pt-car m-0" href="/">
+                <img src="{{ asset('image/logo-pt.png') }}" alt="Logo" class="mt-5">
             </a>
             <div class="row text-center justify-content-center" id="title-section">
-                <p class="fw-medium p-0 m-0" id="kalibrasi" style="font-size: 3.667rem">K A L I B R A S I</p>
-                <h1 style="font-size: 2.042rem">PT. CATURINDO AGUNGJAYA RUBBER</h1>
+                <p class="fw-medium align-self-center" id="kalibrasi">K A L I B R A S I</p>
+                <p class="align-self-center">PT. CATURINDO AGUNGJAYA RUBBER</p>
                 @if (!request()->is('login'))
-                    <button id="title" class="btn btn-lg btn-outline-light w-50 fw-medium fs-2 p-0 my-auto"
+                    <button id="title" class="btn btn-lg btn-outline-light fw-medium fs-5 p-0 my-auto w-50"
                         disabled>
                         &nbsp;
                         @if (!request()->is('dashboard'))
@@ -46,9 +46,8 @@
                     </button>
                 @endif
             </div>
-            <a class="navbar-brand pt-car" href="/">
-                <img src="{{ asset('image/logo-rice.png') }}" alt="Logo" width="71" height="85.4"
-                    class="d-inline-block align-top">
+            <a class="navbar-brand pt-car m-0" href="/">
+                <img src="{{ asset('image/logo-rice.png') }}" alt="Logo" class="mt-5">
             </a>
         </div>
     </nav>
@@ -139,7 +138,6 @@
                 document.addEventListener(event, resetIdleTimer);
             });
         </script>
-
     @endauth
 </body>
 

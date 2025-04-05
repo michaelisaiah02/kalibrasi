@@ -17,7 +17,10 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
+        "@eonasdan/tempus-dominus": "^6.10.2",
+        "bootstrap-datepicker": "^1.10.0",
         "bootstrap-icons": "^1.11.3",
+        "flatpickr": "^4.6.13",
         "jquery": "^3.7.1"
     }
 }
