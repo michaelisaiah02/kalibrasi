@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class MasterList extends Model
 {
     protected $fillable = [
+        'tipe_id',
         'no_id',
-        'alat_ukur_id',
         'no_sn',
         'kapasitas',
         'ketelitian',
@@ -16,6 +16,7 @@ class MasterList extends Model
         'merk',
         'tgl_kalibrasi',
         'tipe_kalibrasi',
+        'first_used',
         'rank',
         'freq_kalibrasi',
         'pic_pengguna',

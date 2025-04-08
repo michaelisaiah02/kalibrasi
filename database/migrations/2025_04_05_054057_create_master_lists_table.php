@@ -16,12 +16,13 @@ return new class extends Migration
             $table->string('tipe_id')->foreign('tipe_id')->references('tipe_id')->on('alat_ukurs')->onDelete('cascade');
             $table->string('no_id')->unique();
             $table->string('no_sn');
-            $table->string('kapasitas');
-            $table->string('ketelitian');
+            $table->integer('kapasitas')->unsigned();
+            $table->integer('ketelitian')->unsigned();
             $table->string('std_ukuran');
             $table->string('merk');
             $table->date('tgl_kalibrasi');
             $table->enum('tipe_kalibrasi', ['Internal', 'External']);
+            $table->date('first_used');
             $table->string('rank');
             $table->integer('freq_kalibrasi');
             $table->string('pic_pengguna');

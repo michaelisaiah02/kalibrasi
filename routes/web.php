@@ -28,7 +28,14 @@ Route::middleware('auth')->group(function () {
     // hanya user ke atas
     Route::middleware(CheckRoleMinUser::class)->group(function () {
         Route::get('/input/new-alat-ukur', [NewAlatUkurController::class, 'create'])->name('input.new.alat.ukur');
+        Route::post('/input-new-alat-ukur', [NewAlatUkurController::class, 'store'])->name('store.alat.ukur');
         // Route::resource('alat-ukur', AlatUkurController::class);
+
+        // API data
+        Route::get('/count-alat/{tipe_id}', function ($tipe_id) {
+            $count = \App\Models\MasterList::where('tipe_id', $tipe_id)->count();
+            return response()->json(['count' => $count]);
+        });
     });
     // hanya admin
     Route::middleware(CheckRoleIsAdmin::class)->group(function () {
