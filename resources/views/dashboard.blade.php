@@ -75,15 +75,31 @@
         </div>
     </div>
     @if (session()->has('error'))
-        <div class="toast-container p-3 bottom-0 end-0">
-            <div id="error" class="toast align-items-center text-bg-warning border-0" role="alert"
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="errorNotification" class="toast align-items-center text-bg-danger border-0" role="alert"
                 aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        {{ session()->get('error') }}
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
+                <div class="toast-header">
+                    <i class="bi bi-x-square-fill text-danger me-1"></i>
+                    <strong class="me-auto">{{ config('app.name') }} - Error</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ session()->get('error') }}
+                </div>
+            </div>
+        </div>
+    @endif
+    @if (session()->has('success'))
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="successNotification" class="toast align-items-center text-bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <i class="bi bi-check-square-fill text-success me-1"></i>
+                    <strong class="me-auto">{{ config('app.name') }} - Berhasil</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ session()->get('success') }}
                 </div>
             </div>
         </div>
@@ -91,13 +107,6 @@
 @endsection
 
 @section('scripts')
-    @session('error')
-        <script type="module">
-            const toastLiveExample = document.getElementById('error')
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-            toastBootstrap.show()
-        </script>
-    @endsession
     <script type="module">
         $(document).ready(function() {
             $(".menu-btn").click(function() {
@@ -153,4 +162,21 @@
             });
         });
     </script>
+    @session('error')
+        <script type="module">
+            const toastLiveExample = document.getElementById('errorNotification')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastBootstrap.show();
+        </script>
+    @endsession
+    @session('success')
+        <script type="module">
+            const toastLiveExample = document.getElementById('successNotification')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+            toastBootstrap.show();
+            $(document).ready(function() {
+                $('.menu-btn[data-target="{{ session()->get('key') }}"]').trigger('click');
+            })
+        </script>
+    @endsession
 @endsection

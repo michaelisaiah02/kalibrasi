@@ -57,6 +57,9 @@ class NewAlatUkurController extends Controller
             'location' => $validated['location'],
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Alat ukur berhasil ditambahkan.');
+        return redirect()->route('dashboard')->with([
+            'success' => 'Alat ukur berhasil ditambahkan.',
+            'key' => 'menu-input'
+        ]);
     }
 }
