@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('master_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('tipe_id')->foreign('tipe_id')->references('tipe_id')->on('alat_ukurs')->onDelete('cascade');
+            $table->string('tipe_id')->foreign('tipe_id')->references('tipe_id')->on('equipments')->onDelete('cascade');
             $table->string('no_id')->unique();
             $table->string('no_sn');
             $table->integer('kapasitas')->unsigned();

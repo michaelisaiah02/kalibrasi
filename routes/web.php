@@ -7,7 +7,7 @@ use App\Http\Middleware\CheckRoleMinUser;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Input\NewAlatUkurController;
+use App\Http\Controllers\Input\NewEquipmentController;
 
 Route::get('/', function () {
     return redirect('/dashboard');
@@ -27,9 +27,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // hanya user ke atas
     Route::middleware(CheckRoleMinUser::class)->group(function () {
-        Route::get('/input/new-alat-ukur', [NewAlatUkurController::class, 'create'])->name('input.new.alat.ukur');
-        Route::post('/input-new-alat-ukur', [NewAlatUkurController::class, 'store'])->name('store.alat.ukur');
-        // Route::resource('alat-ukur', AlatUkurController::class);
+        Route::get('/input/new-equipment', [NewEquipmentController::class, 'create'])->name('input.new.equipment');
+        Route::post('/input/new-equipment', [NewEquipmentController::class, 'store'])->name('store.equipment');
+        Route::get('/input/calibration-data', function () {
+            return view('input.calibration-data', [
+                'title' => 'CALIBRATION DATA INPUT'
+            ]);
+        })->name('input.calibration.data');
+        // Route::resource('equipment', AlatUkurController::class);
 
         // API data
         Route::get('/count-alat/{tipe_id}', function ($tipe_id) {
@@ -43,5 +48,5 @@ Route::middleware('auth')->group(function () {
         Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
         Route::post('/register', [RegisterController::class, 'register']);
     });
-    // Route::post('/input-new-alat-ukur', [AlatUkurController::class, 'store'])->middleware('auth')->name('store.alat.ukur');
+    // Route::post('/input-new-alat-ukur', [AlatUkurController::class, 'store'])->middleware('auth')->name('store.equipment');
 });

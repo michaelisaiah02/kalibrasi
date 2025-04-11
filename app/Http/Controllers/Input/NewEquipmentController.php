@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers\Input;
 
-use App\Models\AlatUkur;
+use App\Models\Equipment;
+use App\Models\MasterList;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\MasterList;
 
-class NewAlatUkurController extends Controller
+class NewEquipmentController extends Controller
 {
     public function create()
     {
         return view(
-            'input.new-alat-ukur',
+            'input.new-equipment',
             [
-                'title' => 'INPUT NEW ALAT UKUR',
-                'alat_ukurs' => AlatUkur::all()
+                'title' => 'INPUT NEW EQUIPMENT',
+                'alat_ukurs' => Equipment::all()
             ]
         );
     }
 
     public function store(Request $request)
     {
-        // dd(request()->all());
         $validated = $request->validate([
             'tipe_id' => ['required', 'string', 'max:255'],
             'no_id' => ['required', 'string', 'unique:master_lists,no_id'],

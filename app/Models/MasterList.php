@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Equipment;
 use Illuminate\Database\Eloquent\Model;
 
 class MasterList extends Model
@@ -23,8 +24,8 @@ class MasterList extends Model
         'location',
     ];
 
-    public function alatUkur()
+    public function equipment()
     {
-        return $this->belongsTo(AlatUkur::class, 'tipe_id', 'tipe_id');
+        return $this->belongsTo(Equipment::class, 'tipe_id', 'tipe_id');
     }
 }

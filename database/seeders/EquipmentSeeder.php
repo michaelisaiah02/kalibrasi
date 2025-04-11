@@ -2,24 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\AlatUkur;
+use App\Models\Equipment;
 use Illuminate\Database\Seeder;
 
-class AlatUkurSeeder extends Seeder
+class EquipmentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run()
     {
-        $alatList = [
+        $equipmentList = [
             ['tipe_id' => 'TIM', 'nama_alat' => 'Timbangan'],
             ['tipe_id' => 'CAL', 'nama_alat' => 'Caliper'],
             ['tipe_id' => 'MIC', 'nama_alat' => 'Micrometer'],
         ];
 
-        foreach ($alatList as $alat) {
-            AlatUkur::create($alat);
+        foreach ($equipmentList as $equipment) {
+            Equipment::create($equipment);
         }
     }
 }

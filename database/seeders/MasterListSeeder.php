@@ -17,7 +17,7 @@ class MasterListSeeder extends Seeder
      */
     public function run(): void
     {
-        $alatUkurList = DB::table('alat_ukurs')->get(); // Ambil semua alat ukur
+        $alatUkurList = DB::table('equipments')->get(); // Ambil semua alat ukur
         $tipeCounter = [];
 
         foreach ($alatUkurList as $alat) {

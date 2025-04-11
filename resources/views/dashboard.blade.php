@@ -28,8 +28,7 @@
                             data-target="menu-input">INPUT</button>
                     </div>
                     <div class="menu-input menu-section row d-none mx-1 mx-md-0">
-                        <a class="btn btn-primary py-3 my-3 rounded-4 btn1 d-block"
-                            href="{{ route('input.new.alat.ukur') }}">NEW
+                        <a class="btn btn-primary py-3 my-3 rounded-4 btn1" href="{{ route('input.new.equipment') }}">NEW
                             ALAT
                             UKUR</a>
                         <button class="btn btn-primary py-3 rounded-4 btn1">DATA
@@ -50,8 +49,9 @@
                             data-target="menu-report">REPORT</button>
                     </div>
                     <div class="menu-input menu-section row d-none mx-1 mx-md-0">
-                        <button class="btn btn-primary py-3 my-3 rounded-4 btn1">DATA
-                            KALIBRASI</button>
+                        <a class="btn btn-primary py-3 my-3 rounded-4 btn1"
+                            href="{{ route('input.calibration.data') }}">DATA
+                            KALIBRASI</a>
                         <button class="btn btn-primary py-3 rounded-4 btn1">STD
                             KEBERTERIMAAN</button>
                     </div>
