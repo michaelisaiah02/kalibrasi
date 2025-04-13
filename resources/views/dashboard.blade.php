@@ -16,9 +16,9 @@
 @endsection
 @section('content')
     {{-- @dd($error) --}}
-    <div class="container">
+    <div class="container" id="dashboard">
         <div class="row justify-content-md-around justify-content-center my-3">
-            <div class="col-md-5">
+            <div class="col-md-5 main-menu">
                 <div class="card border-0">
                     <img src="{{ asset('icon/input.svg') }}" class="mx-auto my-4 icon menu-btn" alt="Input"
                         data-target="menu-input" id="img-input">
@@ -32,13 +32,9 @@
                         <a class="btn btn-primary py-3 rounded-4 btn1" href="{{ route('input.repair.data') }}">REPAIR
                             DATA</a>
                     </div>
-                    <div class="menu-report menu-section row d-none mx-1 mx-md-0">
-                        <button class="btn btn-primary py-3 rounded-4 btn1">KEBERTERIMAAN &
-                            SERTIFIKAT</button>
-                    </div>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 main-menu">
                 <div class="card border-0">
                     <img src="{{ asset('icon/report.svg') }}" class="mx-auto my-4 icon menu-btn" alt="Report"
                         data-target="menu-report" id="img-report">
@@ -49,9 +45,28 @@
                     <div class="menu-input menu-section row d-none mx-1 mx-md-0">
                         <a class="btn btn-primary py-3 my-3 rounded-4 btn1"
                             href="{{ route('input.calibration.data') }}">CALIBRATION DATA</a>
-                        <button class="btn btn-primary py-3 rounded-4 btn1">MASTER DATA</button>
+                        @if (auth()->user()->role === 'admin')
+                            <button class="btn btn-primary py-3 rounded-4 menu-btn btn1" data-target="master-data">MASTER
+                                DATA</button>
+                        @endif
                     </div>
                 </div>
+            </div>
+            <div class="col-md-5 d-grid row-gap-1 row-gap-md-3 text-center d-none master-data">
+                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
+                    href="{{ route('admin.users') }}">Tabel User</a>
+                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Kode dan Jenis Alat
+                    Ukur</a>
+                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tambahkan Sesuai Tabel di
+                    Database</a>
+            </div>
+            <div class="col-md-5 d-grid row-gap-1 row-gap-md-3 text-center d-none master-data">
+                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Satuan Ukuran</a>
+                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Masterlist Alat
+                    Ukur</a>
+                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
+                    href="{{ route('admin.std.keberterimaan') }}">Tabel Standar
+                    Keberterimaan</a>
             </div>
         </div>
         <form id="btn-logout" action="{{ route('logout') }}" method="post" class="d-flex justify-content-center">
@@ -61,8 +76,8 @@
         </form>
         <div id="btn-back" class="row justify-content-end d-none">
             <div class="col-auto">
-                <button type="button"
-                    class="btn btn-primary text-decoration-underline shadow-lg menu-btn px-5 btn2">Back</button>
+                <button type="button" class="btn btn-primary text-decoration-underline shadow-lg menu-btn px-5 btn2"
+                    id="back" data-target="back">Back</button>
             </div>
         </div>
     </div>
@@ -108,10 +123,12 @@
                     $("#img-input").css("opacity", "1");
                     $("#img-report").css("opacity", "0.5");
                     $("#btn-input").addClass("d-none"); // Sembunyikan tombol input
-                    $("#btn-report").addClass("d-none"); // Tampilkan tombol report
+                    $("#btn-report").addClass("d-none"); // Sembunyikan tombol report
                     $("#btn-logout").addClass("d-none");
                     $("#btn-back").removeClass("d-none"); // Tampilkan tombol back
                     $(".menu-section").addClass("d-none"); // Sembunyikan semua menu-section
+                    $("#back").addClass("back-input");
+                    $("#back").removeClass("back-master");
                     $("." + target).removeClass("d-none"); // Tampilkan yang dipilih
 
                     // Ubah judul
@@ -121,25 +138,73 @@
                     }, 5); // kasih delay sedikit supaya transisi bisa kebaca
                 } else if (target === "menu-report") {
                     window.location.href = "/report"
-                } else {
-                    // Tutup semua menu-section
-                    $("#img-input").css("opacity", "1");
-                    $("#img-report").css("opacity", "1");
-                    $(".menu-section").addClass("d-none");
-                    $("#btn-logout").removeClass("d-none");
-                    $("#btn-back").addClass("d-none");
-                    $("#btn-input").removeClass("d-none");
-                    $("#btn-report").removeClass("d-none");
+                } else if (target === "back") {
+                    if ($("#back").hasClass("back-input")) {
+                        // Tutup semua menu-section
+                        $("#img-input").css("opacity", "1");
+                        $("#img-report").css("opacity", "1");
+                        $(".menu-section").addClass("d-none");
+                        $("#btn-logout").removeClass("d-none");
+                        $("#btn-back").addClass("d-none");
+                        $("#btn-input").removeClass("d-none");
+                        $("#btn-report").removeClass("d-none");
+                        $("#back").removeClass("back-input");
 
-                    // Ubah judul
-                    $("#title").removeClass("show-title");
-                    setTimeout(() => {
-                        $("#title").html("&nbsp;");
-                    }, 200); // tunggu animasi selesai (sesuai transition duration CSS)
+                        // Ubah judul
+                        $("#title").removeClass("show-title");
+                        setTimeout(() => {
+                            $("#title").html("&nbsp;");
+                        }, 200); // tunggu animasi selesai (sesuai transition duration CSS)
+                    }
+                    if ($("#back").hasClass("back-master")) {
+                        $("#img-input").css("opacity", "1");
+                        $("#img-report").css("opacity", "0.5");
+                        $("#btn-input").addClass("d-none"); // Sembunyikan tombol input
+                        $("#btn-report").addClass("d-none"); // Sembunyikan tombol report
+                        $("#btn-logout").addClass("d-none");
+                        $(".menu-section").removeClass("d-none"); // Sembunyikan semua menu-section
+                        // Tutup semua menu-section
+                        $("#dashboard").removeClass("mt-md-5");
+                        $(".main-menu").removeClass("d-none");
+                        $(".master-data").addClass("d-none"); // Tampilkan yang dipilih
+                        $("#back").removeClass("back-master");
+                        $("#back").addClass("back-input");
+
+                        // Ubah judul
+                        $("#title").text("INPUT").removeClass("d-none");
+                        setTimeout(() => {
+                            $("#title").addClass("show-title");
+                        }, 5); // kasih delay sedikit supaya transisi bisa kebaca
+                    }
                 }
             });
         });
     </script>
+    @if (auth()->user()->role === 'admin')
+        <script type="module">
+            $(document).ready(function() {
+                $(".menu-btn").click(function() {
+                    var target = $(this).data("target"); // Ambil target dari data-target button
+                    if (target === "master-data") {
+                        // Opacity gambar input 50%, hilangkan tombol input
+                        $("#dashboard").addClass("mt-md-5");
+                        $(".main-menu").addClass("d-none");
+                        $("." + target).removeClass("d-none"); // Tampilkan yang dipilih
+                        $("#btn-back").removeClass("d-none");
+                        $("#back").addClass("back-master");
+                        $("#back").removeClass("back-input");
+                        $("#btn-logout").addClass("d-none");
+
+                        // Ubah judul
+                        $("#title").text("MASTER DATA INPUT").removeClass("d-none");
+                        setTimeout(() => {
+                            $("#title").addClass("show-title");
+                        }, 5); // kasih delay sedikit supaya transisi bisa kebaca
+                    }
+                });
+            })
+        </script>
+    @endif
     @session('error')
         <script type="module">
             const toastLiveExample = document.getElementById('errorNotification')

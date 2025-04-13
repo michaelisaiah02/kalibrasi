@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Middleware\CheckRoleIsAdmin;
 use App\Http\Middleware\CheckRoleMinUser;
 use App\Http\Controllers\ReportController;
@@ -52,9 +53,11 @@ Route::middleware('auth')->group(function () {
     });
     // hanya admin
     Route::middleware(CheckRoleIsAdmin::class)->group(function () {
-        Route::resource('users', UserController::class);
+        // Route::resource('users', UserController::class);
+        Route::get('/admin/users', [AdminController::class, 'user'])->name('admin.users');
         Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
         Route::post('/register', [RegisterController::class, 'register']);
+        Route::get('/admin/std-keberterimaan', [AdminController::class, 'keberterimaan'])->name('admin.std.keberterimaan');
     });
     // Route::post('/input-new-alat-ukur', [AlatUkurController::class, 'store'])->middleware('auth')->name('store.equipment');
 });
