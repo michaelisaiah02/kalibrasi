@@ -17,38 +17,38 @@ class MasterListSeeder extends Seeder
      */
     public function run(): void
     {
-        $alatUkurList = DB::table('equipments')->get(); // Ambil semua alat ukur
-        $tipeCounter = [];
+        $equipmentList = DB::table('equipments')->get(); // Ambil semua alat ukur
+        $counterType = [];
+        $units = DB::table('units')->pluck('id', 'unit');
 
-        foreach ($alatUkurList as $alat) {
+        foreach ($equipmentList as $alat) {
+            $randomUnit = $units->random();
             // Hitung berapa kali tipe ini sudah digunakan
-            $tipe = $alat->tipe_id;
-            if (!isset($tipeCounter[$tipe])) {
-                $tipeCounter[$tipe] = 1;
+            $type = $alat->type_id;
+            if (!isset($counterType[$type])) {
+                $counterType[$type] = 1;
             } else {
-                $tipeCounter[$tipe]++;
+                $counterType[$type]++;
             }
 
             // Format nomor ID: TIM-001, CAL-001, dll
-            $noId = $tipe . '-' . str_pad($tipeCounter[$tipe], 3, '0', STR_PAD_LEFT);
+            $noId = $type . '-' . str_pad($counterType[$type], 3, '0', STR_PAD_LEFT);
 
             DB::table('master_lists')->insert([
-                'no_id' => $noId,
-                'no_sn' => 'SN-' . strtoupper(Str::random(5)),
-                'kapasitas' => '100',
-                'ketelitian' => '1',
-                'std_ukuran' => 'ISO 17025',
+                'type_id' => $type,
+                'id_num' => $noId,
+                'sn_num' => 'SN-' . strtoupper(Str::random(5)),
+                'capacity' => '100',
+                'accuracy' => '1',
+                'unit_id' => $randomUnit,
                 'merk' => 'ACME',
-                'tgl_kalibrasi' => Carbon::now(),
-                'tipe_kalibrasi' => ['Internal', 'External'][rand(0, 1)],
+                'calibration_type' => ['Internal', 'External'][rand(0, 1)],
                 'first_used' => Carbon::now()->setMonth(6),
                 'rank' => 'A',
-                'freq_kalibrasi' => 6,
-                'pic_pengguna' => 'User ' . rand(1, 10),
+                'calibration_freq' => 6,
+                'acceptance_criteria' => 'apa aja boleh',
+                'pic' => fake('id')->name(),
                 'location' => 'Gudang A',
-                'tipe_id' => $tipe,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
         }
     }

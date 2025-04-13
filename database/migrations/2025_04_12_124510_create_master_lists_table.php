@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('master_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('tipe_id')->foreign('tipe_id')->references('tipe_id')->on('equipments')->onDelete('cascade');
-            $table->string('no_id')->unique();
-            $table->string('no_sn');
-            $table->integer('kapasitas')->unsigned();
-            $table->integer('ketelitian')->unsigned();
-            $table->string('std_ukuran');
+            $table->string('type_id')->foreign('type_id')->references('type_id')->on('equipments')->onDelete('cascade');
+            $table->string('id_num')->unique();
+            $table->string('sn_num');
+            $table->integer('capacity')->unsigned();
+            $table->integer('accuracy')->unsigned();
+            $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
             $table->string('merk');
-            $table->date('tgl_kalibrasi');
-            $table->enum('tipe_kalibrasi', ['Internal', 'External']);
+            $table->enum('calibration_type', ['Internal', 'External']);
             $table->date('first_used');
             $table->string('rank');
-            $table->integer('freq_kalibrasi');
-            $table->string('pic_pengguna');
+            $table->integer('calibration_freq');
+            $table->string('acceptance_criteria');
+            $table->string('pic');
             $table->string('location');
             $table->timestamps();
         });

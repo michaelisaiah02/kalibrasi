@@ -8,8 +8,8 @@ class Equipment extends Model
 {
     protected $table = 'equipments';
     protected $fillable = [
-        'tipe_id',
-        'nama_alat',
+        'type_id',
+        'name',
     ];
 
     public function masterLists()

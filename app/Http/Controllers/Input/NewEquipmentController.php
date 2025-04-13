@@ -6,6 +6,7 @@ use App\Models\Equipment;
 use App\Models\MasterList;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Unit;
 
 class NewEquipmentController extends Controller
 {
@@ -15,7 +16,8 @@ class NewEquipmentController extends Controller
             'input.new-equipment',
             [
                 'title' => 'INPUT NEW EQUIPMENT',
-                'alat_ukurs' => Equipment::all()
+                'equipments' => Equipment::all(),
+                'units' => Unit::all()
             ]
         );
     }

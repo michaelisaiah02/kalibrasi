@@ -144,7 +144,7 @@
                                     required placeholder="act">
                             </div>
                         </div>
-                        <div class="col-2 align-content-center">
+                        <div class="col-md-2 align-content-center">
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Judgement</span>
                             </div>
@@ -168,9 +168,9 @@
                 </div>
             </div>
             <div class="row table-responsive mb-3">
-                <table class="table table-sm table-bordered">
+                <table class="table table-sm table-bordered align-middle">
                     <thead class="table-primary">
-                        <tr>
+                        <tr class="align-middle text-center">
                             <th scope="col">No</th>
                             <th scope="col">Calibration Date</th>
                             <th scope="col">Nomor ID/SN</th>
@@ -203,19 +203,19 @@
                 </table>
             </div>
             <div class="row justify-content-end">
-                <div class="col-auto text-center">
-                    <a href="{{ route('dashboard') }}" class="btn btn-primary">New Data</a>
+                <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
+                    <a href="{{ route('input.new.equipment') }}" class="btn btn-primary">New Data</a>
                 </div>
-                <div class="col-auto text-center">
+                <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
-                <div class="col-auto text-center">
-                    <a href="{{ route('dashboard') }}" class="btn btn-primary">Close</a>
+                <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
+                    <a href="{{ route('dashboard', ['key' => 'menu-input']) }}" class="btn btn-primary">Close</a>
                 </div>
-                <div class="col-auto text-center">
+                <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="button" class="btn btn-primary">Print Label</button>
                 </div>
-                <div class="col-auto text-center">
+                <div class="col-12 col-md-auto text-center mb-1 mb-md-0">
                     <button type="button" class="btn btn-primary">Upload Calibration External Certificate</button>
                 </div>
             </div>

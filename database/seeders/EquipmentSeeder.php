@@ -13,9 +13,9 @@ class EquipmentSeeder extends Seeder
     public function run()
     {
         $equipmentList = [
-            ['tipe_id' => 'TIM', 'nama_alat' => 'Timbangan'],
-            ['tipe_id' => 'CAL', 'nama_alat' => 'Caliper'],
-            ['tipe_id' => 'MIC', 'nama_alat' => 'Micrometer'],
+            ['type_id' => 'TIM', 'name' => 'Timbangan'],
+            ['type_id' => 'CAL', 'name' => 'Caliper'],
+            ['type_id' => 'MIC', 'name' => 'Micrometer'],
         ];
 
         foreach ($equipmentList as $equipment) {

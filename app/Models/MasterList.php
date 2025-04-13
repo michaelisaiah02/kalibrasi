@@ -8,24 +8,29 @@ use Illuminate\Database\Eloquent\Model;
 class MasterList extends Model
 {
     protected $fillable = [
-        'tipe_id',
-        'no_id',
-        'no_sn',
-        'kapasitas',
-        'ketelitian',
-        'std_ukuran',
+        'type_id',
+        'id_num',
+        'sn_num',
+        'capacity',
+        'accuracy',
+        'unit',
         'merk',
-        'tgl_kalibrasi',
-        'tipe_kalibrasi',
+        'calibration_type',
         'first_used',
         'rank',
-        'freq_kalibrasi',
-        'pic_pengguna',
+        'calibration_freq',
+        'acceptance_criteria',
+        'pic',
         'location',
     ];
 
     public function equipment()
     {
-        return $this->belongsTo(Equipment::class, 'tipe_id', 'tipe_id');
+        return $this->belongsTo(Equipment::class, 'type_id', 'type_id');
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

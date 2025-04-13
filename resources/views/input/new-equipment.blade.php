@@ -2,7 +2,7 @@
 
 @section('styles')
     <style>
-        #no-id::placeholder {
+        #id-num::placeholder {
             color: white;
         }
     </style>
@@ -15,81 +15,88 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="input-group mb-3">
-                        <label class="input-group-text bg-primary text-light" for="nama-alat-ukur">Nama Alat Ukur</label>
-                        <select class="form-select" id="nama-alat-ukur" name="tipe_id" required>
+                        <label class="input-group-text bg-primary text-light" for="equipment_name">Equipment Name</label>
+                        <select class="form-select" id="equipment_name" name="type_id" required>
                             <option value="" selected>Pilih...</option>
-                            @foreach ($alat_ukurs as $alat_ukur)
-                                <option value="{{ $alat_ukur->tipe_id }}">{{ $alat_ukur->nama_alat }}</option>
+                            @foreach ($equipments as $equipment)
+                                <option value="{{ $equipment->type_id }}">{{ $equipment->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text bg-primary text-light">No ID / SN</span>
-                        <input type="text" aria-label="No ID" placeholder="-"
-                            class="form-control bg-primary text-light text-center" name="no_id" id="no-id" readonly
+                        <span class="input-group-text bg-primary text-light">ID / SN Number</span>
+                        <input type="text" aria-label="ID Num" placeholder="-"
+                            class="form-control bg-primary text-light text-center" name="id_num" id="id-num" readonly
                             required>
-                        <input type="text" aria-label="No SN" placeholder="No SN" class="form-control w-25"
-                            name="no_sn" id="no-sn" required>
+                        <input type="text" aria-label="SN Num" placeholder="SN Num" class="form-control w-25"
+                            name="sn_num" id="sn-num" required>
                     </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text bg-primary text-light">Standar Ukuran</span>
-                        <input type="text" class="form-control" placeholder="Kg / gram / ˚C / mm" id="std_ukuran"
-                            name="std_ukuran" required>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text bg-primary text-light">Kapasitas</span>
-                        <input type="number" class="form-control" placeholder="Kg / gram / ˚C / mm" id="kapasitas"
-                            name="kapasitas" aria-describedby="kapasitas" required>
-                        <span class="input-group-text bg-primary text-light w-25 satuan justify-content-center"></span>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text bg-primary text-light">Ketelitian</span>
-                        <span class="input-group-text bg-primary text-light">±</span>
-                        <input type="number" class="form-control" placeholder="± Kg / gram / ˚C / mm" id="ketelitian"
-                            name="ketelitian" required>
-                        <span class="input-group-text bg-primary text-light w-25 satuan justify-content-center"></span>
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary text-light">Capacity</span>
+                                <input type="number" class="form-control" placeholder="Kg / gram / ˚C / mm" id="capacity"
+                                    name="capacity" aria-describedby="capacity" required>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-primary text-light">Accuracy</span>
+                                <span class="input-group-text bg-primary text-light">±</span>
+                                <input type="number" class="form-control" placeholder="± Kg / gram / ˚C / mm"
+                                    id="accuracy" name="accuracy" required>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="input-group mb-3 h-100 pb-3">
+                                <select class="form-select" id="unit" name="unit" required>
+                                    <option value="" selected>Satuan</option>
+                                    @foreach ($units as $unit)
+                                        <option value="{{ $unit->id }}">{{ $unit->unit }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Merk</span>
                         <input type="text" class="form-control" id="merk" name="merk" required>
                     </div>
-                </div>
-                <div class="col-md-6">
                     <div class="input-group mb-3">
-                        <span class="input-group-text bg-primary text-light">Tanggal Kalibrasi</span>
-                        <input type="date" id="tgl_kalibrasi" name="tgl_kalibrasi" class="form-control"
-                            placeholder="dd/mm/yyyy" required>
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text bg-primary text-light">Tipe Kalibrasi</span>
-                        <select type="text" class="form-select" id="tipe_kalibrasi" name="tipe_kalibrasi" required>
+                        <span class="input-group-text bg-primary text-light">Calibration Type</span>
+                        <select class="form-select" id="calibration_type" name="calibration_type" required>
                             <option selected>Pilih...</option>
                             <option value="Internal">Internal</option>
                             <option value="External">External</option>
                         </select>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">1st Used</span>
                         <input type="date" class="form-control" id="first_used" name="first_used" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Rank</span>
-                        <select type="text" class="form-select" id="rank" name="rank" required>
-                            <option selected>Pilih...</option>
+                        <select class="form-select" id="rank" name="rank" required>
+                            <option selected>AA, A, B, C</option>
                             <option value="AA">AA</option>
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="C">C</option>
                         </select>
                     </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-primary text-light">Calibration Freq</span>
+                        <input type="number" class="form-control" id="calibration_freq" name="calibration_freq" required>
+                        <span class="input-group-text bg-primary text-light">Month</span>
+                    </div>
                     <div class="input-group mb-5">
-                        <span class="input-group-text bg-primary text-light">Freq kalibrasi</span>
-                        <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi" required>
-                        <span class="input-group-text bg-primary text-light">Tahun</span>
+                        <span class="input-group-text bg-primary text-light">Standard Keberterimaan</span>
+                        <input type="text" class="form-control" id="acceptance_criteria" name="acceptance_criteria"
+                            required>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text bg-primary text-light">PIC Pengguna</span>
-                        <input type="text" class="form-control" id="pic_pengguna" name="pic_pengguna" required>
+                        <span class="input-group-text bg-primary text-light">PIC</span>
+                        <input type="text" class="form-control" id="pic" name="pic" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Location</span>
@@ -99,7 +106,7 @@
             </div>
             <div class="row justify-content-between">
                 <div class="col-auto text-center">
-                    <a href="{{ route('dashboard') }}" class="btn btn-primary">Cancel</a>
+                    <a href="{{ route('dashboard', ['key' => 'menu-input']) }}" class="btn btn-primary">Cancel</a>
                 </div>
                 <div class="col-auto text-center">
                     <button type="reset" class="btn btn-danger">Reset</button>
@@ -120,27 +127,21 @@
 @section('scripts')
     <script type="module">
         $(document).ready(function() {
-            $('#nama-alat-ukur').change(function() {
+            $('#equipment_name').change(function() {
                 const tipeId = $(this).val();
 
                 if (tipeId === "") {
-                    $('#no_id').val('');
+                    $('#id_num').val('');
                     return;
                 }
 
                 // Ambil jumlah yang sudah ada untuk tipe ini
                 $.get(`/count-alat/${tipeId}`, function(data) {
-                    console.log(data)
                     const nextNumber = data.count + 1;
                     const paddedNumber = String(nextNumber).padStart(3, '0');
                     const noId = tipeId + '-' + paddedNumber;
-                    console.log(noId)
-                    $('#no-id').val(noId);
+                    $('#id-num').val(noId);
                 });
-            });
-            $('#std_ukuran').on('input', function() {
-                var value = $(this).val();
-                $('.satuan').text(value);
             });
         });
     </script>

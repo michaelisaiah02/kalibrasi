@@ -14,7 +14,6 @@
         }
     </style>
 @endsection
-
 @section('content')
     {{-- @dd($error) --}}
     <div class="container">
@@ -29,10 +28,9 @@
                     </div>
                     <div class="menu-input menu-section row d-none mx-1 mx-md-0">
                         <a class="btn btn-primary py-3 my-3 rounded-4 btn1" href="{{ route('input.new.equipment') }}">NEW
-                            ALAT
-                            UKUR</a>
-                        <button class="btn btn-primary py-3 rounded-4 btn1">DATA
-                            PERBAIKAN</button>
+                            EQUIPMENT</a>
+                        <a class="btn btn-primary py-3 rounded-4 btn1" href="{{ route('input.repair.data') }}">REPAIR
+                            DATA</a>
                     </div>
                     <div class="menu-report menu-section row d-none mx-1 mx-md-0">
                         <button class="btn btn-primary py-3 rounded-4 btn1">KEBERTERIMAAN &
@@ -50,14 +48,8 @@
                     </div>
                     <div class="menu-input menu-section row d-none mx-1 mx-md-0">
                         <a class="btn btn-primary py-3 my-3 rounded-4 btn1"
-                            href="{{ route('input.calibration.data') }}">DATA
-                            KALIBRASI</a>
-                        <button class="btn btn-primary py-3 rounded-4 btn1">STD
-                            KEBERTERIMAAN</button>
-                    </div>
-                    <div class="menu-report menu-section row d-none mx-1 mx-md-0">
-                        <button class="btn btn-primary py-3 mb-5 rounded-4 btn1">SCHEDULE
-                            & MASTERLIST KALIBRASI</button>
+                            href="{{ route('input.calibration.data') }}">CALIBRATION DATA</a>
+                        <button class="btn btn-primary py-3 rounded-4 btn1">MASTER DATA</button>
                     </div>
                 </div>
             </div>
@@ -128,21 +120,7 @@
                         $("#title").addClass("show-title");
                     }, 5); // kasih delay sedikit supaya transisi bisa kebaca
                 } else if (target === "menu-report") {
-                    // Opacity gambar report 50%, hilangkan tombol report
-                    $("#img-input").css("opacity", "0.5");
-                    $("#img-report").css("opacity", "1");
-                    $("#btn-input").addClass("d-none"); // Tampilkan tombol input
-                    $("#btn-report").addClass("d-none"); // Sembunyikan tombol report
-                    $("#btn-logout").addClass("d-none");
-                    $("#btn-back").removeClass("d-none"); // Tampilkan tombol back
-                    $(".menu-section").addClass("d-none"); // Sembunyikan semua menu-section
-                    $("." + target).removeClass("d-none"); // Tampilkan yang dipilih
-
-                    // Ubah judul
-                    $("#title").text("REPORT").removeClass("d-none");
-                    setTimeout(() => {
-                        $("#title").addClass("show-title");
-                    }, 5); // kasih delay sedikit supaya transisi bisa kebaca
+                    window.location.href = "/report"
                 } else {
                     // Tutup semua menu-section
                     $("#img-input").css("opacity", "1");
@@ -179,4 +157,13 @@
             })
         </script>
     @endsession
+    @if (!session()->has('success'))
+        @session('key')
+            <script type="module">
+                $(document).ready(function() {
+                    $('.menu-btn[data-target="{{ session()->get('key') }}"]').trigger('click');
+                })
+            </script>
+        @endsession
+    @endif
 @endsection

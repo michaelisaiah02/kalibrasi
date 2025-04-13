@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckRoleIsAdmin;
 use App\Http\Middleware\CheckRoleMinUser;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -34,11 +35,18 @@ Route::middleware('auth')->group(function () {
                 'title' => 'CALIBRATION DATA INPUT'
             ]);
         })->name('input.calibration.data');
-        // Route::resource('equipment', AlatUkurController::class);
+        Route::get('/input/repair-data', function () {
+            return view('input.repair-data', [
+                'title' => 'REPAIR DATA INPUT'
+            ]);
+        })->name('input.repair.data');
+
+        Route::get('/report', [ReportController::class, 'menu'])->name('report.menu');
+        Route::post('/report', [ReportController::class, 'search'])->name('report.search');
 
         // API data
-        Route::get('/count-alat/{tipe_id}', function ($tipe_id) {
-            $count = \App\Models\MasterList::where('tipe_id', $tipe_id)->count();
+        Route::get('/count-alat/{tipe_id}', function ($type_id) {
+            $count = \App\Models\MasterList::where('type_id', $type_id)->count();
             return response()->json(['count' => $count]);
         });
     });
