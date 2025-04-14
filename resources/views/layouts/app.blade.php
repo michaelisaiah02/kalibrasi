@@ -11,12 +11,12 @@
     @if (!request()->is('login'))
         <style>
             #navbar-kalibrasi {
-                border-bottom-left-radius: 200px;
-                border-bottom-right-radius: 200px;
+                border-bottom-left-radius: 180px;
+                border-bottom-right-radius: 180px;
             }
 
             #title-section {
-                height: 11.2rem
+                height: 10rem
             }
         </style>
     @endif

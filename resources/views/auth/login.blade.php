@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <div class="container" style="margin-top: 30vh">
+    <div class="container" style="margin-top: 25vh">
         <div class="row justify-content-center">
             <div class="col-auto">
                 <div class="card bg-primary bg-opacity-50 shadow-sm border-0 rounded-5">

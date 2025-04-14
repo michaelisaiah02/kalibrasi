@@ -13,7 +13,7 @@ img.icon:hover {
 
 @media only screen and (max-width: 1080px) {
   .sub-judul {
-    width: 90% !important;
+    width: 95% !important;
     font-size: 0.8rem !important;
   }
   p {
@@ -31,19 +31,19 @@ img.icon:hover {
 }
 @media only screen and (min-width: 1081px) {
   .sub-judul {
-    width: 50% !important;
-    font-size: 1.8rem !important;
+    width: 75% !important;
+    font-size: 1.6rem !important;
   }
   p {
-    font-size: 2.267rem;
+    font-size: 2rem;
   }
   img {
-    width: 85px; height: 100.5px;
+    width: 75px; height: 90.5px;
   }
   .btn1 {
-    font-size: 2.3rem !important;
+    font-size: 2.2rem !important;
   }
   .btn2 {
-    font-size: 1.5rem !important;
+    font-size: 1.4rem !important;
   }
 }

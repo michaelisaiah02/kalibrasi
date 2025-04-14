@@ -11,7 +11,7 @@
 @endsection
 @section('content')
     {{-- @dd($error) --}}
-    <div class="container mt-md-5">
+    <div class="container mt-md-3">
         <form action="{{ route('report.search') }}" method="POST">
             @csrf
             <div class="row justify-content-md-around justify-content-center my-3">

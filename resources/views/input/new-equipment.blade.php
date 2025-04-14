@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <div class="container mt-5">
+    <div class="container mt-1 mt-md-3">
         <form action="{{ route('store.equipment') }}" method="POST">
             @csrf
             <div class="row justify-content-center">
@@ -43,7 +43,7 @@
                                 <span class="input-group-text bg-primary text-light">Capacity</span>
                                 <input type="text"
                                     class="form-control @error('capacity') is-invalid @enderror {{ old('capacity') ? 'is-valid' : '' }}"
-                                    placeholder="Kg / gram / ˚C / mm" id="capacity" name="capacity"
+                                    placeholder="Kg / gr / ˚C / mm" id="capacity" name="capacity"
                                     aria-describedby="capacity" required value="{{ old('capacity') }}">
 
                             </div>
@@ -52,7 +52,7 @@
                                 <span class="input-group-text bg-primary text-light">±</span>
                                 <input type="number"
                                     class="form-control @error('accuracy') is-invalid @enderror {{ old('accuracy') ? 'is-valid' : '' }}"
-                                    placeholder="± Kg / gram / ˚C / mm" id="accuracy" name="accuracy" required
+                                    placeholder="± Kg / gr / ˚C / mm" id="accuracy" name="accuracy" required
                                     value="{{ old('accuracy') }}">
                             </div>
                         </div>

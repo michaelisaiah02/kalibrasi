@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-3">
-        <form action="{{ route('store.equipment') }}" method="POST">
+    <div class="container mt-1 mt-md-3">
+        <form action="{{ route('store.equipment') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="row justify-content-center mb-3">
+            <div class="row justify-content-center mb-2">
                 <div class="col-md-6">
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">ID / SN Number</span>
@@ -15,7 +15,7 @@
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <label class="input-group-text bg-primary text-light" for="nama-alat-ukur">Calibration Date</label>
-                        <input type="date" aria-label="Date Now" placeholder="Date Now" class="form-control w-25"
+                        <input type="text" aria-label="Date Now" placeholder="Date Now" class="form-control w-25"
                             id="calibration_date" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
@@ -24,43 +24,37 @@
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">Capacity</span>
-                        <input type="number" class="form-control" placeholder="auto" id="capacity" name="capacity"
+                        <input type="number" class="form-control" placeholder="auto" id="capacity"
                             aria-describedby="capacity" disabled>
-                        <span class="input-group-text bg-primary text-light w-25 satuan justify-content-center"></span>
-                    </div>
-                    <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">Accuracy</span>
                         <span class="input-group-text bg-primary text-light">±</span>
-                        <input type="number" class="form-control" placeholder="± Kg / gram / ˚C / mm" id="ketelitian"
-                            name="ketelitian" required>
+                        <input type="number" class="form-control" placeholder="auto" id="accuracy" disabled>
                         <span class="input-group-text bg-primary text-light w-25 satuan justify-content-center"></span>
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">Merk</span>
-                        <input type="text" class="form-control" id="merk" name="merk" required>
+                        <input type="text" class="form-control" id="merk" placeholder="auto" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">Location</span>
-                        <input type="date" id="tgl_kalibrasi" name="tgl_kalibrasi" class="form-control"
-                            placeholder="dd/mm/yyyy" required>
+                        <input type="text" id="location" class="form-control" placeholder="auto" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">Calibration Type</span>
-                        <select type="text" class="form-select" id="tipe_kalibrasi" name="tipe_kalibrasi" required>
-                            <option selected>Pilih...</option>
-                            <option value="Internal">Internal</option>
-                            <option value="External">External</option>
-                        </select>
+                        <input type="text" id="calibration_type" class="form-control" placeholder="Internal / External"
+                            disabled>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">Standard Keberterimaan</span>
-                        <input type="date" class="form-control" id="first_used" name="first_used" required>
+                        <input type="text" class="form-control" id="acceptance_criteria" placeholder="Kg / gr / °C / mm"
+                            disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">Calibrator Equipment</span>
-                        <select type="text" class="form-select" id="rank" name="rank" required>
+                        <select type="text" class="form-select" id="calibrator-equipment" name="calibrator_equipment"
+                            required>
                             <option selected>Pilih...</option>
                             <option value="AA">AA</option>
                             <option value="A">A</option>
@@ -72,75 +66,65 @@
                         <div class="col">
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 1</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-1" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-1" name="param_1" required
+                                    placeholder="act">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 2</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-2" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-2" name="param_2" required
+                                    placeholder="act">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 3</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-3" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-3" name="param_3" required
+                                    placeholder="act">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 4</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-4" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-4" name="param_4" required
+                                    placeholder="act">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 5</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-5" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-5" name="param_5" required
+                                    placeholder="act">
                             </div>
                         </div>
                         <div class="col">
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 6</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-6" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-6" name="param_6" required
+                                    placeholder="act">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 7</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-7" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-7" name="param_7" required
+                                    placeholder="act">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 8</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-8" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-8" name="param_8" required
+                                    placeholder="act">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 9</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-9" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-9" name="param_9" required
+                                    placeholder="act">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 10</span>
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="std">
-                                <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="act">
+                                <input type="number" class="form-control" id="std-10" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="param-10" name="param_10" required
+                                    placeholder="act">
                             </div>
                         </div>
                         <div class="col-md-2 align-content-center">
@@ -148,7 +132,7 @@
                                 <span class="input-group-text bg-primary text-light">Judgement</span>
                             </div>
                             <div class="input-group input-group-sm mb-1">
-                                <select class="form-select" id="nama-alat-ukur" name="tipe_id" required>
+                                <select class="form-select" id="judgement" name="judgement" required>
                                     <option value="" selected>Pilih...</option>
                                     <option value="OK">OK</option>
                                     <option value="NG">NG</option>
@@ -160,7 +144,7 @@
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <input type="number" class="form-control" id="freq_kalibrasi" name="freq_kalibrasi"
-                                    required placeholder="user">
+                                    readonly value="{{ auth()->user()->idKaryawan }}">
                             </div>
                         </div>
                     </div>
@@ -215,11 +199,13 @@
                     <button type="button" class="btn btn-primary">Print Label</button>
                 </div>
                 <div class="col-12 col-md-auto text-center mb-1 mb-md-0">
+                    <input class="form-control form-control-sm" id="certificate" name="certificate" type="file"
+                        hidden>
                     <button type="button" class="btn btn-primary">Upload Calibration External Certificate</button>
                 </div>
             </div>
+        </form>
     </div>
-    </form>
     @if ($errors->any())
         <div class="alert alert-danger">
             @foreach ($errors->all() as $error)
