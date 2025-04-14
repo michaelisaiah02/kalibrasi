@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('type_id')->foreign('type_id')->references('type_id')->on('equipments')->onDelete('cascade');
             $table->string('id_num')->unique();
             $table->string('sn_num');
-            $table->integer('capacity')->unsigned();
+            $table->string('capacity');
             $table->integer('accuracy')->unsigned();
             $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
             $table->string('merk');

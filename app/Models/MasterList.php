@@ -13,7 +13,7 @@ class MasterList extends Model
         'sn_num',
         'capacity',
         'accuracy',
-        'unit',
+        'unit_id',
         'merk',
         'calibration_type',
         'first_used',

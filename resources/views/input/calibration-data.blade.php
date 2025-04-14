@@ -10,23 +10,22 @@
                         <span class="input-group-text bg-primary text-light">ID / SN Number</span>
                         <input type="text" aria-label="No ID" placeholder="-" class="form-control text-center"
                             name="no_id" id="no-id" required>
-                        <input type="text" aria-label="No SN" placeholder="No SN" class="form-control w-25"
-                            name="no_sn" id="no-sn" disabled>
+                        <input type="text" aria-label="No SN" placeholder="No SN" class="form-control text-center w-25"
+                            id="no-sn" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <label class="input-group-text bg-primary text-light" for="nama-alat-ukur">Calibration Date</label>
                         <input type="date" aria-label="Date Now" placeholder="Date Now" class="form-control w-25"
-                            name="no_sn" id="no-sn" disabled>
+                            id="calibration_date" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">Equipment Name</span>
-                        <input type="text" class="form-control" placeholder="Kg / gram / ˚C / mm" id="std_ukuran"
-                            name="std_ukuran" required>
+                        <input type="text" class="form-control" placeholder="auto" id="equipment-name" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light">Capacity</span>
-                        <input type="number" class="form-control" placeholder="Kg / gram / ˚C / mm" id="kapasitas"
-                            name="kapasitas" aria-describedby="kapasitas" required>
+                        <input type="number" class="form-control" placeholder="auto" id="capacity" name="capacity"
+                            aria-describedby="capacity" disabled>
                         <span class="input-group-text bg-primary text-light w-25 satuan justify-content-center"></span>
                     </div>
                     <div class="input-group input-group-sm mb-1">

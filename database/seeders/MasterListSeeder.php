@@ -38,7 +38,7 @@ class MasterListSeeder extends Seeder
                 'type_id' => $type,
                 'id_num' => $noId,
                 'sn_num' => 'SN-' . strtoupper(Str::random(5)),
-                'capacity' => '100',
+                'capacity' => 'max 100',
                 'accuracy' => '1',
                 'unit_id' => $randomUnit,
                 'merk' => 'ACME',
