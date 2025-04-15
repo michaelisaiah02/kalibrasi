@@ -50,6 +50,28 @@ Route::middleware('auth')->group(function () {
             $count = \App\Models\MasterList::where('type_id', $type_id)->count();
             return response()->json(['count' => $count]);
         });
+        Route::get('/get-masterlist/{id_num}', function ($id_num) {
+            $data = \App\Models\MasterList::with(['equipment', 'unit', 'standard'])
+                ->where('id_num', $id_num)
+                ->first();
+
+            if (!$data) {
+                return response()->json(['message' => 'Data not found'], 404);
+            }
+
+            return response()->json([
+                'sn_num' => $data->sn_num,
+                'equipment_name' => $data->equipment->name ?? null,
+                'capacity' => $data->capacity,
+                'accuracy' => $data->accuracy,
+                'unit' => $data->unit->unit ?? null,
+                'merk' => $data->merk,
+                'location' => $data->location,
+                'calibration_type' => $data->calibration_type,
+                'acceptance_criteria' => $data->acceptance_criteria,
+                'standard' => $data->standard
+            ]);
+        });
     });
     // hanya admin
     Route::middleware(CheckRoleIsAdmin::class)->group(function () {

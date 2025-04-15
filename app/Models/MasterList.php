@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Standard;
 use App\Models\Equipment;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,5 +33,10 @@ class MasterList extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class, 'unit_id');
+    }
+
+    public function standard()
+    {
+        return $this->hasOne(Standard::class, 'id_num', 'id_num');
     }
 }

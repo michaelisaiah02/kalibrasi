@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('standard', function (Blueprint $table) {
+        Schema::create('standards', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_num')->foreign('id_num')->references('id_num')->on('master_lists')->onDelete('cascade');
-            $table->integer('parameter_01')->unsigned();
-            $table->integer('parameter_02')->unsigned();
-            $table->integer('parameter_03')->unsigned();
-            $table->integer('parameter_04')->unsigned();
-            $table->integer('parameter_05')->unsigned();
-            $table->integer('parameter_06')->unsigned();
-            $table->integer('parameter_07')->unsigned();
-            $table->integer('parameter_08')->unsigned();
-            $table->integer('parameter_09')->unsigned();
-            $table->integer('parameter_10')->unsigned();
+            $table->string('id_num')->foreign('id_num')->references('id_num')->on('master_lists')->onDelete('cascade');
+            $table->integer('param_01')->unsigned();
+            $table->integer('param_02')->unsigned();
+            $table->integer('param_03')->unsigned();
+            $table->integer('param_04')->unsigned();
+            $table->integer('param_05')->unsigned();
+            $table->integer('param_06')->unsigned();
+            $table->integer('param_07')->unsigned();
+            $table->integer('param_08')->unsigned();
+            $table->integer('param_09')->unsigned();
+            $table->integer('param_10')->unsigned();
             $table->timestamps();
         });
     }

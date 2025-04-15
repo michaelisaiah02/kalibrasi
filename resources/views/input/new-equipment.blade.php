@@ -45,7 +45,6 @@
                                     class="form-control @error('capacity') is-invalid @enderror {{ old('capacity') ? 'is-valid' : '' }}"
                                     placeholder="Kg / gr / ˚C / mm" id="capacity" name="capacity"
                                     aria-describedby="capacity" required value="{{ old('capacity') }}">
-
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text bg-primary text-light">Accuracy</span>

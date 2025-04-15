@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             EquipmentSeeder::class,
             UnitSeeder::class,
             MasterListSeeder::class,
+            StandardSeeder::class
         ]);
     }
 }
