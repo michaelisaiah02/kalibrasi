@@ -137,11 +137,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-between">
-                <div class="col-auto text-center">
-                    <a href="{{ route('dashboard', ['key' => 'menu-input']) }}" class="btn btn-primary">Cancel</a>
-                </div>
-                <div class="col-auto text-center">
+            <div class="row justify-content-end">
+                <div class="col-auto text-center d-flex column-gap-md-5 column-gap-1">
+                    <a href="{{ route('dashboard', ['key' => 'menu-input']) }}" class="btn btn-primary">Close</a>
                     <button type="reset" class="btn btn-danger">Reset</button>
                     <button type="submit" class="btn btn-primary">Save & Print</button>
                 </div>

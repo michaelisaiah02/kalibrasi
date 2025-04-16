@@ -9,6 +9,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Input\CalibrationDataController;
 use App\Http\Controllers\Input\NewEquipmentController;
 
 Route::get('/', function () {
@@ -31,16 +32,16 @@ Route::middleware('auth')->group(function () {
     Route::middleware(CheckRoleMinUser::class)->group(function () {
         Route::get('/input/new-equipment', [NewEquipmentController::class, 'create'])->name('input.new.equipment');
         Route::post('/input/new-equipment', [NewEquipmentController::class, 'store'])->name('store.equipment');
-        Route::get('/input/calibration-data', function () {
-            return view('input.calibration-data', [
-                'title' => 'CALIBRATION DATA INPUT'
-            ]);
-        })->name('input.calibration.data');
+
+        Route::get('/input/calibration-data', [CalibrationDataController::class, 'create'])->name('input.calibration.data');
+        Route::post('/input/calibration-data', [CalibrationDataController::class, 'store'])->name('store.calibration');
+
         Route::get('/input/repair-data', function () {
             return view('input.repair-data', [
                 'title' => 'REPAIR DATA INPUT'
             ]);
         })->name('input.repair.data');
+
 
         Route::get('/report', [ReportController::class, 'menu'])->name('report.menu');
         Route::post('/report', [ReportController::class, 'search'])->name('report.search');
@@ -54,7 +55,9 @@ Route::middleware('auth')->group(function () {
             $data = \App\Models\MasterList::with(['equipment', 'unit', 'standard'])
                 ->where('id_num', $id_num)
                 ->first();
-
+            if ($data->calibration_type === 'Internal') {
+                $calibrator_equipments = \App\Models\MasterList::where('id_num', '!=', $id_num)->pluck('id_num');
+            }
             if (!$data) {
                 return response()->json(['message' => 'Data not found'], 404);
             }
@@ -69,6 +72,7 @@ Route::middleware('auth')->group(function () {
                 'location' => $data->location,
                 'calibration_type' => $data->calibration_type,
                 'acceptance_criteria' => $data->acceptance_criteria,
+                'calibrator_equipment' => $calibrator_equipments ?? '',
                 'standard' => $data->standard
             ]);
         });
