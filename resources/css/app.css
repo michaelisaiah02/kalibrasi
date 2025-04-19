@@ -19,7 +19,7 @@ img.icon:hover {
   p {
     font-size: 1rem;
   }
-  img {
+  .logo, .icon {
     width: 30px; height: 40.5px;
   }
   .btn1 {
@@ -27,6 +27,12 @@ img.icon:hover {
   }
   .btn2 {
     font-size: 1rem;
+  }
+  .width-label-1 {
+    width: 50%;
+  }
+  .width-label-2 {
+    width: 50%;
   }
 }
 @media only screen and (min-width: 1081px) {
@@ -37,7 +43,7 @@ img.icon:hover {
   p {
     font-size: 2rem;
   }
-  img {
+  .logo, .icon {
     width: 75px; height: 90.5px;
   }
   .btn1 {
@@ -45,5 +51,11 @@ img.icon:hover {
   }
   .btn2 {
     font-size: 1.4rem !important;
+  }
+  .width-label-1 {
+    width: 25%;
+  }
+  .width-label-2 {
+    width: 30%;
   }
 }

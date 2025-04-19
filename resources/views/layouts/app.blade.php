@@ -27,7 +27,7 @@
         id="navbar-kalibrasi">
         <div class="container-fluid justify-content-center">
             <a class="navbar-brand mx-0 mx-md-4" href="/">
-                <img src="{{ asset('image/logo-pt.png') }}" alt="Logo" class="mt-0">
+                <img src="{{ asset('image/logo-pt.png') }}" alt="Logo" class="mt-0 logo">
             </a>
             <div class="row text-center justify-content-center" id="title-section">
                 <p class="fw-bold align-self-center" id="kalibrasi">CALIBRATION APP</p>
@@ -44,7 +44,7 @@
                 @endif
             </div>
             <a class="navbar-brand mx-0 mx-md-4" href="/">
-                <img src="{{ asset('image/logo-rice.png') }}" alt="Logo" class="mt-0">
+                <img src="{{ asset('image/logo-rice.png') }}" alt="Logo" class="mt-0 logo">
             </a>
         </div>
     </nav>

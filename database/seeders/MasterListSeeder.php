@@ -47,7 +47,7 @@ class MasterListSeeder extends Seeder
                 'rank' => 'A',
                 'calibration_freq' => 6,
                 'acceptance_criteria' => 'apa aja boleh',
-                'pic' => fake('id')->name(),
+                'pic' => fake('id_ID')->name(),
                 'location' => 'Gudang A',
             ]);
         }

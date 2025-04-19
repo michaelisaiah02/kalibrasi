@@ -25,7 +25,8 @@ class Result extends Model
         'param_09',
         'param_10',
         'judgement',
-        'created_by'
+        'created_by',
+        'certificate'
     ];
 
     public function masterList()

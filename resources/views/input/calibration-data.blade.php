@@ -1,60 +1,71 @@
 @extends('layouts.app')
 
+@section('styles')
+    <style>
+        .selected-row {
+            background-color: #e2f0ff !important;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container mt-1 mt-md-3">
         <form action="{{ route('store.calibration') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="row justify-content-center mb-2">
+            <div class="row justify-content-center mb-1">
                 <div class="col-md-6">
                     <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text bg-primary text-light">ID / SN Number</span>
+                        <span class="input-group-text bg-primary text-light width-label-1">ID / SN Number</span>
                         <input type="text" aria-label="No ID" placeholder="-"
                             class="form-control text-center @error('id_num') is-invalid @enderror {{ old('id_num') ? 'is-valid' : '' }}"
                             name="id_num" id="id-num" required value="{{ old('id_num') }}">
-                        <input type="text" aria-label="No SN" placeholder="No SN" class="form-control text-center w-25"
-                            id="sn-num" disabled>
+                        <input type="text" aria-label="No SN" placeholder="No SN"
+                            class="form-control text-center width-label-1" id="sn-num" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
-                        <label class="input-group-text bg-primary text-light" for="nama-alat-ukur">Calibration Date</label>
-                        <input type="text" aria-label="Date Now" placeholder="Date Now" class="form-control w-25"
-                            id="calibration-date" value="{{ now()->isoFormat('D MMMM Y') }}" disabled>
+                        <label class="input-group-text bg-primary text-light width-label-1" for="nama-alat-ukur">Calibration
+                            Date</label>
+                        <input type="date" aria-label="Date Now" placeholder="Date Now"
+                            class="form-control width-label-1" id="calibration-date" name="calibration_date"
+                            value="{{ now()->toDateString() }}">
                     </div>
                     <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text bg-primary text-light">Equipment Name</span>
+                        <span class="input-group-text bg-primary text-light width-label-1">Equipment Name</span>
                         <input type="text" class="form-control" placeholder="auto" id="equipment-name" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text bg-primary text-light">Capacity</span>
+                        <span class="input-group-text bg-primary text-light width-label-1">Capacity</span>
                         <input type="text" class="form-control" placeholder="auto" id="capacity"
                             aria-describedby="capacity" disabled>
-                        <span class="input-group-text bg-primary text-light">Accuracy</span>
-                        <span class="input-group-text bg-primary text-light">±</span>
+                        <span class="input-group-text bg-primary text-light">Accuracy ±</span>
                         <input type="number" class="form-control" placeholder="auto" id="accuracy" disabled>
-                        <span class="input-group-text bg-primary text-light w-25 justify-content-center"
-                            id="unit"></span>
+                        <span class="input-group-text bg-primary text-light justify-content-center" id="unit"></span>
                     </div>
                     <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text bg-primary text-light">Merk</span>
+                        <span class="input-group-text bg-primary text-light width-label-1">Merk</span>
                         <input type="text" class="form-control" id="merk" placeholder="auto" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text bg-primary text-light">Location</span>
+                        <span class="input-group-text bg-primary text-light width-label-1">Location - PIC</span>
                         <input type="text" id="location" class="form-control" placeholder="auto" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text bg-primary text-light">Calibration Type</span>
-                        <input type="text" id="calibration-type" class="form-control" placeholder="Internal / External"
+                        <span class="input-group-text bg-primary text-light width-label-1">Calibration Type</span>
+                        <input type="text" class="form-control calibration-type" placeholder="Internal / External" hidden
+                            name="calibration_type">
+                        <input type="text" class="form-control calibration-type" placeholder="Internal / External"
                             disabled>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text bg-primary text-light">Standard Keberterimaan</span>
+                        <span class="input-group-text bg-primary text-light width-label-2">Standar
+                            Keberterimaan</span>
                         <input type="text" class="form-control" id="acceptance-criteria" placeholder="Kg / gr / °C / mm"
                             disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1" id="calibrator-equipment-section">
-                        <span class="input-group-text bg-primary text-light">Calibrator Equipment</span>
+                        <span class="input-group-text bg-primary text-light width-label-2">Calibrator Equipment</span>
                         <select type="text"
                             class="form-select @error('calibrator_equipment') is-invalid @enderror {{ old('calibrator_equipment') ? 'is-valid' : '' }}"
                             id="calibrator-equipment" name="calibrator_equipment" required>
@@ -153,10 +164,13 @@
                                 <select
                                     class="form-select @error('judgement') is-invalid @enderror {{ old('judgement') ? 'is-valid' : '' }}"
                                     id="judgement" name="judgement" required>
-                                    <option value="" selected>Pilih...</option>
-                                    <option value="OK">OK</option>
-                                    <option value="NG">NG</option>
-                                    <option value="Disposal">Disposal</option>
+                                    <option value="" {{ old('judgement') == '' ? 'selected' : '' }}>Pilih...
+                                    </option>
+                                    <option value="OK" {{ old('judgement') == 'OK' ? 'selected' : '' }}>OK</option>
+                                    <option value="NG" {{ old('judgement') == 'NG' ? 'selected' : '' }}>NG</option>
+                                    <option value="Disposal" {{ old('judgement') == 'Disposal' ? 'selected' : '' }}>
+                                        Disposal
+                                    </option>
                                 </select>
                             </div>
                             <div class="input-group input-group-sm mb-1">
@@ -170,11 +184,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row table-responsive mb-3">
+            <div class="row table-responsive mb-1" style="max-height: 110px; overflow-y: auto;">
                 <table class="table table-sm table-bordered align-middle">
-                    <thead class="table-primary">
+                    <thead class="table-primary sticky-top">
                         <tr class="align-middle text-center">
-                            <th scope="col">No</th>
+                            <th scope="col">No
+                            </th>
                             <th scope="col">Calibration Date</th>
                             <th scope="col">Nomor ID/SN</th>
                             <th scope="col">Equipment Name</th>
@@ -194,21 +209,35 @@
                     <tbody class="table-group-divider">
                         @foreach ($results as $result)
                             <tr>
-                                <td> <button class="btn btn-primary">{{ $loop->iteration }}</button> </td>
-                                <td> {{ $result->calibration_date }} </td>
-                                <td> {{ $result->id_num }} / {{ $result->masterList->sn_num }} </td>
-                                <td> {{ $result->masterList->equipment->name }} </td>
-                                <td> {{ $result->masterList->capacity }} </td>
-                                <td> {{ $result->masterList->accuracy }} </td>
-                                <td> {{ $result->masterList->merk }} </td>
-                                <td> {{ $result->masterList->location }} </td>
-                                <td> {{ $result->masterList->pic }} </td>
-                                <td> {{ $result->masterList->calibration_type }} </td>
-                                <td> {{ $result->masterList->rank }} </td>
-                                <td> {{ $result->masterList->calibration_freq }} </td>
-                                <td> {{ $result->masterList->acceptance_criteria }} </td>
-                                <td> {{ $result->judgement }} </td>
-                                <td> <button class="btn btn-primary">Lihat</button> </td>
+                                <td><button type="button" class="btn btn-primary btn-select-id"
+                                        data-id="{{ $result->id_num }}">{{ $loop->iteration }}</button></td>
+                                <td class="text-nowrap"> {{ $result->calibration_date }} </td>
+                                <td class="text-nowrap"> {{ $result->id_num }} / {{ $result->masterList->sn_num }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->equipment->name }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->capacity }}
+                                    {{ $result->masterList->unit->unit }} </td>
+                                <td class="text-nowrap">± {{ $result->masterList->accuracy }}
+                                    {{ $result->masterList->unit->unit }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->merk }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->location }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->pic }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->calibration_type }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->rank }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->calibration_freq }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->acceptance_criteria }} </td>
+                                <td class="text-nowrap"> {{ $result->judgement }} </td>
+                                <td>
+                                    @if ($result->certificate)
+                                        <button class="btn btn-primary btn-view-certificate" data-bs-toggle="modal"
+                                            data-bs-target="#certificateModal"
+                                            data-path="{{ asset('storage/' . $result->certificate) }}"
+                                            data-ext="{{ pathinfo($result->certificate, PATHINFO_EXTENSION) }}">
+                                            Lihat
+                                        </button>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -222,16 +251,98 @@
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#resultModal">Lihat
+                        Semua Data</button>
+                </div>
+                <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="button" class="btn btn-primary">Print Label</button>
                 </div>
                 <div class="col-12 col-md-auto text-center mb-1 mb-md-0">
                     <input class="form-control form-control-sm" id="certificate" name="certificate" type="file"
                         hidden>
-                    <button type="button" class="btn btn-primary">Upload Calibration External Certificate</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="document.getElementById('certificate').click()">Upload Calibration External
+                        Certificate</button>
                 </div>
             </div>
         </form>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Semua Data Kalibrasi</h5>
+                    <input type="text" class="form-control w-25 ms-3" placeholder="Cari..." id="search-table">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body p-0 m-0">
+                    <table class="table table-sm table-bordered align-middle" id="modal-table">
+                        <thead class="table-primary sticky-top">
+                            <tr class="align-middle text-center">
+                                <th scope="col">No</th>
+                                <th scope="col">Calibration Date</th>
+                                <th scope="col">Nomor ID/SN</th>
+                                <th scope="col">Equipment Name</th>
+                                <th scope="col">Capacity</th>
+                                <th scope="col">Accuracy</th>
+                                <th scope="col">Merk</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">PIC</th>
+                                <th scope="col">Calibration Type</th>
+                                <th scope="col">Rank</th>
+                                <th scope="col">Calibration Freq</th>
+                                <th scope="col">Standar Keberterimaan</th>
+                                <th scope="col">Judgement</th>
+                                <th scope="col">Certificate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($results as $result)
+                                <tr>
+                                    <td><button class="btn btn-primary btn-select-id" data-id="{{ $result->id_num }}"
+                                            data-bs-dismiss="modal">{{ $loop->iteration }}</button></td>
+                                    <td>{{ $result->calibration_date }}</td>
+                                    <td>{{ $result->id_num }} / {{ $result->masterList->sn_num }}</td>
+                                    <td>{{ $result->masterList->equipment->name }}</td>
+                                    <td>{{ $result->masterList->capacity }} {{ $result->masterList->unit->unit }}</td>
+                                    <td>± {{ $result->masterList->accuracy }} {{ $result->masterList->unit->unit }}</td>
+                                    <td>{{ $result->masterList->merk }}</td>
+                                    <td>{{ $result->masterList->location }}</td>
+                                    <td>{{ $result->masterList->pic }}</td>
+                                    <td>{{ $result->masterList->calibration_type }}</td>
+                                    <td>{{ $result->masterList->rank }}</td>
+                                    <td>{{ $result->masterList->calibration_freq }}</td>
+                                    <td>{{ $result->masterList->acceptance_criteria }}</td>
+                                    <td>{{ $result->judgement }}</td>
+                                    <td><button class="btn btn-primary">Lihat</button></td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sertifikat Kalibrasi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body text-center vh-100" id="certificateContent">
+                    <div class="text-muted">Memuat...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <x-toast />
 @endsection
 
@@ -249,30 +360,36 @@
                 url: `/get-masterlist/${idNum}`,
                 method: 'GET',
                 success: function(data) {
+                    console.log(data);
                     $('#sn-num').val(data.sn_num);
                     $('#equipment-name').val(data.equipment_name);
                     $('#capacity').val(data.capacity);
                     $('#accuracy').val(data.accuracy);
                     $('#unit').text(data.unit);
                     $('#merk').val(data.merk);
-                    $('#location').val(data.location);
-                    $('#calibration-type').val(data.calibration_type);
+                    $('#location').val(data.location + ' - ' + data.pic);
+                    $('.calibration-type').val(data.calibration_type);
                     $('#acceptance-criteria').val(data.acceptance_criteria);
                     if (data.calibration_type === 'External') {
                         $('#calibrator-equipment-section').addClass('d-none');
                         $('#calibrator-equipment').prop('required', false).prop('disabled', true)
-                            .prop('hidden', true);
+                            .hide();
+                        $('#certificate').next('button').prop('required', true).prop('disabled', false).show();
                     } else {
                         $('#calibrator-equipment').empty();
                         $('#calibrator-equipment').append(
                             `<option disabled selected>Pilih...</option>`);
-                        data.calibrator_equipment.forEach(function(id_num) {
+                        console.log(data.calibrator_equipments);
+                        data.calibrator_equipments.forEach(function(item) {
                             $('#calibrator-equipment').append(
-                                `<option value="${id_num}">${id_num}</option>`);
+                                `<option value="${item.id_num}">${item.id_num} - ${item.equipment_name}</option>`
+                            );
                         });
                         $('#calibrator-equipment-section').removeClass('d-none');
                         $('#calibrator-equipment').prop('required', true).prop('disabled', false)
-                            .prop('hidden', false);
+                            .show();
+                        $('#certificate').next('button').prop('required', false).prop('disabled', true).hide();
+                        $('#certificate').val('');
                     }
                     $('#std-1').val(data.standard.param_01);
                     $('#std-2').val(data.standard.param_02);
@@ -295,11 +412,12 @@
                         $('#unit').text('');
                         $('#merk').val('');
                         $('#location').val('');
-                        $('#calibration-type').val('');
+                        $('.calibration-type').val('');
                         $('#acceptance-criteria').val('');
                         $('#calibrator-equipment').empty('');
                         $('#calibrator-equipment').append(
                             `<option disabled selected>Pilih...</option>`);
+                        $('#certificate').val('');
                         $('#std-1').val('');
                         $('#std-2').val('');
                         $('#std-3').val('');
@@ -344,5 +462,42 @@
                 fetchMasterList($input.val().trim());
             }
         })
+
+        $(document).on('click', '.btn-select-id', function() {
+            const selectedId = $(this).data('id');
+
+            // trigger autofill
+            $('#id-num').val(selectedId).trigger('input');
+
+            // highlight baris terpilih
+            $('.table tbody tr').removeClass('selected-row'); // reset
+            $(this).closest('tr').addClass('selected-row'); // tandai baris aktif
+        });
+
+
+        // Optional: search bar real-time di modal
+        $('#search-table').on('input', function() {
+            const keyword = $(this).val().toLowerCase();
+            $('#modal-table tbody tr').each(function() {
+                const rowText = $(this).text().toLowerCase();
+                $(this).toggle(rowText.includes(keyword));
+            });
+        });
+
+        $(document).on('click', '.btn-view-certificate', function() {
+            const path = $(this).data('path');
+            const ext = $(this).data('ext').toLowerCase();
+            const container = $('#certificateContent');
+
+            container.html('<div class="text-muted">Memuat...</div>'); // reset dulu
+
+            if (['jpg', 'jpeg', 'png'].includes(ext)) {
+                container.html(`<img src="${path}" class="img-fluid" alt="Certificate">`);
+            } else if (ext === 'pdf') {
+                container.html(`<iframe src="${path}" style="border: none;"></iframe>`);
+            } else {
+                container.html(`<div class="text-danger">Format file tidak dikenali: .${ext}</div>`);
+            }
+        });
     </script>
 @endsection

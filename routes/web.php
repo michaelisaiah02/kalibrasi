@@ -56,7 +56,15 @@ Route::middleware('auth')->group(function () {
                 ->where('id_num', $id_num)
                 ->first();
             if ($data->calibration_type === 'Internal') {
-                $calibrator_equipments = \App\Models\MasterList::where('id_num', '!=', $id_num)->pluck('id_num');
+                $calibrator_equipments = \App\Models\MasterList::with('equipment')
+                    ->where('id_num', '!=', $id_num)
+                    ->get()
+                    ->map(function ($item) {
+                        return [
+                            'id_num' => $item->id_num,
+                            'equipment_name' => $item->equipment->name ?? '(Unknown)',
+                        ];
+                    });
             }
             if (!$data) {
                 return response()->json(['message' => 'Data not found'], 404);
@@ -70,9 +78,10 @@ Route::middleware('auth')->group(function () {
                 'unit' => $data->unit->unit ?? null,
                 'merk' => $data->merk,
                 'location' => $data->location,
+                'pic' => $data->pic,
                 'calibration_type' => $data->calibration_type,
                 'acceptance_criteria' => $data->acceptance_criteria,
-                'calibrator_equipment' => $calibrator_equipments ?? '',
+                'calibrator_equipments' => $calibrator_equipments ?? '',
                 'standard' => $data->standard
             ]);
         });

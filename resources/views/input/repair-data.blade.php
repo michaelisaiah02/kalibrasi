@@ -2,9 +2,9 @@
 
 @section('styles')
     <style>
-        #id-num::placeholder {
-            color: white;
-        }
+        /* #id-num::placeholder {
+                            color: white;
+                        } */
     </style>
 @endsection
 
@@ -78,14 +78,14 @@
                         <tr class="align-middle text-center">
                             <th scope="col">No ID</th>
                             <th scope="col">Equipment Name</th>
-                            <th scope="col">Capacity</th>
                             <th scope="col">Merk</th>
+                            <th scope="col">Problem Date</th>
                             <th scope="col">Repair Date</th>
-                            <th scope="col">PIC</th>
                             <th scope="col">Location</th>
                             <th scope="col">Problem</th>
                             <th scope="col">Countermeasure</th>
                             <th scope="col">Judgement</th>
+                            <th scope="col">PIC Perbaikan</th>
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
