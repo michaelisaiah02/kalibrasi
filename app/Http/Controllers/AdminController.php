@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function user()
     {
         $users = User::all();
-        return view('admin.user', [
+        return view('admin.user.index', [
             'title' => 'MASTER DATA INPUT - Tabel User',
             'users' => $users,
         ]);

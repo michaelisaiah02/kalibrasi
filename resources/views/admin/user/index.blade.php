@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <a href="{{ route('register') }}" class="btn btn-primary">Tambah User Baru</a>
+                        <a href="{{ route('admin.users.register') }}" class="btn btn-primary">Tambah User Baru</a>
                     </div>
                 </div>
                 <!-- Tampilkan data sesuai dengan kebutuhan -->

@@ -8,7 +8,7 @@
                     <h3 class="card-header text-center">DAFTAR USER BARU</h3>
                     <div class="card-body">
                         <!-- Form register -->
-                        <form action="{{ route('register') }}" method="POST" id="registerForm">
+                        <form action="{{ route('admin.users.register.store') }}" method="POST" id="registerForm">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Nama Lengkap</label>

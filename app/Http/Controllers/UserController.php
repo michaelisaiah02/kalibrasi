@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,7 +10,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        return view('admin.edit-user', compact('user'));
+        return view('admin.user.edit', compact('user'));
     }
 
     public function update(Request $request, $id)

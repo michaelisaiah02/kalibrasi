@@ -1,14 +1,5 @@
 @extends('layouts.app')
 
-@section('styles')
-    <style>
-        #title {
-            opacity: 1;
-            transform: translateY(-20px);
-            transition: opacity 0.1s ease, transform 0.2s ease;
-        }
-    </style>
-@endsection
 @section('content')
     {{-- @dd($error) --}}
     <div class="container mt-md-3">
@@ -57,11 +48,11 @@
                 </div>
             </div>
             <div class="input-group mb-md-5 mb-1">
-                <button type="submit" class="btn btn-info me-0 me-md-4 rounded-1" value="masterlist"
+                <button type="submit" class="btn btn-secondary me-0 me-md-4 rounded-1" value="masterlist"
                     name="report">Masterlist</button>
-                <button type="submit" class="btn btn-info mx-1 mx-md-4 rounded-1" value="keberterimaan"
+                <button type="submit" class="btn btn-secondary mx-1 mx-md-4 rounded-1" value="keberterimaan"
                     name="report">Keberterimaan</button>
-                <button type="submit" class="btn btn-info mx-md-4 rounded-1" value="history" name="report">History
+                <button type="submit" class="btn btn-secondary mx-md-4 rounded-1" value="history" name="report">History
                     Perbaikan</button>
             </div>
         </form>
@@ -71,36 +62,7 @@
             </div>
         </div>
     </div>
-    @if (session()->has('error'))
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-            <div id="errorNotification" class="toast align-items-center text-bg-danger border-0" role="alert"
-                aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <i class="bi bi-x-square-fill text-danger me-1"></i>
-                    <strong class="me-auto">{{ config('app.name') }} - Error</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    {{ session()->get('error') }}
-                </div>
-            </div>
-        </div>
-    @endif
-    @if (session()->has('success'))
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-            <div id="successNotification" class="toast align-items-center text-bg-success border-0" role="alert"
-                aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <i class="bi bi-check-square-fill text-success me-1"></i>
-                    <strong class="me-auto">{{ config('app.name') }} - Berhasil</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">
-                    {{ session()->get('success') }}
-                </div>
-            </div>
-        </div>
-    @endif
+    <x-toast />
 @endsection
 
 @section('scripts')

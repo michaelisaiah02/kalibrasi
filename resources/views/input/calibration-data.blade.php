@@ -360,7 +360,6 @@
                 url: `/get-masterlist/${idNum}`,
                 method: 'GET',
                 success: function(data) {
-                    console.log(data);
                     $('#sn-num').val(data.sn_num);
                     $('#equipment-name').val(data.equipment_name);
                     $('#capacity').val(data.capacity);
@@ -378,11 +377,11 @@
                     } else {
                         $('#calibrator-equipment').empty();
                         $('#calibrator-equipment').append(
-                            `<option disabled selected>Pilih...</option>`);
-                        console.log(data.calibrator_equipments);
+                            `<option disabled {{ old('calibrator_equipment') ? '' : 'selected' }}>Pilih...</option>`
+                        );
                         data.calibrator_equipments.forEach(function(item) {
                             $('#calibrator-equipment').append(
-                                `<option value="${item.id_num}">${item.id_num} - ${item.equipment_name}</option>`
+                                `<option value="${item.id_num}" ${item.id_num == "{{ old('calibrator_equipment') }}" ? 'selected' : ''}>${item.id_num} - ${item.equipment_name}</option>`
                             );
                         });
                         $('#calibrator-equipment-section').removeClass('d-none');
@@ -457,8 +456,7 @@
         });
 
         $(document).ready(function() {
-            if ($input.val().trim().length >= 0) {
-                console.log($input.val().trim());
+            if ($input.val().trim().length === 7) {
                 fetchMasterList($input.val().trim());
             }
         })

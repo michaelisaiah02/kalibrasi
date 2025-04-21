@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\APIController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\CheckRoleIsAdmin;
@@ -9,8 +10,8 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Input\CalibrationDataController;
 use App\Http\Controllers\Input\NewEquipmentController;
+use App\Http\Controllers\Input\CalibrationDataController;
 
 Route::get('/', function () {
     return redirect('/dashboard');
@@ -47,51 +48,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/report', [ReportController::class, 'search'])->name('report.search');
 
         // API data
-        Route::get('/count-alat/{tipe_id}', function ($type_id) {
-            $count = \App\Models\MasterList::where('type_id', $type_id)->count();
-            return response()->json(['count' => $count]);
-        });
-        Route::get('/get-masterlist/{id_num}', function ($id_num) {
-            $data = \App\Models\MasterList::with(['equipment', 'unit', 'standard'])
-                ->where('id_num', $id_num)
-                ->first();
-            if ($data->calibration_type === 'Internal') {
-                $calibrator_equipments = \App\Models\MasterList::with('equipment')
-                    ->where('id_num', '!=', $id_num)
-                    ->get()
-                    ->map(function ($item) {
-                        return [
-                            'id_num' => $item->id_num,
-                            'equipment_name' => $item->equipment->name ?? '(Unknown)',
-                        ];
-                    });
-            }
-            if (!$data) {
-                return response()->json(['message' => 'Data not found'], 404);
-            }
-
-            return response()->json([
-                'sn_num' => $data->sn_num,
-                'equipment_name' => $data->equipment->name ?? null,
-                'capacity' => $data->capacity,
-                'accuracy' => $data->accuracy,
-                'unit' => $data->unit->unit ?? null,
-                'merk' => $data->merk,
-                'location' => $data->location,
-                'pic' => $data->pic,
-                'calibration_type' => $data->calibration_type,
-                'acceptance_criteria' => $data->acceptance_criteria,
-                'calibrator_equipments' => $calibrator_equipments ?? '',
-                'standard' => $data->standard
-            ]);
-        });
+        Route::get('/count-alat/{tipe_id}', [APIController::class, 'countEquipments'])->name('api.count.alat');
+        Route::get('/get-masterlist/{id_num}', [APIController::class, 'getMasterList'])->name('api.get.masterlist');
     });
     // hanya admin
     Route::middleware(CheckRoleIsAdmin::class)->group(function () {
         // Route::resource('users', UserController::class);
         Route::get('/admin/users', [AdminController::class, 'user'])->name('admin.users');
-        Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-        Route::post('/register', [RegisterController::class, 'register']);
+        Route::get('/admin/users/register', [RegisterController::class, 'showRegistrationForm'])->name('admin.users.register');
+        Route::get('/admin/users/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/admin/users/edit/{id}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/admin/users/delete/{id}', [UserController::class, 'destroy'])->name('admin.users.delete');
+        Route::post('/admin/users/register', [RegisterController::class, 'register'])->name('admin.users.register.store');
         Route::get('/admin/std-keberterimaan', [AdminController::class, 'keberterimaan'])->name('admin.std.keberterimaan');
     });
     // Route::post('/input-new-alat-ukur', [AlatUkurController::class, 'store'])->middleware('auth')->name('store.equipment');
