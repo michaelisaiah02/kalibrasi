@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->string('name');
             $table->char('idKaryawan', 5)->unique();
             $table->string('password');
-            $table->rememberToken();
             $table->timestamps();
         });
 

@@ -2,23 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\APIController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\CheckRoleIsAdmin;
 use App\Http\Middleware\CheckRoleMinUser;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Input\NewEquipmentController;
 use App\Http\Controllers\Input\CalibrationDataController;
 
 Route::get('/', function () {
     return redirect('/dashboard');
-});
-
-Route::get('/welcome', function () {
-    return view('welcome');
 });
 
 Route::middleware('guest')->group(function () {
@@ -54,12 +49,12 @@ Route::middleware('auth')->group(function () {
     // hanya admin
     Route::middleware(CheckRoleIsAdmin::class)->group(function () {
         // Route::resource('users', UserController::class);
-        Route::get('/admin/users', [AdminController::class, 'user'])->name('admin.users');
-        Route::get('/admin/users/register', [RegisterController::class, 'showRegistrationForm'])->name('admin.users.register');
-        Route::get('/admin/users/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
-        Route::put('/admin/users/edit/{id}', [UserController::class, 'update'])->name('admin.users.update');
-        Route::delete('/admin/users/delete/{id}', [UserController::class, 'destroy'])->name('admin.users.delete');
-        Route::post('/admin/users/register', [RegisterController::class, 'register'])->name('admin.users.register.store');
+        Route::prefix('admin/users')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
+            Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
+            Route::post('/update-user/{id}', [UserController::class, 'update'])->name('admin.users.update');
+            Route::delete('/delete-user/{id}', [UserController::class, 'destroy']);
+        });
         Route::get('/admin/std-keberterimaan', [AdminController::class, 'keberterimaan'])->name('admin.std.keberterimaan');
     });
     // Route::post('/input-new-alat-ukur', [AlatUkurController::class, 'store'])->middleware('auth')->name('store.equipment');

@@ -54,7 +54,7 @@
             </div>
             <div class="col-md-5 d-grid row-gap-1 row-gap-md-3 text-center d-none master-data">
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
-                    href="{{ route('admin.users') }}">Tabel User</a>
+                    href="{{ route('admin.users.index') }}">Tabel User</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Kode dan Jenis Alat
                     Ukur</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tambahkan Sesuai Tabel di
