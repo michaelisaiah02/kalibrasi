@@ -45,7 +45,7 @@ class APIController extends Controller
             'capacity' => $data->capacity,
             'accuracy' => $data->accuracy,
             'unit' => $data->unit->unit ?? null,
-            'merk' => $data->merk,
+            'brand' => $data->brand,
             'location' => $data->location,
             'pic' => $data->pic,
             'calibration_type' => $data->calibration_type,

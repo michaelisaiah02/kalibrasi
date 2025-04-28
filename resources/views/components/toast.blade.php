@@ -7,7 +7,7 @@
                 <strong class="me-auto">{{ config('app.name') }} - Error</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body">
+            <div class="toast-body bg-danger text-light">
                 {{ session()->get('error') }}
             </div>
         </div>
@@ -22,7 +22,7 @@
                 <strong class="me-auto">{{ config('app.name') }} - Berhasil</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body">
+            <div class="toast-body bg-success text-light">
                 {{ session()->get('success') }}
             </div>
         </div>
@@ -37,9 +37,9 @@
                 <strong class="me-auto">{{ config('app.name') }} - Error</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body list-group">
+            <div class="toast-body bg-danger text-light">
                 @foreach ($errors->all() as $error)
-                    <li class="list-group-item list-group-item-danger">{{ $error }}</li>
+                    - {{ $error }} <br>
                 @endforeach
             </div>
         </div>

@@ -14,7 +14,7 @@ class UserController extends Controller
     {
         $users = User::paginate(5);
         return view('admin.user.index', compact('users'), [
-            'title' => 'MASTER DATA INPUT - Tabel User',
+            'title' => 'MASTER DATA INPUT - USERS TABLE',
         ]);
     }
 
@@ -22,7 +22,7 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'idKaryawan' => ['required', 'size:5', 'unique:users,idKaryawan'],
+            'employeeID' => ['required', 'size:5', 'unique:users,employeeID'],
             'role' => ['required', 'in:admin,user,guest'],
             'password' => ['required', 'string', 'min:6'],
         ]);
@@ -40,10 +40,10 @@ class UserController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'idKaryawan' => [
+            'employeeID' => [
                 'required',
                 'size:5',
-                Rule::unique('users', 'idKaryawan')->ignore($user->id)
+                Rule::unique('users', 'employeeID')->ignore($user->id)
             ],
             'role' => ['required', 'in:admin,user,guest'],
         ]);

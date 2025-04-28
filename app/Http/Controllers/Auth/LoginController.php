@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('idKaryawan', 'password');
+        $credentials = $request->only('employeeID', 'password');
 
         if (Auth::attempt($credentials)) {
             // Login berhasil, redirect ke halaman yang diinginkan
@@ -22,7 +23,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'error' => 'ID Karyawan atau password salah.',
+            'error' => 'Incorrect Employee ID or password.',
         ]);
     }
 

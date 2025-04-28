@@ -41,7 +41,7 @@ class MasterListSeeder extends Seeder
                 'capacity' => 'max 100',
                 'accuracy' => '1',
                 'unit_id' => $randomUnit,
-                'merk' => 'ACME',
+                'brand' => 'ACME',
                 'calibration_type' => ['Internal', 'External'][rand(0, 1)],
                 'first_used' => Carbon::now()->setMonth(6),
                 'rank' => 'A',

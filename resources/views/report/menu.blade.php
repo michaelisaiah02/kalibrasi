@@ -13,7 +13,7 @@
                             name="date" id="date" required>
                     </div>
                     <div class="input-group mb-md-5 mb-1">
-                        <label class="input-group-text bg-primary text-light" for="nama-alat-ukur">Location</label>
+                        <label class="input-group-text bg-primary text-light" for="Name-alat-ukur">Location</label>
                         <input type="text" aria-label="Location" placeholder="Search" class="form-control w-25"
                             name="no_sn" id="no-sn">
                     </div>
@@ -22,7 +22,7 @@
                     <div class="input-group mb-md-5 mb-1">
                         <span class="input-group-text bg-primary text-light">Calibration Type</span>
                         <select class="form-select" id="calibration_type" name="calibration_type" required>
-                            <option selected>Pilih...</option>
+                            <option selected>Choose...</option>
                             <option value="Internal">Internal</option>
                             <option value="External">External</option>
                         </select>
@@ -30,7 +30,7 @@
                     <div class="input-group mb-md-5 mb-1">
                         <span class="input-group-text bg-primary text-light">Equipment Name</span>
                         <select class="form-select" id="equipment_name" name="type_id" required>
-                            <option value="" selected>Pilih...</option>
+                            <option value="" selected>Choose...</option>
                             @foreach ($equipments as $equipment)
                                 <option value="{{ $equipment->type_id }}">{{ $equipment->name }}</option>
                             @endforeach

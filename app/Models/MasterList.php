@@ -15,7 +15,7 @@ class MasterList extends Model
         'capacity',
         'accuracy',
         'unit_id',
-        'merk',
+        'brand',
         'calibration_type',
         'first_used',
         'rank',

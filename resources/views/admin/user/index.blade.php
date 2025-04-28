@@ -4,14 +4,14 @@
     <div class="container mt-3">
         <div class="row justify-content-md-between justify-content-center align-items-center mb-3">
             <div class="col-auto">
-                <h3 class="mb-0">Manajemen User</h3>
+                <h3 class="mb-0">Users Management</h3>
             </div>
             <div class="col-auto ms-md-auto my-2 my-md-0">
                 <input type="search" class="form-control" placeholder="Cari Username" id="search-user">
             </div>
             <div class="col-auto">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal" id="btn-add-user">
-                    Tambah User Baru
+                    Add New User
                 </button>
             </div>
         </div>
@@ -20,17 +20,17 @@
             <table class="table table-striped" id="user-table">
                 <thead class="table-primary">
                     <tr class="text-center">
-                        <th>ID Karyawan</th>
-                        <th>Nama</th>
+                        <th>Employee ID</th>
+                        <th>Name</th>
                         <th>Role</th>
                         <th>Registered</th>
-                        <th>Aksi</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
                         <tr class="text-center">
-                            <td>{{ $user->idKaryawan }}</td>
+                            <td>{{ $user->employeeID }}</td>
                             <td class="text-start">{{ $user->name }}</td>
                             <td>
                                 @if ($user->role === 'admin')
@@ -46,14 +46,14 @@
                             <td class="text-center">
                                 @if (Auth::user()->role === 'admin')
                                     <button class="btn btn-sm btn-primary btn-edit-user" data-id="{{ $user->id }}"
-                                        data-name="{{ $user->name }}" data-idkaryawan="{{ $user->idKaryawan }}"
+                                        data-name="{{ $user->name }}" data-employeeid="{{ $user->employeeID }}"
                                         data-role="{{ $user->role }}">
                                         Edit
                                     </button>
                                     <button class="btn btn-sm btn-danger btn-delete-user" data-id="{{ $user->id }}"
                                         data-name="{{ $user->name }}" data-bs-toggle="modal"
                                         data-bs-target="#deleteUserModal">
-                                        Hapus
+                                        Delete
                                     </button>
                                 @endif
                             </td>
@@ -83,47 +83,47 @@
             <form class="modal-content needs-validation" method="POST" id="userForm" novalidate>
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userModalLabel">Tambah User</h5>
+                    <h5 class="modal-title" id="userModalLabel">Add User</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="user_id" id="user-id">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Nama</label>
+                        <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name" required>
-                        <div class="invalid-feedback">Nama wajib diisi.</div>
+                        <div class="invalid-feedback">Name is required.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="idKaryawan" class="form-label">ID Karyawan</label>
-                        <input type="text" class="form-control" id="idKaryawan" name="idKaryawan" minlength="5"
+                        <label for="employeeID" class="form-label">Employee ID</label>
+                        <input type="text" class="form-control" id="employeeID" name="employeeID" minlength="5"
                             maxlength="5" required>
-                        <div class="invalid-feedback">ID Karyawan harus 5 karakter.</div>
+                        <div class="invalid-feedback">Employee ID must be 5 characters.</div>
                     </div>
                     <div class="mb-3">
                         <label for="role" class="form-label">Role</label>
                         <select class="form-select" id="role" name="role" required>
-                            <option value="" disabled selected>Pilih Role</option>
+                            <option value="" disabled selected>Choose Role</option>
                             <option value="admin">Admin</option>
                             <option value="user">User</option>
                             <option value="guest">Guest</option>
                         </select>
-                        <div class="invalid-feedback">Role wajib dipilih.</div>
+                        <div class="invalid-feedback">Role must be selected.</div>
                     </div>
                     <div class="mb-3" id="password-group">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" minlength="6">
-                        <div class="invalid-feedback">Password minimal 6 karakter.</div>
+                        <div class="invalid-feedback">Password must be at least 6 characters.</div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal Hapus User -->
+    <!-- Modal Delete User -->
     <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -131,15 +131,15 @@
                 @csrf
                 @method('DELETE')
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteUserModalLabel">Hapus User</h5>
+                    <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Apakah Anda yakin ingin menghapus user <strong id="deleteUserName"></strong>?</p>
+                    <p>Are you sure you want to delete the user named <strong id="deleteUserName"></strong>?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">Hapus</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
                 </div>
             </form>
         </div>
@@ -150,10 +150,10 @@
 @section('scripts')
     <script type="module">
         $(document).ready(function() {
-            // Tambah User
+            // Add User
             $('#btn-add-user').click(function() {
                 $('#userForm').trigger('reset');
-                $('#userModalLabel').text('Tambah User');
+                $('#userModalLabel').text('Add User');
                 $('#userForm').attr('action', "{{ route('admin.users.store') }}");
                 $('#password-group').show();
             });
@@ -163,7 +163,7 @@
                 const id = $(this).data('id');
                 $('#user-id').val(id);
                 $('#name').val($(this).data('name'));
-                $('#idKaryawan').val($(this).data('idkaryawan'));
+                $('#employeeID').val($(this).data('employeeid'));
                 $('#role').val($(this).data('role'));
                 $('#password').val('');
                 $('#userModalLabel').text('Edit User');

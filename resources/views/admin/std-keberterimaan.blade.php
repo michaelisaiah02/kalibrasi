@@ -17,7 +17,7 @@
                     <div class="input-group mb-3">
                         <label class="input-group-text bg-primary text-light" for="equipment_name">Equipment Name</label>
                         <select class="form-select" id="equipment_name" name="type_id" required>
-                            <option value="" selected>Pilih...</option>
+                            <option value="" selected>Choose...</option>
                             {{-- @foreach ($equipments as $equipment)
                               <option value="{{ $equipment->type_id }}">{{ $equipment->name }}</option>
                           @endforeach --}}
@@ -94,7 +94,7 @@
                     <thead class="table-primary">
                         <tr class="align-middle text-center">
                             <th scope="col">No</th>
-                            <th scope="col">Nama Alat Ukur</th>
+                            <th scope="col">Name Alat Ukur</th>
                             <th scope="col">Nomor ID</th>
                             <th scope="col">Kapasitas</th>
                             <th scope="col">Ketelitian</th>

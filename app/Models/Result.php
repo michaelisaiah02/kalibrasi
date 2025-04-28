@@ -42,6 +42,6 @@ class Result extends Model
 
     public function creator()
     {
-        return $this->belongsTo(\App\Models\User::class, 'created_by', 'idKaryawan');
+        return $this->belongsTo(\App\Models\User::class, 'created_by', 'employeeID');
     }
 }

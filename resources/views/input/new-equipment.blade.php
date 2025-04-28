@@ -19,7 +19,7 @@
                         <select
                             class="form-select @error('type_id') is-invalid @enderror {{ old('type_id') ? 'is-valid' : '' }}"
                             id="equipment_name" name="type_id" required>
-                            <option value="" disabled {{ old('type_id') ? '' : 'selected' }}>Pilih...</option>
+                            <option value="" disabled {{ old('type_id') ? '' : 'selected' }}>Choose...</option>
                             @foreach ($equipments as $equipment)
                                 <option value="{{ $equipment->type_id }}"
                                     {{ old('type_id') == $equipment->type_id ? 'selected' : '' }}>
@@ -60,7 +60,7 @@
                                 <select
                                     class="form-select @error('unit_id') is-invalid @enderror {{ old('unit_id') ? 'is-valid' : '' }}"
                                     id="unit" name="unit_id" required>
-                                    <option value="" disabled {{ old('unit_id') ? '' : 'selected' }}>Satuan</option>
+                                    <option value="" disabled {{ old('unit_id') ? '' : 'selected' }}>Unit</option>
                                     @foreach ($units as $unit)
                                         <option value="{{ $unit->id }}"
                                             {{ old('unit_id') == $unit->id ? 'selected' : '' }}>
@@ -72,17 +72,17 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text bg-primary text-light">Merk</span>
+                        <span class="input-group-text bg-primary text-light">Brand</span>
                         <input type="text"
-                            class="form-control @error('merk') is-invalid @enderror {{ old('merk') ? 'is-valid' : '' }}"
-                            id="merk" name="merk" required value="{{ old('merk') }}">
+                            class="form-control @error('brand') is-invalid @enderror {{ old('brand') ? 'is-valid' : '' }}"
+                            id="brand" name="brand" required value="{{ old('brand') }}">
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Calibration Type</span>
                         <select
                             class="form-select @error('calibration_type') is-invalid @enderror {{ old('calibration_type') ? 'is-valid' : '' }}"
                             id="calibration_type" name="calibration_type" required>
-                            <option value="" disabled {{ old('calibration_type') ? '' : 'selected' }}>Pilih...
+                            <option value="" disabled {{ old('calibration_type') ? '' : 'selected' }}>Choose...
                             </option>
                             <option value="Internal" {{ old('calibration_type') == 'Internal' ? 'selected' : '' }}>Internal
                             </option>
@@ -117,7 +117,7 @@
                         <span class="input-group-text bg-primary text-light">Month</span>
                     </div>
                     <div class="input-group mb-5">
-                        <span class="input-group-text bg-primary text-light">Standard Keberterimaan</span>
+                        <span class="input-group-text bg-primary text-light">Acceptance Standards</span>
                         <input type="text"
                             class="form-control @error('acceptance_criteria') is-invalid @enderror {{ old('acceptance_criteria') ? 'is-valid' : '' }}"
                             id="acceptance_criteria" name="acceptance_criteria" required

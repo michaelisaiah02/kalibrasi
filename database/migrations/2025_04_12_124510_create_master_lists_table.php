@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('capacity');
             $table->integer('accuracy')->unsigned();
             $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
-            $table->string('merk');
+            $table->string('brand');
             $table->enum('calibration_type', ['Internal', 'External']);
             $table->date('first_used');
             $table->string('rank');

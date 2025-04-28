@@ -20,9 +20,9 @@
                         <form action="{{ route('login') }}" method="POST" id="loginForm">
                             @csrf
                             <div class="form-floating mb-3 mx-auto">
-                                <input type="text" class="form-control text-center" placeholder="" id="idKaryawan"
-                                    name="idKaryawan" value="{{ old('idKaryawan') }}" required autofocus>
-                                <label for="idKaryawan">ID Karyawan</label>
+                                <input type="text" class="form-control text-center" placeholder="" id="employeeID"
+                                    name="employeeID" value="{{ old('employeeID') }}" required autofocus>
+                                <label for="employeeID">Employee ID</label>
                             </div>
                             <div class="form-floating mb-3 mx-auto">
                                 <input type="password" class="form-control text-center" placeholder="" id="password"
@@ -38,7 +38,7 @@
                                     </div>
                                 @endif
                                 <button type="submit" class="btn btn-primary text-center mb-2 mx-auto">Login</button>
-                                <p class="text-center fst-italic text-light">Jika gagal login hubungi (IT)</p>
+                                <p class="text-center fst-italic text-light">If login fails, contact (IT)</p>
                             </div>
                         </form>
                     </div>

@@ -10,7 +10,7 @@ class AdminController extends Controller
     public function keberterimaan()
     {
         return view('admin.std-keberterimaan', [
-            'title' => 'FORM STANDAR KEBERTERIMAAN EQUIPMENT'
+            'title' => 'STANDARD EQUIPMENT ACCEPTANCE FORM'
         ]);
     }
 
@@ -18,7 +18,7 @@ class AdminController extends Controller
     {
         $users = User::all();
         return view('admin.user.index', [
-            'title' => 'MASTER DATA INPUT - Tabel User',
+            'title' => 'MASTER DATA INPUT - USERS TABLE',
             'users' => $users,
         ]);
     }

@@ -23,7 +23,7 @@
                             class="form-control text-center width-label-1" id="sn-num" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
-                        <label class="input-group-text bg-primary text-light width-label-1" for="nama-alat-ukur">Calibration
+                        <label class="input-group-text bg-primary text-light width-label-1" for="Name-alat-ukur">Calibration
                             Date</label>
                         <input type="date" aria-label="Date Now" placeholder="Date Now"
                             class="form-control width-label-1" id="calibration-date" name="calibration_date"
@@ -42,8 +42,8 @@
                         <span class="input-group-text bg-primary text-light justify-content-center" id="unit"></span>
                     </div>
                     <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text bg-primary text-light width-label-1">Merk</span>
-                        <input type="text" class="form-control" id="merk" placeholder="auto" disabled>
+                        <span class="input-group-text bg-primary text-light width-label-1">Brand</span>
+                        <input type="text" class="form-control" id="brand" placeholder="auto" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light width-label-1">Location - PIC</span>
@@ -69,7 +69,7 @@
                         <select type="text"
                             class="form-select @error('calibrator_equipment') is-invalid @enderror {{ old('calibrator_equipment') ? 'is-valid' : '' }}"
                             id="calibrator-equipment" name="calibrator_equipment" required>
-                            <option selected>Pilih...</option>
+                            <option selected>Choose...</option>
                         </select>
                     </div>
                     <div class="row g-1">
@@ -164,7 +164,7 @@
                                 <select
                                     class="form-select @error('judgement') is-invalid @enderror {{ old('judgement') ? 'is-valid' : '' }}"
                                     id="judgement" name="judgement" required>
-                                    <option value="" {{ old('judgement') == '' ? 'selected' : '' }}>Pilih...
+                                    <option value="" {{ old('judgement') == '' ? 'selected' : '' }}>Choose...
                                     </option>
                                     <option value="OK" {{ old('judgement') == 'OK' ? 'selected' : '' }}>OK</option>
                                     <option value="NG" {{ old('judgement') == 'NG' ? 'selected' : '' }}>NG</option>
@@ -195,13 +195,13 @@
                             <th scope="col">Equipment Name</th>
                             <th scope="col">Capacity</th>
                             <th scope="col">Accuracy</th>
-                            <th scope="col">Merk</th>
+                            <th scope="col">Brand</th>
                             <th scope="col">Location</th>
                             <th scope="col">PIC</th>
                             <th scope="col">Calibration Type</th>
                             <th scope="col">Rank</th>
                             <th scope="col">Calibration Freq</th>
-                            <th scope="col">Standar Keberterimaan</th>
+                            <th scope="col">Acceptance Criteria</th>
                             <th scope="col">Judgement</th>
                             <th scope="col">Certificate</th>
                         </tr>
@@ -218,7 +218,7 @@
                                     {{ $result->masterList->unit->unit }} </td>
                                 <td class="text-nowrap">± {{ $result->masterList->accuracy }}
                                     {{ $result->masterList->unit->unit }} </td>
-                                <td class="text-nowrap"> {{ $result->masterList->merk }} </td>
+                                <td class="text-nowrap"> {{ $result->masterList->brand }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->location }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->pic }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->calibration_type }} </td>
@@ -232,7 +232,7 @@
                                             data-bs-target="#certificateModal"
                                             data-path="{{ asset('storage/' . $result->certificate) }}"
                                             data-ext="{{ pathinfo($result->certificate, PATHINFO_EXTENSION) }}">
-                                            Lihat
+                                            Show
                                         </button>
                                     @else
                                         <span class="text-muted">-</span>
@@ -252,8 +252,7 @@
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#resultModal">Lihat
-                        Semua Data</button>
+                        data-bs-target="#resultModal">Show All Data</button>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="button" class="btn btn-primary">Print Label</button>
@@ -288,13 +287,13 @@
                                 <th scope="col">Equipment Name</th>
                                 <th scope="col">Capacity</th>
                                 <th scope="col">Accuracy</th>
-                                <th scope="col">Merk</th>
+                                <th scope="col">Brand</th>
                                 <th scope="col">Location</th>
                                 <th scope="col">PIC</th>
                                 <th scope="col">Calibration Type</th>
                                 <th scope="col">Rank</th>
                                 <th scope="col">Calibration Freq</th>
-                                <th scope="col">Standar Keberterimaan</th>
+                                <th scope="col">Acceptance Criteria</th>
                                 <th scope="col">Judgement</th>
                                 <th scope="col">Certificate</th>
                             </tr>
@@ -309,7 +308,7 @@
                                     <td>{{ $result->masterList->equipment->name }}</td>
                                     <td>{{ $result->masterList->capacity }} {{ $result->masterList->unit->unit }}</td>
                                     <td>± {{ $result->masterList->accuracy }} {{ $result->masterList->unit->unit }}</td>
-                                    <td>{{ $result->masterList->merk }}</td>
+                                    <td>{{ $result->masterList->brand }}</td>
                                     <td>{{ $result->masterList->location }}</td>
                                     <td>{{ $result->masterList->pic }}</td>
                                     <td>{{ $result->masterList->calibration_type }}</td>
@@ -317,7 +316,7 @@
                                     <td>{{ $result->masterList->calibration_freq }}</td>
                                     <td>{{ $result->masterList->acceptance_criteria }}</td>
                                     <td>{{ $result->judgement }}</td>
-                                    <td><button class="btn btn-primary">Lihat</button></td>
+                                    <td><button class="btn btn-primary">Show</button></td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -336,7 +335,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body text-center vh-100" id="certificateContent">
-                    <div class="text-muted">Memuat...</div>
+                    <div class="text-muted">Loading...</div>
                 </div>
             </div>
         </div>
@@ -365,7 +364,7 @@
                     $('#capacity').val(data.capacity);
                     $('#accuracy').val(data.accuracy);
                     $('#unit').text(data.unit);
-                    $('#merk').val(data.merk);
+                    $('#brand').val(data.brand);
                     $('#location').val(data.location + ' - ' + data.pic);
                     $('.calibration-type').val(data.calibration_type);
                     $('#acceptance-criteria').val(data.acceptance_criteria);
@@ -377,7 +376,7 @@
                     } else {
                         $('#calibrator-equipment').empty();
                         $('#calibrator-equipment').append(
-                            `<option disabled {{ old('calibrator_equipment') ? '' : 'selected' }}>Pilih...</option>`
+                            `<option disabled {{ old('calibrator_equipment') ? '' : 'selected' }}>Choose...</option>`
                         );
                         data.calibrator_equipments.forEach(function(item) {
                             $('#calibrator-equipment').append(
@@ -409,13 +408,13 @@
                         $('#capacity').val('');
                         $('#accuracy').val('');
                         $('#unit').text('');
-                        $('#merk').val('');
+                        $('#brand').val('');
                         $('#location').val('');
                         $('.calibration-type').val('');
                         $('#acceptance-criteria').val('');
                         $('#calibrator-equipment').empty('');
                         $('#calibrator-equipment').append(
-                            `<option disabled selected>Pilih...</option>`);
+                            `<option disabled selected>Choose...</option>`);
                         $('#certificate').val('');
                         $('#std-1').val('');
                         $('#std-2').val('');
@@ -487,7 +486,7 @@
             const ext = $(this).data('ext').toLowerCase();
             const container = $('#certificateContent');
 
-            container.html('<div class="text-muted">Memuat...</div>'); // reset dulu
+            container.html('<div class="text-muted">Loading...</div>'); // reset dulu
 
             if (['jpg', 'jpeg', 'png'].includes(ext)) {
                 container.html(`<img src="${path}" class="img-fluid" alt="Certificate">`);

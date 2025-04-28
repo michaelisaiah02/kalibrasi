@@ -22,7 +22,6 @@ class CalibrationDataController extends Controller
 
     public function store(Request $request, Result $result)
     {
-        // dd($request->all());
         $validated = $request->validate([
             'id_num' => 'required|exists:master_lists,id_num',
             'calibration_date' => 'nullable|date',
@@ -45,7 +44,7 @@ class CalibrationDataController extends Controller
                 : 'nullable',
         ]);
 
-        $validated['created_by'] = auth()->user()->idKaryawan;
+        $validated['created_by'] = auth()->user()->employeeID;
 
         if (isNull($validated['calibration_date'])) {
             $validated['calibration_date'] = now()->toDateString();
@@ -56,7 +55,7 @@ class CalibrationDataController extends Controller
                 Storage::delete($result->certificate);
             }
             $idNum = $validated['id_num'];
-            $date = \Carbon\Carbon::parse($validated['calibration_date'])->format('dmY');
+            $date = Carbon::parse($validated['calibration_date'])->format('dmY');
             $ext = $request->file('certificate')->getClientOriginalExtension();
 
             $filename = "{$idNum}-{$date}.{$ext}";
@@ -69,6 +68,6 @@ class CalibrationDataController extends Controller
 
         Result::create($validated);
 
-        return redirect()->route('input.calibration.data')->with('success', 'Hasil kalibrasi berhasil disimpan.');
+        return redirect()->route('input.calibration.data')->with('success', 'Calibration result were successfully saved.');
     }
 }

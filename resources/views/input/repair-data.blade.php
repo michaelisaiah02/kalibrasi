@@ -3,8 +3,8 @@
 @section('styles')
     <style>
         /* #id-num::placeholder {
-                            color: white;
-                        } */
+                                            color: white;
+                                        } */
     </style>
 @endsection
 
@@ -33,8 +33,8 @@
                         <span class="input-group-text bg-primary text-light" id="unit"></span>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text bg-primary text-light">Merk</span>
-                        <input type="text" class="form-control" id="merk" placeholder="auto" disabled>
+                        <span class="input-group-text bg-primary text-light">Brand</span>
+                        <input type="text" class="form-control" id="brand" placeholder="auto" disabled>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Problem Date</span>
@@ -47,7 +47,7 @@
                 <div class="col-md-6">
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">PIC</span>
-                        <input type="text" class="form-control" id="pic" placeholder="Nama" disabled>
+                        <input type="text" class="form-control" id="pic" placeholder="Name" disabled>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Location</span>
@@ -78,14 +78,14 @@
                         <tr class="align-middle text-center">
                             <th scope="col">No ID</th>
                             <th scope="col">Equipment Name</th>
-                            <th scope="col">Merk</th>
+                            <th scope="col">Brand</th>
                             <th scope="col">Problem Date</th>
                             <th scope="col">Repair Date</th>
                             <th scope="col">Location</th>
                             <th scope="col">Problem</th>
                             <th scope="col">Countermeasure</th>
                             <th scope="col">Judgement</th>
-                            <th scope="col">PIC Perbaikan</th>
+                            <th scope="col">PIC Repair</th>
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
