@@ -154,7 +154,7 @@
                 }
 
                 // Ambil jumlah yang sudah ada untuk tipe ini
-                $.get(`/count-alat/${tipeId}`, function(data) {
+                $.get(`/count-equipments/${tipeId}`, function(data) {
                     const nextNumber = data.count + 1;
                     const paddedNumber = String(nextNumber).padStart(3, '0');
                     const noId = tipeId + '-' + paddedNumber;

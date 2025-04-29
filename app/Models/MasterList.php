@@ -25,6 +25,10 @@ class MasterList extends Model
         'location',
     ];
 
+    protected $casts = [
+        'first_used' => 'date',
+    ];
+
     public function equipment()
     {
         return $this->belongsTo(Equipment::class, 'type_id', 'type_id');
@@ -38,5 +42,10 @@ class MasterList extends Model
     public function standard()
     {
         return $this->hasOne(Standard::class, 'id_num', 'id_num');
+    }
+
+    public function repairs()
+    {
+        return $this->hasMany(Repair::class, 'id_num', 'id_num');
     }
 }

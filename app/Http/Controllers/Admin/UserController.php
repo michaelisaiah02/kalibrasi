@@ -13,7 +13,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(5);
-        return view('admin.user.index', compact('users'), [
+        return view('admin.user', compact('users'), [
             'title' => 'MASTER DATA INPUT - USERS TABLE',
         ]);
     }

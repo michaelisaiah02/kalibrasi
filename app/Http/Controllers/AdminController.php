@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function keberterimaan()
+    public function acceptanceCriteria()
     {
-        return view('admin.std-keberterimaan', [
+        return view('admin.acceptance-criteria', [
             'title' => 'STANDARD EQUIPMENT ACCEPTANCE FORM'
         ]);
     }

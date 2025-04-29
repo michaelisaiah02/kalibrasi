@@ -54,7 +54,7 @@
             </div>
             <div class="col-md-5 d-grid row-gap-1 row-gap-md-3 text-center d-none master-data">
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
-                    href="{{ route('admin.users.index') }}">Users Table</a>
+                    href="{{ route('admin.users.index') }}">Users</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Kode dan Jenis Alat
                     Ukur</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tambahkan Sesuai Tabel di
@@ -65,8 +65,7 @@
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Masterlist Alat
                     Ukur</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
-                    href="{{ route('admin.std.keberterimaan') }}">Tabel Standar
-                    Keberterimaan</a>
+                    href="{{ route('admin.acceptance.criteria.index') }}">Acceptance Criteria</a>
             </div>
         </div>
         <form id="btn-logout" action="{{ route('logout') }}" method="post" class="d-flex justify-content-center">

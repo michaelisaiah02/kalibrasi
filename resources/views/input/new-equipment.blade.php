@@ -117,7 +117,7 @@
                         <span class="input-group-text bg-primary text-light">Month</span>
                     </div>
                     <div class="input-group mb-5">
-                        <span class="input-group-text bg-primary text-light">Acceptance Standards</span>
+                        <span class="input-group-text bg-primary text-light">Acceptance Criteria</span>
                         <input type="text"
                             class="form-control @error('acceptance_criteria') is-invalid @enderror {{ old('acceptance_criteria') ? 'is-valid' : '' }}"
                             id="acceptance_criteria" name="acceptance_criteria" required
@@ -161,7 +161,7 @@
                 }
 
                 // Ambil jumlah yang sudah ada untuk tipe ini
-                $.get(`/count-alat/${tipeId}`, function(data) {
+                $.get(`/count-equipments/${tipeId}`, function(data) {
                     const nextNumber = data.count + 1;
                     const paddedNumber = String(nextNumber).padStart(3, '0');
                     const noId = tipeId + '-' + paddedNumber;

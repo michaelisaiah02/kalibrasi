@@ -27,17 +27,29 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'employeeID' => fake()->randomNumber(5, true),
             'password' => static::$password ??= Hash::make('12345'),
-            'remember_token' => Str::random(10),
         ];
+    }
+    /**
+     * Indicate that the model's password should be plain text.
+     *
+     * @return static
+     */
+    public function plainPassword(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'password' => $attributes['password'],
+        ]);
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Indicate that the model's password should be hashed.
+     *
+     * @return static
      */
-    public function unverified(): static
+    public function hashedPassword(): static
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            'password' => Hash::make($attributes['password']),
         ]);
     }
 }

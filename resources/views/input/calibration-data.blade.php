@@ -268,12 +268,12 @@
         </form>
     </div>
 
-    <!-- Modal -->
+    <!-- Result Modal -->
     <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Semua Data Kalibrasi</h5>
+                    <h5 class="modal-title">All Calibration Data</h5>
                     <input type="text" class="form-control w-25 ms-3" placeholder="Cari..." id="search-table">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
@@ -283,7 +283,7 @@
                             <tr class="align-middle text-center">
                                 <th scope="col">No</th>
                                 <th scope="col">Calibration Date</th>
-                                <th scope="col">Nomor ID/SN</th>
+                                <th scope="col">ID/SN Number</th>
                                 <th scope="col">Equipment Name</th>
                                 <th scope="col">Capacity</th>
                                 <th scope="col">Accuracy</th>
@@ -331,7 +331,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Sertifikat Kalibrasi</h5>
+                    <h5 class="modal-title">Calibration Certificate</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body text-center vh-100" id="certificateContent">

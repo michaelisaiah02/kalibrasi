@@ -29,6 +29,10 @@ class Result extends Model
         'certificate'
     ];
 
+    protected $casts = [
+        'calibration_date' => 'date',
+    ];
+
     public function masterList()
     {
         return $this->belongsTo(\App\Models\MasterList::class, 'id_num', 'id_num');
