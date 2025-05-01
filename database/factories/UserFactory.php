@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -29,10 +28,9 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('12345'),
         ];
     }
+
     /**
      * Indicate that the model's password should be plain text.
-     *
-     * @return static
      */
     public function plainPassword(): static
     {
@@ -43,8 +41,6 @@ class UserFactory extends Factory
 
     /**
      * Indicate that the model's password should be hashed.
-     *
-     * @return static
      */
     public function hashedPassword(): static
     {

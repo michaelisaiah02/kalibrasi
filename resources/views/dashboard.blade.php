@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+{{-- @dd($warnings) --}}
 @section('styles')
     <style>
         #title {
@@ -52,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5 d-grid row-gap-1 row-gap-md-3 text-center d-none master-data">
+            <div class="col-md-5 d-grid row-gap-1 row-gap-md-3 text-center d-none master-data mb-1 mb-md-0">
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
                     href="{{ route('admin.users.index') }}">Users</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Kode dan Jenis Alat
@@ -65,7 +66,7 @@
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Masterlist Alat
                     Ukur</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
-                    href="{{ route('admin.acceptance.criteria.index') }}">Acceptance Criteria</a>
+                    href="{{ route('admin.standards.index') }}">Acceptance Criteria</a>
             </div>
         </div>
         <form id="btn-logout" action="{{ route('logout') }}" method="post" class="d-flex justify-content-center">
@@ -80,6 +81,7 @@
             </div>
         </div>
     </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 z-3"></div>
     <x-toast />
 @endsection
 
@@ -191,4 +193,30 @@
             </script>
         @endsession
     @endif
+    @if (!empty($warnings))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                @foreach ($warnings as $warn)
+                    const toast = document.createElement('div');
+                    toast.className = 'toast show mb-2';
+                    toast.setAttribute('role', 'alert');
+                    toast.setAttribute('aria-live', 'assertive');
+                    toast.setAttribute('aria-atomic', 'true');
+                    toast.innerHTML = `
+                    <div class="toast-header bg-warning text-dark">
+                        <strong class="me-auto">Calibration Reminder</strong>
+                        <small>Last {{ $warn['last_date'] }} ({{ $warn['since'] }})</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <strong>{{ $warn['id_num'] }} - {{ $warn['name'] }}</strong> need to be recalibrated immediately!
+                    </div>
+                `;
+                    document.querySelector('.toast-container').appendChild(toast);
+                @endforeach
+            });
+        </script>
+    @endif
+
+
 @endsection

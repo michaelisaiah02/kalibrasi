@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Result extends Model
 {
@@ -26,7 +27,7 @@ class Result extends Model
         'param_10',
         'judgement',
         'created_by',
-        'certificate'
+        'certificate',
     ];
 
     protected $casts = [
@@ -43,9 +44,17 @@ class Result extends Model
         return $this->belongsTo(\App\Models\MasterList::class, 'calibrator_equipment', 'id_num');
     }
 
-
     public function creator()
     {
         return $this->belongsTo(\App\Models\User::class, 'created_by', 'employeeID');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($result) {
+            if ($result->certificate && Storage::exists($result->certificate)) {
+                Storage::delete($result->certificate);
+            }
+        });
     }
 }

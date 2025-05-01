@@ -33,7 +33,7 @@ return new class extends Migration
             $table->unsignedInteger('param_09')->nullable();
             $table->unsignedInteger('param_10')->nullable();
 
-            $table->string('judgement'); // "Pass" / "Fail" atau enum kalau mau
+            $table->enum('judgement', ['OK', 'NG', 'Disposal']);
             $table->char('created_by', 5); // harus cocok dengan tipe employeeID
             $table->foreign('created_by')->references('employeeID')->on('users')->onDelete('cascade');
             $table->string('certificate')->nullable()->default(null);

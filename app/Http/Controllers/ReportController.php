@@ -11,7 +11,7 @@ class ReportController extends Controller
     {
         return view('report.menu', [
             'title' => 'REPORT',
-            'equipments' => Equipment::all()
+            'equipments' => Equipment::all(),
         ]);
     }
 

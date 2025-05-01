@@ -19,6 +19,7 @@ class CheckRoleMinUser
         if (Auth::user()->role !== 'user' && Auth::user()->role !== 'admin') {
             return redirect()->back()->with('error', 'Tamu hanya bisa lihat!');
         }
+
         return $next($request);
     }
 }

@@ -211,7 +211,7 @@
                             <tr>
                                 <td><button type="button" class="btn btn-primary btn-select-id"
                                         data-id="{{ $result->id_num }}">{{ $loop->iteration }}</button></td>
-                                <td class="text-nowrap"> {{ $result->calibration_date }} </td>
+                                <td class="text-nowrap"> {{ $result->calibration_date->format('d-m-Y') }} </td>
                                 <td class="text-nowrap"> {{ $result->id_num }} / {{ $result->masterList->sn_num }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->equipment->name }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->capacity }}
@@ -240,6 +240,11 @@
                                 </td>
                             </tr>
                         @endforeach
+                        @if ($results->isEmpty())
+                            <tr>
+                                <td colspan="15" class="text-center">No data available</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -303,7 +308,7 @@
                                 <tr>
                                     <td><button class="btn btn-primary btn-select-id" data-id="{{ $result->id_num }}"
                                             data-bs-dismiss="modal">{{ $loop->iteration }}</button></td>
-                                    <td>{{ $result->calibration_date }}</td>
+                                    <td>{{ $result->calibration_date->format('d-m-Y') }}</td>
                                     <td>{{ $result->id_num }} / {{ $result->masterList->sn_num }}</td>
                                     <td>{{ $result->masterList->equipment->name }}</td>
                                     <td>{{ $result->masterList->capacity }} {{ $result->masterList->unit->unit }}</td>
@@ -359,6 +364,7 @@
                 url: `/get-masterlist/${idNum}`,
                 method: 'GET',
                 success: function(data) {
+                    console.log(data);
                     $('#sn-num').val(data.sn_num);
                     $('#equipment-name').val(data.equipment_name);
                     $('#capacity').val(data.capacity);

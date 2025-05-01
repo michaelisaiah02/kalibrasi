@@ -13,6 +13,7 @@ class APIController extends Controller
     public function countEquipments($type_id)
     {
         $count = MasterList::where('type_id', $type_id)->count();
+
         return response()->json(['count' => $count]);
     }
 
@@ -35,7 +36,7 @@ class APIController extends Controller
                     ];
                 });
         }
-        if (!$data) {
+        if (! $data) {
             return response()->json(['message' => 'Data not found'], 404);
         }
 
@@ -51,7 +52,7 @@ class APIController extends Controller
             'calibration_type' => $data->calibration_type,
             'acceptance_criteria' => $data->acceptance_criteria,
             'calibrator_equipments' => $calibrator_equipments ?? '',
-            'standard' => $data->standard
+            'standard' => $data->standard,
         ]);
     }
 

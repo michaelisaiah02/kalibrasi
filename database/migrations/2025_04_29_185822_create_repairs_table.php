@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('repair_date');
             $table->string('problem');
             $table->text('countermeasure');
+            $table->string('pic_repair');
             $table->enum('judgement', ['OK', 'NG', 'Disposal']);
             $table->timestamps();
         });

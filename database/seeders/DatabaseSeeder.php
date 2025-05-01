@@ -5,8 +5,6 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Database\Seeders\EquipmentSeeder;
-use Database\Seeders\MasterListSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,14 +19,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Michael',
             'employeeID' => '12025',
             'password' => '200302',
-            'role' => 'admin'
+            'role' => 'admin',
         ]);
 
         $this->call([
             EquipmentSeeder::class,
             UnitSeeder::class,
             MasterListSeeder::class,
-            StandardSeeder::class
+            StandardSeeder::class,
         ]);
     }
 }

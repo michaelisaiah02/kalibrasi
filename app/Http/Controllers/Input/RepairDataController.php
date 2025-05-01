@@ -12,7 +12,7 @@ class RepairDataController extends Controller
     {
         return view('input.repair-data', [
             'title' => 'REPAIR DATA INPUT',
-            'repairs' => $repair->all()
+            'repairs' => $repair->all(),
         ]);
     }
 
@@ -21,8 +21,12 @@ class RepairDataController extends Controller
         $validated = $request->validate([
             'id_num' => ['required', 'string', 'max:255'],
             'problem_date' => ['required', 'date'],
-            'problem' => ['required', 'string', 'max:255'],
+            'repair_date' => ['required', 'date'],
+            'problem' => ['required', 'string'],
+            'countermeasure' => ['required', 'string'],
+            'judgement' => ['required', 'string', 'in:OK,NG,Disposal'],
         ]);
+        $validated['pic_repair'] = auth()->user()->name;
 
         Repair::create($validated);
 

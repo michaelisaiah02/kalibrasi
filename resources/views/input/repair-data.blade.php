@@ -3,8 +3,8 @@
 @section('styles')
     <style>
         /* #id-num::placeholder {
-                                                                                                                        color: white;
-                                                                                                                    } */
+                                                                                                                                                                                                                                                color: white;
+                                                                                                                                                                                                                                            } */
     </style>
 @endsection
 
@@ -16,8 +16,9 @@
                 <div class="col-md-6">
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">ID / SN Number</span>
-                        <input type="text" aria-label="ID Num" placeholder="-" class="form-control text-center"
-                            name="id_num" id="id-num" required>
+                        <input type="text" aria-label="ID Num" placeholder="-"
+                            class="form-control text-center @error('id_num') is-invalid @enderror {{ old('id_num') ? 'is-valid' : '' }}"
+                            name="id_num" id="id-num" value="{{ old('id_num') }}" required>
                         <input type="text" aria-label="SN Num" placeholder="SN Num" class="form-control w-25 text-center"
                             id="sn-num" disabled>
                     </div>
@@ -38,9 +39,13 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Problem Date</span>
-                        <input type="date" class="form-control" id="problem-date" name="problem_date" required>
+                        <input type="date"
+                            class="form-control @error('problem_date') is-invalid @enderror {{ old('problem_date') ? 'is-valid' : '' }}"
+                            id="problem-date" name="problem_date" value="{{ old('problem_date') }}" required>
                         <span class="input-group-text bg-primary text-light">Repair Date</span>
                         <input type="text" class="form-control" id="repair-date" name="repair_date"
+                            value="{{ now() }}" hidden>
+                        <input type="text" class="form-control" id="repair-date-display"
                             value="{{ now()->isoFormat('D MMMM Y') }}" readonly>
                     </div>
                 </div>
@@ -55,16 +60,20 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Problem</span>
-                        <input type="text" class="form-control" id="problem" name="problem" required>
+                        <input type="text"
+                            class="form-control @error('problem') is-invalid @enderror {{ old('problem') ? 'is-valid' : '' }}"
+                            id="problem" name="problem" value="{{ old('problem') }}" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Countermeasure</span>
-                        <input type="text" class="form-control" id="countermeasure" name="countermeasure" required>
+                        <input type="text"
+                            class="form-control @error('countermeasure') is-invalid @enderror {{ old('countermeasure') ? 'is-valid' : '' }}"
+                            id="countermeasure" name="countermeasure" value="{{ old('countermeasure') }}" required>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Judgement</span>
                         <select class="form-select" id="judgement" name="judgement" required>
-                            <option selected disabled>OK / NG / Disposal</option>
+                            <option disabled>OK / NG / Disposal</option>
                             <option value="OK">OK</option>
                             <option value="NG">NG</option>
                             <option value="Disposal">Disposal</option>
@@ -73,7 +82,7 @@
                 </div>
             </div>
             <div class="row table-responsive mb-1">
-                <table class="table table-sm table-bordered align-middle">
+                <table class="table table-sm table-bordered align-middle text-nowrap">
                     <thead class="table-primary">
                         <tr class="align-middle text-center">
                             <th scope="col">No ID</th>
@@ -89,12 +98,25 @@
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
+                        @foreach ($repairs as $repair)
+                            <tr>
+                                <td>{{ $repair->id_num }}</td>
+                                <td>{{ $repair->masterList->equipment->name }}</td>
+                                <td>{{ $repair->masterList->brand }}</td>
+                                <td>{{ $repair->problem_date }}</td>
+                                <td>{{ $repair->repair_date->format('j M Y') }}</td>
+                                <td>{{ $repair->masterList->location }}</td>
+                                <td>{{ $repair->problem }}</td>
+                                <td>{{ $repair->countermeasure }}</td>
+                                <td>{{ $repair->judgement }}</td>
+                                <td>{{ $repair->pic_repair }}</td>
+                            </tr>
+                        @endforeach
+                        @if ($repairs->isEmpty())
+                            <tr>
+                                <td colspan="10" class="text-center">No data available</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

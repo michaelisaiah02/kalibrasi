@@ -5,15 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::paginate(5);
-        return view('admin.user', compact('users'), [
+
+        return view('admin.users.index', compact('users'), [
             'title' => 'MASTER DATA INPUT - USERS TABLE',
         ]);
     }
@@ -43,7 +44,7 @@ class UserController extends Controller
             'employeeID' => [
                 'required',
                 'size:5',
-                Rule::unique('users', 'employeeID')->ignore($user->id)
+                Rule::unique('users', 'employeeID')->ignore($user->id),
             ],
             'role' => ['required', 'in:admin,user,guest'],
         ]);
@@ -59,5 +60,23 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+    }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->query('keyword');
+
+        $query = User::query()
+            ->when($keyword, function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%")
+                    ->orWhere('employeeID', 'like', "%{$keyword}%");
+            });
+
+        $users = $query->orderBy('created_at', 'desc')->paginate(5);
+
+        return response()->json([
+            'html' => view('admin.users.partials.table_rows', compact('users'))->render(),
+            'pagination' => view('admin.users.partials.pagination', compact('users'))->render(),
+        ]);
     }
 }

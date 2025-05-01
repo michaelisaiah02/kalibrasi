@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Input;
 
-use Carbon\Carbon;
-use App\Models\Result;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Result;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use function PHPUnit\Framework\isNull;
-use Illuminate\Support\Facades\Storage;
 
 class CalibrationDataController extends Controller
 {
@@ -16,7 +16,7 @@ class CalibrationDataController extends Controller
     {
         return view('input.calibration-data', [
             'title' => 'CALIBRATION DATA INPUT',
-            'results' => $result->all()
+            'results' => $result->all(),
         ]);
     }
 
@@ -44,6 +44,7 @@ class CalibrationDataController extends Controller
                 : 'nullable',
         ]);
 
+        $validated['id_num'] = strtoupper($request->id_num);
         $validated['created_by'] = auth()->user()->employeeID;
 
         if (isNull($validated['calibration_date'])) {
@@ -66,7 +67,17 @@ class CalibrationDataController extends Controller
             $validated['certificate'] = $path;
         }
 
-        Result::create($validated);
+        // Simpan hasil kalibrasi
+        $result = Result::create($validated);
+
+        // Cek dan hapus jika lebih dari 3
+        $oldResults = Result::where('id_num', $validated['id_num'])
+            ->orderByDesc('calibration_date')
+            ->skip(4)->take(PHP_INT_MAX)->get();
+
+        foreach ($oldResults as $old) {
+            $old->delete();
+        }
 
         return redirect()->route('input.calibration.data')->with('success', 'Calibration result were successfully saved.');
     }

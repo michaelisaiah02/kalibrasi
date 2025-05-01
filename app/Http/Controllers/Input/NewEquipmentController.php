@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Input;
 
+use App\Http\Controllers\Controller;
 use App\Models\Equipment;
 use App\Models\MasterList;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Unit;
+use Illuminate\Http\Request;
 
 class NewEquipmentController extends Controller
 {
@@ -17,7 +17,7 @@ class NewEquipmentController extends Controller
             [
                 'title' => 'INPUT NEW EQUIPMENT',
                 'equipments' => Equipment::all(),
-                'units' => Unit::all()
+                'units' => Unit::all(),
             ]
         );
     }
@@ -58,9 +58,18 @@ class NewEquipmentController extends Controller
             'location' => $validated['location'],
         ]);
 
-        return redirect()->route('dashboard')->with([
-            'success' => 'The equipment was successfully added.',
-            'key' => 'menu-input'
-        ]);
+        return redirect()->route('equipment.print', $validated['id_num']);
+
+        // return redirect()->route('dashboard')->with([
+        //     'success' => 'The equipment was successfully added.',
+        //     'key' => 'menu-input',
+        // ]);
+    }
+
+    public function print($id)
+    {
+        $equipment = MasterList::with(['equipment', 'unit'])->where('id_num', $id)->firstOrFail();
+
+        return view('print-sticker', compact('equipment'));
     }
 }

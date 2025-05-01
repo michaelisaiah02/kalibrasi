@@ -16,7 +16,8 @@ class Repair extends Model
         'repair_date',
         'problem',
         'countermeasure',
-        'judgement'
+        'pic_repair',
+        'judgement',
     ];
 
     protected $casts = [

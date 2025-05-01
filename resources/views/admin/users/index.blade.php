@@ -6,8 +6,13 @@
             <div class="col-auto">
                 <h3 class="mb-0">Users Management</h3>
             </div>
-            <div class="col-auto ms-md-auto my-2 my-md-0">
-                <input type="search" class="form-control" placeholder="Cari Username" id="search-user">
+            <div class="col-auto ms-md-auto my-2 my-md-0 d-flex align-items-center">
+                <div id="loading-spinner" style="display: none;" class="text-center me-3">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <input type="search" class="form-control" placeholder="Search..." id="search-user" autocomplete="off">
             </div>
             <div class="col-auto">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal" id="btn-add-user">
@@ -16,8 +21,8 @@
             </div>
         </div>
 
-        <div class="table-responsive text-nowrap">
-            <table class="table table-striped" id="user-table">
+        <div class="table-responsive text-nowrap mb-3">
+            <table class="table table-striped m-0" id="user-table">
                 <thead class="table-primary">
                     <tr class="text-center">
                         <th>Employee ID</th>
@@ -27,52 +32,17 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach ($users as $user)
-                        <tr class="text-center">
-                            <td>{{ $user->employeeID }}</td>
-                            <td class="text-start">{{ $user->name }}</td>
-                            <td>
-                                @if ($user->role === 'admin')
-                                    <i class="bi bi-person-gear"></i> Admin
-                                @elseif ($user->role === 'user')
-                                    <i class="bi bi-person"></i> User
-                                @else
-                                    <i class="bi bi-person-badge"></i> Guest
-                                @endif
-                            <td>{{ $user->created_at->format('j M Y H:i') }}</td>
-                            {{-- <td>{{ $user->created_at->diffForHumans() }}</td> --}}
-                            {{-- <td>{{ $user->created_at->diffInDays() }} hari yang lalu</td> --}}
-                            <td class="text-center">
-                                @if (Auth::user()->role === 'admin')
-                                    <button class="btn btn-sm btn-primary btn-edit-user" data-id="{{ $user->id }}"
-                                        data-name="{{ $user->name }}" data-employeeid="{{ $user->employeeID }}"
-                                        data-role="{{ $user->role }}">
-                                        Edit
-                                    </button>
-                                    <button class="btn btn-sm btn-danger btn-delete-user" data-id="{{ $user->id }}"
-                                        data-name="{{ $user->name }}" data-bs-toggle="modal"
-                                        data-bs-target="#deleteUserModal">
-                                        Delete
-                                    </button>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
+                <tbody id="user-table-body">
+                    {{-- Data will generate by AJAX --}}
                 </tbody>
             </table>
         </div>
-        @if ($users->isEmpty())
-            <div class="alert alert-info text-center" role="alert">
-                Tidak ada data user.
+        <div class="text-center row justify-content-between align-items-start">
+            <div id="pagination-links" class="col-md col align-items-center" data-url="{{ route('admin.users.search') }}">
+                {{-- Generate by AJAX --}}
             </div>
-        @endif
-        <div class="row justify-content-end mb-2">
             <div class="col-auto">
                 <a href="{{ route('dashboard', ['key' => 'master-data']) }}" class="btn btn-primary">Close</a>
-            </div>
-            <div class="col-auto">
-                {{ $users->links() }}
             </div>
         </div>
     </div>
@@ -149,6 +119,32 @@
 
 @section('scripts')
     <script type="module">
+        function fetchUsers(keyword = '', page = 1) {
+            $('#loading').show();
+            $.ajax({
+                url: `{{ route('admin.users.search') }}`,
+                type: 'GET',
+                data: {
+                    keyword: keyword,
+                    page: page
+                },
+                success: function(response) {
+                    $('#user-table-body').html(response.html);
+                    $('#pagination-links').html(response.pagination);
+                    $('html, body').animate({
+                        scrollTop: $('#user-table').offset().top - 100
+                    }, 300);
+                    $('.pagination nav').addClass('w-100');
+                },
+                complete: function() {
+                    $('#loading').hide();
+                },
+                error: function() {
+                    alert('Gagal memuat data.');
+                }
+            });
+        }
+
         $(document).ready(function() {
             // Add User
             $('#btn-add-user').click(function() {
@@ -158,8 +154,8 @@
                 $('#password-group').show();
             });
 
-            // Edit User
-            $('.btn-edit-user').click(function() {
+            // Delegasi tombol Edit
+            $(document).on('click', '.btn-edit-user', function() {
                 const id = $(this).data('id');
                 $('#user-id').val(id);
                 $('#name').val($(this).data('name'));
@@ -172,8 +168,8 @@
                 new bootstrap.Modal(document.getElementById('userModal')).show();
             });
 
-            // Delete User
-            $('.btn-delete-user').click(function() {
+            // Delegasi tombol Delete
+            $(document).on('click', '.btn-delete-user', function() {
                 const id = $(this).data('id');
                 const name = $(this).data('name');
                 $('#deleteUserForm').attr('action', `{{ url('admin/users/delete-user') }}/${id}`);
@@ -189,13 +185,25 @@
                 $(this).addClass('was-validated');
             });
 
-            // Search Filter
+            let debounceTimer;
             $('#search-user').on('keyup', function() {
-                const value = $(this).val().toLowerCase();
-                $('#user-table tbody tr').filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-                });
+                clearTimeout(debounceTimer);
+                const keyword = $(this).val();
+                debounceTimer = setTimeout(() => {
+                    fetchUsers(keyword);
+                }, 400);
             });
+
+            // AJAX pagination
+            $(document).on('click', '#pagination-links .pagination a', function(e) {
+                e.preventDefault();
+                const page = $(this).attr('href').split('page=')[1];
+                const keyword = $('#search-user').val();
+                fetchUsers(keyword, page);
+            });
+
+            // Initial fetch
+            fetchUsers();
         });
     </script>
 @endsection

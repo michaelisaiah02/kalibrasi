@@ -1,21 +1,23 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\StandardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\APIController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Input\CalibrationDataController;
+use App\Http\Controllers\Input\NewEquipmentController;
+use App\Http\Controllers\Input\RepairDataController;
+use App\Http\Controllers\ReportController;
 use App\Http\Middleware\CheckRoleIsAdmin;
 use App\Http\Middleware\CheckRoleMinUser;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Admin\StandardController;
-use App\Http\Controllers\Input\RepairDataController;
-use App\Http\Controllers\Input\NewEquipmentController;
-use App\Http\Controllers\Input\CalibrationDataController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/dashboard');
 });
+
+Route::get('/print-sticker/{id}', [NewEquipmentController::class, 'print'])->name('equipment.print');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -36,7 +38,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/input/repair-data', [RepairDataController::class, 'create'])->name('input.repair.data');
         Route::post('/input/repair-data', [RepairDataController::class, 'store'])->name('store.repair.data');
 
-
         Route::get('/report', [ReportController::class, 'menu'])->name('report.menu');
         Route::post('/report', [ReportController::class, 'search'])->name('report.search');
 
@@ -52,12 +53,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
             Route::post('/update-user/{id}', [UserController::class, 'update'])->name('admin.users.update');
             Route::delete('/delete-user/{id}', [UserController::class, 'destroy']);
+            Route::get('/search', [UserController::class, 'search'])->name('admin.users.search');
         });
-        Route::prefix('admin/acceptance-criteria')->group(function () {
-            Route::get('/', [StandardController::class, 'index'])->name('admin.acceptance.criteria.index');
-            Route::post('/store', [StandardController::class, 'store'])->name('admin.acceptance.criteria.store');
-            Route::post('/update-acceptance-criteria/{id}', [StandardController::class, 'update'])->name('admin.acceptance.criteria.update');
-            Route::delete('/delete-acceptance-criteria/{id}', [StandardController::class, 'destroy']);
+        Route::prefix('admin/standards')->group(function () {
+            Route::get('/', [StandardController::class, 'index'])->name('admin.standards.index');
+            Route::post('/store', [StandardController::class, 'store'])->name('admin.standards.store');
+            Route::post('/update-standard/{id}', [StandardController::class, 'update'])->name('admin.standards.update');
+            Route::delete('/delete-standard/{id}', [StandardController::class, 'destroy']);
+            Route::get('/search', [StandardController::class, 'search'])->name('admin.standards.search');
         });
     });
     // Route::post('/input-new-alat-ukur', [AlatUkurController::class, 'store'])->middleware('auth')->name('store.equipment');
