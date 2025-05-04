@@ -13,10 +13,12 @@ class UnitSeeder extends Seeder
     public function run(): void
     {
         $unitList = [
-            ['unit' => 'Kg'],
-            ['unit' => 'gr'],
-            ['unit' => 'mm'],
-            ['unit' => '˚C'],
+            ['symbol' => 'Kg', 'name' => 'Kilogram'],
+            ['symbol' => 'g', 'name' => 'Gram'],
+            ['symbol' => 'm', 'name' => 'Meter'],
+            ['symbol' => 'cm', 'name' => 'Centimeter'],
+            ['symbol' => 'mm', 'name' => 'Millimeter'],
+            ['symbol' => '°C', 'name' => 'Celsius'],
         ];
 
         foreach ($unitList as $unit) {

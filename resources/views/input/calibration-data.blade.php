@@ -215,9 +215,9 @@
                                 <td class="text-nowrap"> {{ $result->id_num }} / {{ $result->masterList->sn_num }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->equipment->name }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->capacity }}
-                                    {{ $result->masterList->unit->unit }} </td>
+                                    {{ $result->masterList->unit->symbol }} </td>
                                 <td class="text-nowrap">± {{ $result->masterList->accuracy }}
-                                    {{ $result->masterList->unit->unit }} </td>
+                                    {{ $result->masterList->unit->symbol }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->brand }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->location }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->pic }} </td>
@@ -260,7 +260,7 @@
                         data-bs-target="#resultModal">Show All Data</button>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
-                    <button type="button" class="btn btn-primary">Print Label</button>
+                    <button type="button" id="print" class="btn btn-primary" disabled>Print Label</button>
                 </div>
                 <div class="col-12 col-md-auto text-center mb-1 mb-md-0">
                     <input class="form-control form-control-sm" id="certificate" name="certificate" type="file"
@@ -311,8 +311,8 @@
                                     <td>{{ $result->calibration_date->format('d-m-Y') }}</td>
                                     <td>{{ $result->id_num }} / {{ $result->masterList->sn_num }}</td>
                                     <td>{{ $result->masterList->equipment->name }}</td>
-                                    <td>{{ $result->masterList->capacity }} {{ $result->masterList->unit->unit }}</td>
-                                    <td>± {{ $result->masterList->accuracy }} {{ $result->masterList->unit->unit }}</td>
+                                    <td>{{ $result->masterList->capacity }} {{ $result->masterList->unit->symbol }}</td>
+                                    <td>± {{ $result->masterList->accuracy }} {{ $result->masterList->unit->symbol }}</td>
                                     <td>{{ $result->masterList->brand }}</td>
                                     <td>{{ $result->masterList->location }}</td>
                                     <td>{{ $result->masterList->pic }}</td>
@@ -405,6 +405,7 @@
                     $('#std-8').val(data.standard.param_08);
                     $('#std-9').val(data.standard.param_09);
                     $('#std-10').val(data.standard.param_10);
+                    $('#print').prop('disabled', false);
                 },
                 error: function(xhr) {
                     if (xhr.status !== 0) {
@@ -432,6 +433,7 @@
                         $('#std-8').val('');
                         $('#std-9').val('');
                         $('#std-10').val('');
+                        $('#print').prop('disabled', true);
                     }
                 }
             });
@@ -500,6 +502,13 @@
                 container.html(`<iframe src="${path}" style="border: none;"></iframe>`);
             } else {
                 container.html(`<div class="text-danger">Format file tidak dikenali: .${ext}</div>`);
+            }
+        });
+
+        $('#print').on('click', function() {
+            const idNum = $('#id-num').val();
+            if (idNum) {
+                window.open(`/print-label/${idNum}`, '_self');
             }
         });
     </script>

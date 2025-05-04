@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Input\CalibrationDataController;
 use App\Http\Controllers\Input\NewEquipmentController;
 use App\Http\Controllers\Input\RepairDataController;
+use App\Http\Controllers\PrintController;
 use App\Http\Controllers\ReportController;
 use App\Http\Middleware\CheckRoleIsAdmin;
 use App\Http\Middleware\CheckRoleMinUser;
@@ -17,7 +18,7 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
-Route::get('/print-sticker/{id}', [NewEquipmentController::class, 'print'])->name('equipment.print');
+Route::get('/print-label/{id}', [PrintController::class, 'label'])->name('print.label');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -27,6 +28,11 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/report', [ReportController::class, 'menu'])->name('report.menu');
+    Route::post('/report/search', [ReportController::class, 'search'])->name('report.search');
+    Route::post('/report/masterlist', [ReportController::class, 'masterlist'])->name('report.masterlist');
+    Route::post('/report/repairs', [ReportController::class, 'repairs'])->name('report.repairs');
+
     // hanya user ke atas
     Route::middleware(CheckRoleMinUser::class)->group(function () {
         Route::get('/input/new-equipment', [NewEquipmentController::class, 'create'])->name('input.new.equipment');
@@ -37,9 +43,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/input/repair-data', [RepairDataController::class, 'create'])->name('input.repair.data');
         Route::post('/input/repair-data', [RepairDataController::class, 'store'])->name('store.repair.data');
-
-        Route::get('/report', [ReportController::class, 'menu'])->name('report.menu');
-        Route::post('/report', [ReportController::class, 'search'])->name('report.search');
 
         // API data
         Route::get('/count-equipments/{type_id}', [APIController::class, 'countEquipments'])->name('api.count.equipments');

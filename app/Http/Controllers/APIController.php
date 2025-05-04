@@ -45,7 +45,7 @@ class APIController extends Controller
             'equipment_name' => $data->equipment->name ?? null,
             'capacity' => $data->capacity,
             'accuracy' => $data->accuracy,
-            'unit' => $data->unit->unit ?? null,
+            'unit' => $data->unit->symbol ?? null,
             'brand' => $data->brand,
             'location' => $data->location,
             'pic' => $data->pic,

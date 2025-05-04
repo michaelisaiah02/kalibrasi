@@ -10,7 +10,7 @@ class Unit extends Model
     /** @use HasFactory<\Database\Factories\UnitFactory> */
     use HasFactory;
 
-    protected $fillable = ['unit'];
+    protected $fillable = ['symbol', 'name'];
 
     public function masterLists()
     {

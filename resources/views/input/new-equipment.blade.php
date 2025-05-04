@@ -64,7 +64,7 @@
                                     @foreach ($units as $unit)
                                         <option value="{{ $unit->id }}"
                                             {{ old('unit_id') == $unit->id ? 'selected' : '' }}>
-                                            {{ $unit->unit }}
+                                            {{ $unit->symbol }}
                                         </option>
                                     @endforeach
                                 </select>

@@ -2,8 +2,8 @@
     <tr class="text-center">
         <td>{{ $standard->id_num }}</td>
         <td>{{ $standard->masterList->equipment->name }}</td>
-        <td>{{ $standard->masterList->capacity }} {{ $standard->masterList->unit->unit }}</td>
-        <td>{{ $standard->masterList->accuracy }} {{ $standard->masterList->unit->unit }}</td>
+        <td>{{ $standard->masterList->capacity }} {{ $standard->masterList->unit->symbol }}</td>
+        <td>{{ $standard->masterList->accuracy }} {{ $standard->masterList->unit->symbol }}</td>
         <td>{{ $standard->param_01 }}</td>
         <td>{{ $standard->param_02 }}</td>
         <td>{{ $standard->param_03 }}</td>
@@ -16,7 +16,7 @@
         <td>{{ $standard->param_10 }}</td>
         <td>
             <button class="btn btn-primary btn-sm btn-edit-standard" data-id="{{ $standard->masterList->id_num }}"
-                data-capacity="{{ $standard->masterList->capacity }} {{ $standard->masterList->unit->unit }}"
+                data-capacity="{{ $standard->masterList->capacity }} {{ $standard->masterList->unit->symbol }}"
                 data-param01="{{ $standard->param_01 }}" data-param02="{{ $standard->param_02 }}"
                 data-param03="{{ $standard->param_03 }}" data-param04="{{ $standard->param_04 }}"
                 data-param05="{{ $standard->param_05 }}" data-param06="{{ $standard->param_06 }}"

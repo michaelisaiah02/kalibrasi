@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Input;
 
-use App\Http\Controllers\Controller;
+use App\Models\Unit;
+use App\Models\Result;
 use App\Models\Equipment;
 use App\Models\MasterList;
-use App\Models\Unit;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class NewEquipmentController extends Controller
 {
@@ -41,35 +42,19 @@ class NewEquipmentController extends Controller
             'location' => ['required', 'string'],
         ]);
 
-        MasterList::create([
-            'type_id' => $validated['type_id'],
-            'id_num' => $validated['id_num'],
-            'sn_num' => $validated['sn_num'],
-            'capacity' => $validated['capacity'],
-            'accuracy' => $validated['accuracy'],
-            'unit_id' => $validated['unit_id'],
-            'brand' => $validated['brand'],
-            'calibration_type' => $validated['calibration_type'],
-            'first_used' => $validated['first_used'],
-            'rank' => $validated['rank'],
-            'calibration_freq' => $validated['calibration_freq'],
-            'acceptance_criteria' => $validated['acceptance_criteria'],
-            'pic' => $validated['pic'],
-            'location' => $validated['location'],
-        ]);
+        $masterList = MasterList::create($validated);
 
-        return redirect()->route('equipment.print', $validated['id_num']);
-
-        // return redirect()->route('dashboard')->with([
-        //     'success' => 'The equipment was successfully added.',
-        //     'key' => 'menu-input',
+        // Buat data result otomatis (anggap semua alat baru pasti "OK")
+        // Result::create([
+        //     'id_num' => $masterList->id_num,
+        //     'calibration_date' => $masterList->first_used,
+        //     'judgement' => 'OK',
+        //     'created_by' => $validated['created_by'], // dari request
         // ]);
-    }
 
-    public function print($id)
-    {
-        $equipment = MasterList::with(['equipment', 'unit'])->where('id_num', $id)->firstOrFail();
-
-        return view('print-sticker', compact('equipment'));
+        return redirect()->route('print.label', $validated['id_num'])->with([
+            'success' => 'The equipment was successfully added.',
+            'key' => 'menu-input',
+        ]);
     }
 }

@@ -3,8 +3,8 @@
 @section('styles')
     <style>
         /* #id-num::placeholder {
-                                                                                                                                                                                                                                                color: white;
-                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                    color: white;
+                                                                                                                                                                                                                                                } */
     </style>
 @endsection
 
@@ -171,8 +171,8 @@
                                     <td>{{ $repair->calibration_date }}</td>
                                     <td>{{ $repair->id_num }} / {{ $repair->masterList->sn_num }}</td>
                                     <td>{{ $repair->masterList->equipment->name }}</td>
-                                    <td>{{ $repair->masterList->capacity }} {{ $repair->masterList->unit->unit }}</td>
-                                    <td>± {{ $repair->masterList->accuracy }} {{ $repair->masterList->unit->unit }}</td>
+                                    <td>{{ $repair->masterList->capacity }} {{ $repair->masterList->unit->symbol }}</td>
+                                    <td>± {{ $repair->masterList->accuracy }} {{ $repair->masterList->unit->symbol }}</td>
                                     <td>{{ $repair->masterList->brand }}</td>
                                     <td>{{ $repair->masterList->location }}</td>
                                     <td>{{ $repair->masterList->pic }}</td>
