@@ -264,6 +264,18 @@
             const dangers = @json($dangers);
             const speedPxPerSec = 100;
 
+            if (!warnings.length) {
+                document.getElementById('warning').classList.add('d-none');
+            } else {
+                document.getElementById('warning').classList.remove('d-none'); //warnings exist
+            }
+
+            if (!dangers.length) {
+                document.getElementById('danger').classList.add('d-none');
+            } else {
+                document.getElementById('danger').classList.remove('d-none'); //dangers exist
+            }
+
             if (warnings.length) {
                 const el = document.getElementById('warning-text');
                 el.textContent = warnings.join('      ');
@@ -277,7 +289,7 @@
                     styleEl.textContent = `
             @keyframes marqueeDynamic {
                 0%   { transform: translateX(${containerWidth + 100}px); }
-                100% { transform: translateX(-${textWidth + 120}px); }
+                100% { transform: translateX(-${textWidth + 250}px); }
             }`;
                     document.head.appendChild(styleEl);
 
@@ -302,7 +314,7 @@
                     styleEl2.textContent = `
             @keyframes marqueeDynamic2 {
                 0%   { transform: translateX(${containerWidth2 + 100}px); }
-                100% { transform: translateX(-${textWidth2 + 120}px); }
+                100% { transform: translateX(-${textWidth2 + 250}px); }
             }`;
                     document.head.appendChild(styleEl2);
 

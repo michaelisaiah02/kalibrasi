@@ -25,7 +25,7 @@
 
 <body style="height: 1000px">
     <div class="container-fluid py-0 px-1">
-        <div class="row justify-content-center table-responsive">
+        <div class="row justify-content-center">
             <table class="table table-sm table-bordered align-middle">
                 <thead>
                     <tr>
@@ -37,43 +37,41 @@
                             </div>
                         </th>
                         <th scope="col" colspan="4" rowspan="3" class="text-center align-middle fs-3">
-                            CALIBRATION
-                            RESULT
-                            VERIFICATION</th>
-                        <th scope="col">Form Num</th>
+                            VERIFIKASI HASIL KALIBRASI</th>
+                        <th scope="col">NO.FORM</th>
                         <th scope="col">:</th>
                         <th scope="col">hdhd</th>
                     </tr>
                     <tr>
-                        <th scope="col">Form Date</th>
+                        <th scope="col">TGL.FORM</th>
                         <th scope="col">:</th>
                         <th scope="col">{{ now()->format('d-m-Y') }}</th>
                     </tr>
                     <tr>
-                        <th scope="col">Revision</th>
+                        <th scope="col">Revisi</th>
                         <th scope="col">:</th>
                         <th scope="col">0</th>
                     </tr>
                     <tr>
                         <th scope="col" colspan="2">Equipment Name</th>
-                        <th scope="col" colspan="4">Caliper Rubber</th>
-                        <th scope="col">Brand</th>
+                        <th scope="col" colspan="4">{{ $equipment->equipment->name }}</th>
+                        <th scope="col">Merk</th>
                         <th scope="col">:</th>
-                        <th scope="col">Mitutoyo</th>
+                        <th scope="col">{{ $equipment->brand }}</th>
                     </tr>
                     <tr>
-                        <th scope="col" colspan="2">ID Num</th>
-                        <th scope="col" colspan="4">DCA-001</th>
+                        <th scope="col" colspan="2">No. ID</th>
+                        <th scope="col" colspan="4">{{ $equipment->id_num }}</th>
                         <th scope="col">Cal Equipment</th>
                         <th scope="col">:</th>
-                        <th scope="col">No id equipment</th>
+                        <th scope="col">{{ $equipment->results->last()->calibrator_equipment ?? 'N/A' }}</th>
                     </tr>
                     <tr>
                         <th scope="col" colspan="2">Calibration Date</th>
                         <th scope="col" colspan="4">{{ now()->format('d F Y') }}</th>
-                        <th scope="col">Acc Criteria</th>
+                        <th scope="col">Std Keberterimaan</th>
                         <th scope="col">:</th>
-                        <th scope="col">&plusmn; 0.2mm</th>
+                        <th scope="col">{{ $equipment->acceptance_criteria }}</th>
                     </tr>
                     <tr>
                         <th scope="col">#</th>

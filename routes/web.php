@@ -18,8 +18,6 @@ Route::get('/', function () {
     return redirect('/dashboard');
 });
 
-Route::get('/print-label/{id}', [PrintController::class, 'label'])->name('print.label');
-Route::get('/print-report/{id}', [PrintController::class, 'report'])->name('print.report');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -27,6 +25,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/print-label/{id}', [PrintController::class, 'label'])->name('print.label');
+    Route::get('/print-report/{id}', [PrintController::class, 'report'])->name('print.report');
     Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/report', [ReportController::class, 'menu'])->name('report.menu');
