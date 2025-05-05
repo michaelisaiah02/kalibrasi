@@ -22,17 +22,27 @@
         }
     </style>
 </head>
-{{-- @dd($equipment) --}}
 
 <body>
     <div class="container-fluid py-0 px-1">
         <div class="row justify-content-center">
             <div class="col-auto">
-                <strong>Valid : {{ $equipment->first_used->format('d-m-Y') }}</strong>
+                <strong>Valid :
+                    @if ($equipment->results->count() > 0)
+                        {{ $equipment->results->last()->calibration_date->format('d-m-Y') }}
+                    @else
+                        {{ $equipment->first_used->format('d-m-Y') }}
+                    @endif
+                </strong>
             </div>
             <div class="col-auto">
                 <strong>Until :
-                    {{ $equipment->first_used->addMonth($equipment->calibration_freq)->format('d-m-Y') }}</strong>
+                    @if ($equipment->results->count() > 0)
+                        {{ $equipment->results->last()->calibration_date->addMonth($equipment->calibration_freq)->format('d-m-Y') }}
+                    @else
+                        {{ $equipment->first_used->addMonth($equipment->calibration_freq)->format('d-m-Y') }}
+                    @endif
+                </strong>
             </div>
         </div>
         <div class="barcode row justify-content-center">
@@ -41,12 +51,12 @@
         <p class="text-center">{{ $equipment->id_num }}</p>
     </div>
     <script>
-        // window.onload = function() {
-        //     window.print();
-        //     setTimeout(() => {
-        //         window.location.href = "{{ route('dashboard', ['key' => 'menu-input']) }}";
-        //     }, 1000); // Delay biar gak ke-redirect sebelum sempat print
-        // }
+        window.onload = function() {
+            window.print();
+            setTimeout(() => {
+                window.location.href = "{{ route('dashboard', ['key' => 'menu-input']) }}";
+            }, 1000); // Delay biar gak ke-redirect sebelum sempat print
+        }
     </script>
 </body>
 

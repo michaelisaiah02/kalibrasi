@@ -273,12 +273,11 @@
                     const containerWidth = el.parentElement.offsetWidth;
                     const distance = textWidth + containerWidth;
                     const durationSec = distance / speedPxPerSec;
-
                     const styleEl = document.createElement('style');
                     styleEl.textContent = `
             @keyframes marqueeDynamic {
-                0%   { transform: translateX(${containerWidth}px); }
-                100% { transform: translateX(-${textWidth}px); }
+                0%   { transform: translateX(${containerWidth + 100}px); }
+                100% { transform: translateX(-${textWidth + 120}px); }
             }`;
                     document.head.appendChild(styleEl);
 
@@ -302,8 +301,8 @@
                     const styleEl2 = document.createElement('style');
                     styleEl2.textContent = `
             @keyframes marqueeDynamic2 {
-                0%   { transform: translateX(${containerWidth2}px); }
-                100% { transform: translateX(-${textWidth2}px); }
+                0%   { transform: translateX(${containerWidth2 + 100}px); }
+                100% { transform: translateX(-${textWidth2 + 120}px); }
             }`;
                     document.head.appendChild(styleEl2);
 

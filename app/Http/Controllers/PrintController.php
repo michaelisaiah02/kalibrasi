@@ -8,8 +8,15 @@ class PrintController extends Controller
 {
     public function label($id)
     {
-        $equipment = MasterList::with(['equipment', 'unit'])->where('id_num', $id)->firstOrFail();
+        $equipment = MasterList::with(['equipment', 'unit', 'results'])->where('id_num', $id)->firstOrFail();
 
         return view('print-label', compact('equipment'));
+    }
+
+    public function report($id)
+    {
+        $equipment = MasterList::with(['equipment', 'unit', 'results', 'standard'])->where('id_num', $id)->firstOrFail();
+
+        return view('print-report', compact('equipment'));
     }
 }

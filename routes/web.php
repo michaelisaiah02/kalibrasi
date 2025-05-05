@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('/print-label/{id}', [PrintController::class, 'label'])->name('print.label');
+Route::get('/print-report/{id}', [PrintController::class, 'report'])->name('print.report');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
