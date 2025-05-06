@@ -58,7 +58,7 @@
         </form>
         <div id="btn-back" class="row justify-content-end">
             <div class="col-auto">
-                <a href="{{ route('dashboard') }}" class="btn btn-primary">Back</a>
+                <a href="{{ route('dashboard') }}" class="btn btn-primary">Close</a>
             </div>
         </div>
     </div>

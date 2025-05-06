@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Input;
 
-use App\Models\Unit;
-use App\Models\Result;
+use App\Http\Controllers\Controller;
 use App\Models\Equipment;
 use App\Models\MasterList;
+use App\Models\Result;
+use App\Models\Unit;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class NewEquipmentController extends Controller
 {

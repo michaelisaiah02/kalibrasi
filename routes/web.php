@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\StandardController;
+use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\APIController;
 use App\Http\Controllers\Auth\LoginController;
@@ -17,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('/dashboard');
 });
-
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -65,6 +65,13 @@ Route::middleware('auth')->group(function () {
             Route::post('/update-standard/{id}', [StandardController::class, 'update'])->name('admin.standards.update');
             Route::delete('/delete-standard/{id}', [StandardController::class, 'destroy']);
             Route::get('/search', [StandardController::class, 'search'])->name('admin.standards.search');
+        });
+        Route::prefix('admin/units')->group(function () {
+            Route::get('/', [UnitController::class, 'index'])->name('admin.units.index');
+            Route::post('/store', [UnitController::class, 'store'])->name('admin.units.store');
+            Route::post('/update-unit/{id}', [UnitController::class, 'update'])->name('admin.units.update');
+            Route::delete('/delete-unit/{id}', [UnitController::class, 'destroy']);
+            Route::get('/search', [UnitController::class, 'search'])->name('admin.units.search');
         });
     });
     // Route::post('/input-new-alat-ukur', [AlatUkurController::class, 'store'])->middleware('auth')->name('store.equipment');

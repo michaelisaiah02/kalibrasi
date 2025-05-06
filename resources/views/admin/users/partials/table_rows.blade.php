@@ -11,7 +11,7 @@
                 <i class="bi bi-person-badge"></i> Guest
             @endif
         </td>
-        <td>{{ $user->created_at->format('j M Y H:i') }}</td>
+        <td>{{ $user->created_at->format('j F Y H:i') }}</td>
         <td>
             @if (Auth::user()->role === 'admin')
                 <button class="btn btn-sm btn-primary btn-edit-user" data-id="{{ $user->id }}"

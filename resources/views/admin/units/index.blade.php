@@ -58,29 +58,13 @@
                     <input type="hidden" name="unit_id" id="unit-id">
                     <div class="mb-3">
                         <label for="symbol" class="form-label">Symbol</label>
-                        <input type="text" class="form-control" id="symbol" name="symbol" minlength="5"
-                            maxlength="5" required>
-                        <div class="invalid-feedback">Symbol must be 5 characters.</div>
+                        <input type="text" class="form-control" id="symbol" name="symbol" required>
+                        <div class="invalid-feedback">Symbol is required.</div>
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name" required>
                         <div class="invalid-feedback">Name is required.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="role" class="form-label">Role</label>
-                        <select class="form-select" id="role" name="role" required>
-                            <option value="" disabled selected>Choose Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="unit">Unit</option>
-                            <option value="guest">Guest</option>
-                        </select>
-                        <div class="invalid-feedback">Role must be selected.</div>
-                    </div>
-                    <div class="mb-3" id="password-group">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" minlength="6">
-                        <div class="invalid-feedback">Password must be at least 6 characters.</div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -92,8 +76,7 @@
     </div>
 
     <!-- Modal Delete Unit -->
-    <div class="modal fade" id="deleteUnitModal" tabindex="-1" aria-labelledby="deleteUnitModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="deleteUnitModal" tabindex="-1" aria-labelledby="deleteUnitModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <form method="POST" id="deleteUnitForm" class="modal-content">
                 @csrf
@@ -157,11 +140,7 @@
                 const id = $(this).data('id');
                 $('#unit-id').val(id);
                 $('#name').val($(this).data('name'));
-                $('#symbol').val($(this).data('employeeid'));
-                $('#role').val($(this).data('role'));
-                $('#password').val('');
-                $('#unitModalLabel').text('Edit Unit');
-                $('#password-group').hide();
+                $('#symbol').val($(this).data('symbol'));
                 $('#unitForm').attr('action', `{{ url('admin/units/update-unit') }}/${id}`);
                 new bootstrap.Modal(document.getElementById('unitModal')).show();
             });

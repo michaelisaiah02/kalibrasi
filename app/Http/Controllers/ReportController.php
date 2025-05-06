@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Repair;
 use App\Models\Equipment;
 use App\Models\MasterList;
+use App\Models\Repair;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -21,10 +21,10 @@ class ReportController extends Controller
     {
         // Ambil semua input (boleh kosong)
         $from = $request->input('date_from');
-        $to   = $request->input('date_to');
-        $sn   = $request->input('no_sn');
+        $to = $request->input('date_to');
+        $sn = $request->input('no_sn');
         $type = $request->input('type_id');
-        $cal  = $request->input('calibration_type');
+        $cal = $request->input('calibration_type');
         $judg = $request->input('judgement');
 
         // Jika tombol Masterlist diklik:
@@ -56,6 +56,7 @@ class ReportController extends Controller
 
             // dd($query);
             $results = $query->get();
+
             return view('report.masterlist', compact('results'), ['title' => 'Master List']);
         }
 
@@ -86,6 +87,7 @@ class ReportController extends Controller
             }
 
             $results = $query->get();
+
             return view('report.repair', compact('results'), ['title' => 'Repair']);
         }
     }

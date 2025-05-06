@@ -29,12 +29,12 @@ class MasterListSeeder extends Seeder
             }
 
             // Format nomor ID: TIM-001, CAL-001, dll
-            $noId = $type . '-' . str_pad($counterType[$type], 3, '0', STR_PAD_LEFT);
+            $noId = $type.'-'.str_pad($counterType[$type], 3, '0', STR_PAD_LEFT);
 
             DB::table('master_lists')->insert([
                 'type_id' => $type,
                 'id_num' => $noId,
-                'sn_num' => 'SN-' . strtoupper(Str::random(5)),
+                'sn_num' => 'SN-'.strtoupper(Str::random(5)),
                 'capacity' => 'max 100',
                 'accuracy' => '1',
                 'unit_id' => $randomUnit,

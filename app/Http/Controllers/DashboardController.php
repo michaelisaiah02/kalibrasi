@@ -19,7 +19,7 @@ class DashboardController extends Controller
         }])->get();
 
         $warnings = []; // utk soon & NG
-        $dangers  = []; // utk overdue
+        $dangers = []; // utk overdue
 
         foreach ($equipments as $eq) {
             $latest = $eq->results->first();
@@ -27,10 +27,10 @@ class DashboardController extends Controller
             // jika belum pernah ada result, gunakan first_used & treat as OK
             if (! $latest) {
                 $lastCal = Carbon::parse($eq->first_used);
-                $judg    = 'OK';
+                $judg = 'OK';
             } else {
                 $lastCal = Carbon::parse($latest->calibration_date);
-                $judg    = $latest->judgement;
+                $judg = $latest->judgement;
             }
 
             // skip Disposal
@@ -39,10 +39,10 @@ class DashboardController extends Controller
             }
 
             // hitung kapan due, dan sebulan sebelum
-            $freq    = $eq->calibration_freq;
+            $freq = $eq->calibration_freq;
             $dueDate = $lastCal->copy()->addMonths($freq);
             $warnFrom = $dueDate->copy()->subMonth();
-            $now     = Carbon::now();
+            $now = Carbon::now();
             // `The ${w.id_num} - ${w.name} device needs to be recalibrated (NG). Last: ${w.last_date}.`;
             // bentuk pesan
             $msg = "The equipment {$eq->id_num} - {$eq->sn_num} device needs to be recalibrated. Last calibrate: {$lastCal->format('d-m-Y')}.";
@@ -52,7 +52,7 @@ class DashboardController extends Controller
                 $warnings[] = $msg;
             } elseif ($now->gt($dueDate)) {
                 // sudah lewat due date
-                $dangers[] = $msg . " (should be calibrated before: {$dueDate->format('d-m-Y')})";
+                $dangers[] = $msg." (should be calibrated before: {$dueDate->format('d-m-Y')})";
             }
         }
         // dd($warnings);
