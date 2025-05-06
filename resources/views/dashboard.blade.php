@@ -78,16 +78,16 @@
             <div class="col-md-5 d-grid row-gap-1 row-gap-md-3 text-center d-none master-data mb-1 mb-md-0">
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
                     href="{{ route('admin.users.index') }}">Users</a>
-                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Kode dan Jenis Alat
-                    Ukur</a>
+                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
+                    href="{{ route('admin.equipments.index') }}">Equipments</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tambahkan Sesuai Tabel di
                     Database</a>
             </div>
             <div class="col-md-5 d-grid row-gap-1 row-gap-md-3 text-center d-none master-data">
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
                     href="{{ route('admin.units.index') }}">Units</a>
-                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tabel Masterlist Alat
-                    Ukur</a>
+                <a href="{{ route('admin.master-lists.index') }}"
+                    class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Master Lists</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
                     href="{{ route('admin.standards.index') }}">Acceptance Criteria</a>
             </div>

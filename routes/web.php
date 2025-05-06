@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\EquipmentController;
+use App\Http\Controllers\Admin\MasterListController;
 use App\Http\Controllers\Admin\StandardController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
@@ -72,6 +74,20 @@ Route::middleware('auth')->group(function () {
             Route::post('/update-unit/{id}', [UnitController::class, 'update'])->name('admin.units.update');
             Route::delete('/delete-unit/{id}', [UnitController::class, 'destroy']);
             Route::get('/search', [UnitController::class, 'search'])->name('admin.units.search');
+        });
+        Route::prefix('admin/equipments')->group(function () {
+            Route::get('/', [EquipmentController::class, 'index'])->name('admin.equipments.index');
+            Route::post('/store', [EquipmentController::class, 'store'])->name('admin.equipments.store');
+            Route::post('/update-equipment/{id}', [EquipmentController::class, 'update'])->name('admin.equipments.update');
+            Route::delete('/delete-equipment/{id}', [EquipmentController::class, 'destroy']);
+            Route::get('/search', [EquipmentController::class, 'search'])->name('admin.equipments.search');
+        });
+        Route::prefix('admin/master-lists')->group(function () {
+            Route::get('/', [MasterListController::class, 'index'])->name('admin.master-lists.index');
+            Route::post('/store', [MasterListController::class, 'store'])->name('admin.master-lists.store');
+            Route::post('/update-master-list/{id}', [MasterListController::class, 'update'])->name('admin.master-lists.update');
+            Route::delete('/delete-master-list/{id}', [MasterListController::class, 'destroy']);
+            Route::get('/search', [MasterListController::class, 'search'])->name('admin.master-lists.search');
         });
     });
     // Route::post('/input-new-alat-ukur', [AlatUkurController::class, 'store'])->middleware('auth')->name('store.equipment');
