@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('master_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('type_id')->foreign('type_id')->references('type_id')->on('equipments')->onDelete('cascade');
+            $table->string('type_id')->foreign('type_id')->references('type_id')->on('equipments');
             $table->string('id_num')->unique();
             $table->string('sn_num');
             $table->string('capacity');
             $table->integer('accuracy')->unsigned();
-            $table->foreignId('unit_id')->constrained('units')->onDelete('cascade');
+            $table->foreignId('unit_id');
             $table->string('brand');
             $table->enum('calibration_type', ['Internal', 'External']);
             $table->date('first_used');

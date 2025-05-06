@@ -215,50 +215,6 @@
             </script>
         @endsession
     @endif
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const warnings = @json($warnings); // e.g. ["Alat TIM-001 ...", "Alat XYZ ..."]
-            const dangers = @json($dangers); // e.g. ["Alat ABC ...", ...]
-
-            function initMarquee(messages, spanId, keyframeName) {
-                if (!messages.length) return;
-
-                // Gabungkan array string jadi satu teks panjang
-                const text = messages.join('      ');
-
-                const el = document.getElementById(spanId);
-                el.textContent = text;
-
-                requestAnimationFrame(() => {
-                    const textW = el.offsetWidth;
-                    const contW = el.parentElement.offsetWidth;
-                    const distance = textW + contW;
-                    const speed = 100; // px per detik, sesuaikan
-                    const duration = distance / speed;
-
-                    // Buat keyframes dinamis
-                    const styleTag = document.createElement('style');
-                    styleTag.textContent = `
-        @keyframes ${keyframeName} {
-          0%   { transform: translateX(${contW}px); }
-          100% { transform: translateX(-${textW}px); }
-        }`;
-                    document.head.appendChild(styleTag);
-
-                    // Terapkan animasi
-                    el.style.animationName = keyframeName;
-                    el.style.animationDuration = duration + 's';
-                    el.style.animationTimingFunction = 'linear';
-                    el.style.animationIterationCount = 'infinite';
-                    // Pastikan span diawali di luar kanan
-                    el.style.position = 'absolute';
-                });
-            }
-
-            initMarquee(warnings, 'warning-text', 'marqueeWarning');
-            initMarquee(dangers, 'danger-text', 'marqueeDanger');
-        });
-    </script> --}}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const warnings = @json($warnings);

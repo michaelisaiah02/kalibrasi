@@ -215,14 +215,18 @@
             // Delegasi tombol Edit
             $(document).on('click', '.btn-edit-standard', function() {
                 const id = $(this).data('id');
-                const idNum = $(this).data('id-num');
                 $('#standard-id').val(id);
-                $('#name').val($(this).data('name'));
-                $('#employeeID').val($(this).data('employeeid'));
-                $('#role').val($(this).data('role'));
-                $('#password').val('');
-                $('#standardModalLabel').text('Edit Standard');
-                $('#password-group').hide();
+                $('#id-num').val(id).change();
+                $('#param-01').val($(this).data('param01'));
+                $('#param-02').val($(this).data('param02'));
+                $('#param-03').val($(this).data('param03'));
+                $('#param-04').val($(this).data('param04'));
+                $('#param-05').val($(this).data('param05'));
+                $('#param-06').val($(this).data('param06'));
+                $('#param-07').val($(this).data('param07'));
+                $('#param-08').val($(this).data('param08'));
+                $('#param-09').val($(this).data('param09'));
+                $('#param-10').val($(this).data('param10'));
                 $('#standardForm').attr('action', `{{ url('admin/standards/update-standard') }}/${id}`);
                 new bootstrap.Modal(document.getElementById('standardModal')).show();
             });

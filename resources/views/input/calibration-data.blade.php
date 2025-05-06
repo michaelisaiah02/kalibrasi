@@ -213,11 +213,29 @@
                                         data-id="{{ $result->id_num }}">{{ $loop->iteration }}</button></td>
                                 <td class="text-nowrap"> {{ $result->calibration_date->format('d-m-Y') }} </td>
                                 <td class="text-nowrap"> {{ $result->id_num }} / {{ $result->masterList->sn_num }} </td>
-                                <td class="text-nowrap"> {{ $result->masterList->equipment->name }} </td>
-                                <td class="text-nowrap"> {{ $result->masterList->capacity }}
-                                    {{ $result->masterList->unit->symbol }} </td>
-                                <td class="text-nowrap">± {{ $result->masterList->accuracy }}
-                                    {{ $result->masterList->unit->symbol }} </td>
+                                <td class="text-nowrap">
+                                    @isset($result->masterList->equipment->name)
+                                        {{ $result->masterList->equipment->name }}
+                                    @else
+                                        <span class="text-danger">has been deleted</span>
+                                    @endisset
+                                </td>
+                                <td class="text-nowrap">
+                                    {{ $result->masterList->capacity }}
+                                    @isset($result->masterList->unit->symbol)
+                                        {{ $result->masterList->unit->symbol }}
+                                    @else
+                                        <span class="text-danger">N/A</span>
+                                    @endisset
+                                </td>
+                                <td class="text-nowrap">
+                                    ± {{ $result->masterList->accuracy }}
+                                    @isset($result->masterList->unit->symbol)
+                                        {{ $result->masterList->unit->symbol }}
+                                    @else
+                                        <span class="text-danger">N/A</span>
+                                    @endisset
+                                </td>
                                 <td class="text-nowrap"> {{ $result->masterList->brand }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->location }} </td>
                                 <td class="text-nowrap"> {{ $result->masterList->pic }} </td>
@@ -310,9 +328,23 @@
                                             data-bs-dismiss="modal">{{ $loop->iteration }}</button></td>
                                     <td>{{ $result->calibration_date->format('d-m-Y') }}</td>
                                     <td>{{ $result->id_num }} / {{ $result->masterList->sn_num }}</td>
-                                    <td>{{ $result->masterList->equipment->name }}</td>
-                                    <td>{{ $result->masterList->capacity }} {{ $result->masterList->unit->symbol }}</td>
-                                    <td>± {{ $result->masterList->accuracy }} {{ $result->masterList->unit->symbol }}</td>
+                                    <td>{{ $result->masterList->equipment->name ?? '' }}</td>
+                                    <td>
+                                        {{ $result->masterList->capacity }}
+                                        @isset($result->masterList->unit->symbol)
+                                            {{ $result->masterList->unit->symbol }}
+                                        @else
+                                            <span class="text-danger">N/A</span>
+                                        @endisset
+                                    </td>
+                                    <td>
+                                        ± {{ $result->masterList->accuracy }}
+                                        @isset($result->masterList->unit->symbol)
+                                            {{ $result->masterList->unit->symbol }}
+                                        @else
+                                            <span class="text-danger">N/A</span>
+                                        @endisset
+                                    </td>
                                     <td>{{ $result->masterList->brand }}</td>
                                     <td>{{ $result->masterList->location }}</td>
                                     <td>{{ $result->masterList->pic }}</td>

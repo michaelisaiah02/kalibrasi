@@ -35,9 +35,9 @@ class EquipmentController extends Controller
         $unit = Equipment::findOrFail($id);
 
         $validated = $request->validate([
-            'symbol' => [
+            'type_id' => [
                 'required',
-                Rule::unique('equipments', 'symbol')->ignore($unit->id),
+                Rule::unique('equipments', 'type_id')->ignore($unit->id),
             ],
             'name' => ['required', 'string', 'max:255'],
         ]);
@@ -62,7 +62,7 @@ class EquipmentController extends Controller
         $query = Equipment::query()
             ->when($keyword, function ($q) use ($keyword) {
                 $q->where('name', 'like', "%{$keyword}%")
-                    ->orWhere('symbol', 'like', "%{$keyword}%");
+                    ->orWhere('type_id', 'like', "%{$keyword}%");
             });
 
         $equipments = $query->orderBy('created_at', 'desc')->paginate(5);

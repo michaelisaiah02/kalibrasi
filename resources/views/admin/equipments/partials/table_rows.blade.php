@@ -9,7 +9,7 @@
             </button>
             <button class="btn btn-danger btn-sm btn-delete-equipment" data-id="{{ $equipment->id }}"
                 data-type-id="{{ $equipment->type_id }}" data-name="{{ $equipment->name }}" data-bs-toggle="modal"
-                data-bs-target="#deleteUnitModal">
+                data-bs-target="#deleteEquipmentModal">
                 Delete
             </button>
         </td>

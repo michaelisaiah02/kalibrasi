@@ -2,8 +2,20 @@
     <tr class="text-center">
         <td>{{ $masterlist->id_num }}</td>
         <td>{{ $masterlist->sn_num }}</td>
-        <td>{{ $masterlist->capacity }} ({{ $masterlist->unit->symbol }})</td>
-        <td>{{ $masterlist->accuracy }} ({{ $masterlist->unit->symbol }})</td>
+        <td>{{ $masterlist->capacity }}
+            @isset($result->masterList->unit->symbol)
+                {{ $result->masterList->unit->symbol }}
+            @else
+                <span class="text-danger">N/A</span>
+            @endisset
+        </td>
+        <td>{{ $masterlist->accuracy }}
+            @isset($result->masterList->unit->symbol)
+                {{ $result->masterList->unit->symbol }}
+            @else
+                <span class="text-danger">N/A</span>
+            @endisset
+        </td>
         <td>{{ $masterlist->brand }}</td>
         <td>{{ $masterlist->calibration_type }}</td>
         <td>{{ $masterlist->first_used }}</td>

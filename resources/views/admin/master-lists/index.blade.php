@@ -12,17 +12,13 @@
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </div>
-                <input type="search" class="form-control" placeholder="Search..." id="search-unit" autocomplete="off">
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#unitModal" id="btn-add-unit">
-                    Add New Master List
-                </button>
+                <input type="search" class="form-control" placeholder="Search..." id="search-master-list"
+                    autocomplete="off">
             </div>
         </div>
 
         <div class="table-responsive text-nowrap mb-3">
-            <table class="table table-striped m-0" id="unit-table">
+            <table class="table table-striped m-0" id="master-list-table">
                 <thead class="table-primary">
                     <tr class="text-center">
                         <th>ID Num</th>
@@ -39,7 +35,7 @@
                         <th>Location</th>
                     </tr>
                 </thead>
-                <tbody id="unit-table-body">
+                <tbody id="master-list-table-body">
                     {{-- Data will generate by AJAX --}}
                 </tbody>
             </table>
@@ -56,16 +52,16 @@
     </div>
 
     <!-- Modal Tambah/Edit MasterList -->
-    <div class="modal fade" id="unitModal" tabindex="-1" aria-labelledby="unitModalLabel" aria-hidden="true">
+    <div class="modal fade" id="master-listModal" tabindex="-1" aria-labelledby="master-listModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form class="modal-content needs-validation" method="POST" id="unitForm" novalidate>
+            <form class="modal-content needs-validation" method="POST" id="master-listForm" novalidate>
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="unitModalLabel">Add Master List</h5>
+                    <h5 class="modal-title" id="master-listModalLabel">Add Master List</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="unit_id" id="unit-id">
+                    <input type="hidden" name="master-list_id" id="master-list-id">
                     <div class="mb-3">
                         <label for="symbol" class="form-label">Symbol</label>
                         <input type="text" class="form-control" id="symbol" name="symbol" required>
@@ -97,7 +93,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete the unit named <strong id="deleteMasterListName"></strong>?</p>
+                    <p>Are you sure you want to delete the master-list named <strong id="deleteMasterListName"></strong>?
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -121,10 +118,10 @@
                     page: page
                 },
                 success: function(response) {
-                    $('#unit-table-body').html(response.html);
+                    $('#master-list-table-body').html(response.html);
                     $('#pagination-links').html(response.pagination);
                     $('html, body').animate({
-                        scrollTop: $('#unit-table').offset().top - 100
+                        scrollTop: $('#master-list-table').offset().top - 100
                     }, 300);
                     $('.pagination nav').addClass('w-100');
                 },
@@ -138,30 +135,33 @@
         }
 
         $(document).ready(function() {
-            // Add MasterList
-            $('#btn-add-unit').click(function() {
-                $('#unitForm').trigger('reset');
-                $('#unitModalLabel').text('Add MasterList');
-                $('#unitForm').attr('action', "{{ route('admin.master-lists.store') }}");
-                $('#password-group').show();
-            });
-
             // Delegasi tombol Edit
-            $(document).on('click', '.btn-edit-unit', function() {
+            $(document).on('click', '.btn-edit-master-list', function() {
                 const id = $(this).data('id');
-                $('#unit-id').val(id);
-                $('#name').val($(this).data('name'));
-                $('#symbol').val($(this).data('symbol'));
-                $('#unitForm').attr('action', `{{ url('admin/master-lists/update-unit') }}/${id}`);
-                new bootstrap.Modal(document.getElementById('unitModal')).show();
+                $('#master-list-id').val(id);
+                $('#id-num').val($(this).data('id-num'));
+                $('#sn-num').val($(this).data('sn-num'));
+                $('#capacity').val($(this).data('capacity'));
+                $('#accuracy').val($(this).data('accuracy'));
+                $('#brand').val($(this).data('brand'));
+                $('#calibration-type').val($(this).data('calibration-type'));
+                $('#first-used').val($(this).data('first-used'));
+                $('#rank').val($(this).data('rank'));
+                $('#calibration-freq').val($(this).data('calibration-freq'));
+                $('#acceptance-criteria').val($(this).data('acceptance-criteria'));
+                $('#pic').val($(this).data('pic'));
+                $('#location').val($(this).data('location'));
+                $('#master-listForm').attr('action',
+                    `{{ url('admin/master-lists/update-master-list') }}/${id}`);
+                new bootstrap.Modal(document.getElementById('master-listModal')).show();
             });
 
             // Delegasi tombol Delete
-            $(document).on('click', '.btn-delete-unit', function() {
+            $(document).on('click', '.btn-delete-master-list', function() {
                 const id = $(this).data('id');
                 const name = $(this).data('name');
                 $('#deleteMasterListForm').attr('action',
-                    `{{ url('admin/master-lists/delete-unit') }}/${id}`);
+                    `{{ url('admin/master-lists/delete-master-list') }}/${id}`);
                 $('#deleteMasterListName').text(name);
             });
 
@@ -175,7 +175,7 @@
             });
 
             let debounceTimer;
-            $('#search-unit').on('keyup', function() {
+            $('#search-master-list').on('keyup', function() {
                 clearTimeout(debounceTimer);
                 const keyword = $(this).val();
                 debounceTimer = setTimeout(() => {
@@ -187,7 +187,7 @@
             $(document).on('click', '#pagination-links .pagination a', function(e) {
                 e.preventDefault();
                 const page = $(this).attr('href').split('page=')[1];
-                const keyword = $('#search-unit').val();
+                const keyword = $('#search-master-list').val();
                 fetchMasterLists(keyword, page);
             });
 
