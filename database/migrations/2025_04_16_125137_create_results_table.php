@@ -22,16 +22,16 @@ return new class extends Migration
             $table->string('calibrator_equipment')->nullable()->default(null);
             $table->foreign('calibrator_equipment')->references('id_num')->on('master_lists')->onDelete('cascade');
 
-            $table->unsignedInteger('param_01')->nullable();
-            $table->unsignedInteger('param_02')->nullable();
-            $table->unsignedInteger('param_03')->nullable();
-            $table->unsignedInteger('param_04')->nullable();
-            $table->unsignedInteger('param_05')->nullable();
-            $table->unsignedInteger('param_06')->nullable();
-            $table->unsignedInteger('param_07')->nullable();
-            $table->unsignedInteger('param_08')->nullable();
-            $table->unsignedInteger('param_09')->nullable();
-            $table->unsignedInteger('param_10')->nullable();
+            $table->float('param_01', 8, 2)->nullable();
+            $table->float('param_02', 8, 2)->nullable();
+            $table->float('param_03', 8, 2)->nullable();
+            $table->float('param_04', 8, 2)->nullable();
+            $table->float('param_05', 8, 2)->nullable();
+            $table->float('param_06', 8, 2)->nullable();
+            $table->float('param_07', 8, 2)->nullable();
+            $table->float('param_08', 8, 2)->nullable();
+            $table->float('param_09', 8, 2)->nullable();
+            $table->float('param_10', 8, 2)->nullable();
 
             $table->enum('judgement', ['OK', 'NG', 'Disposal']);
             $table->char('created_by', 5); // harus cocok dengan tipe employeeID

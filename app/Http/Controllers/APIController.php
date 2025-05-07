@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MasterList;
 use Illuminate\Http\Request;
 
-class APIController extends Controller
+class APIController
 {
     /**
      * Display a listing of the resource.

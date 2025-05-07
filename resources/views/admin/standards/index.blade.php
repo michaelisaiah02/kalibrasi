@@ -208,7 +208,7 @@
             $('#btn-add-standard').click(function() {
                 $('#standardForm').trigger('reset');
                 $('#standardModalLabel').text('Add Standard');
-                $('#standardForm').attr('action', "{{ route('admin.standards.store') }}");
+                $('#standardForm').attr('action', "{{ route('standards.store') }}");
                 $('#password-group').show();
             });
 

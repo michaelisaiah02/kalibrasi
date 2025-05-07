@@ -52,11 +52,17 @@ class DashboardController extends Controller
                 $warnings[] = $msg;
             } elseif ($now->gt($dueDate)) {
                 // sudah lewat due date
-                $dangers[] = $msg." (should be calibrated before: {$dueDate->format('d-m-Y')})";
+                $dangers[] = $msg . " (should be calibrated before: {$dueDate->format('d-m-Y')})";
             }
         }
         // dd($warnings);
 
-        return view('dashboard', compact('warnings', 'dangers'));
+        if (session()->has('pending_acceptance')) {
+            $masterList = MasterList::where('id_num', session('pending_acceptance'))->first();
+        }
+
+        return view('dashboard', compact('warnings', 'dangers'), [
+            'masterList' => $masterList ?? null,
+        ]);
     }
 }

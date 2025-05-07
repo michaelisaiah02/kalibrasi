@@ -13,6 +13,7 @@ use App\Http\Controllers\Input\NewEquipmentController;
 use App\Http\Controllers\Input\RepairDataController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\ReportController;
+use App\Http\Middleware\CheckResult;
 use App\Http\Middleware\CheckRoleIsAdmin;
 use App\Http\Middleware\CheckRoleMinUser;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/input/repair-data', [RepairDataController::class, 'create'])->name('input.repair.data');
         Route::post('/input/repair-data', [RepairDataController::class, 'store'])->name('store.repair.data');
 
+        Route::post('/standards/store', [StandardController::class, 'store'])->name('standards.store');
+
         // API data
         Route::get('/count-equipments/{type_id}', [APIController::class, 'countEquipments'])->name('api.count.equipments');
         Route::get('/get-masterlist/{id_num}', [APIController::class, 'getMasterList'])->name('api.get.masterlist');
@@ -63,7 +66,6 @@ Route::middleware('auth')->group(function () {
         });
         Route::prefix('admin/standards')->group(function () {
             Route::get('/', [StandardController::class, 'index'])->name('admin.standards.index');
-            Route::post('/store', [StandardController::class, 'store'])->name('admin.standards.store');
             Route::post('/update-standard/{id}', [StandardController::class, 'update'])->name('admin.standards.update');
             Route::delete('/delete-standard/{id}', [StandardController::class, 'destroy']);
             Route::get('/search', [StandardController::class, 'search'])->name('admin.standards.search');

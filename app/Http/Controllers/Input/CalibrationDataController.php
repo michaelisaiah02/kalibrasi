@@ -28,16 +28,16 @@ class CalibrationDataController extends Controller
             'calibrator_equipment' => $request->calibration_type === 'Internal'
                 ? 'required|exists:master_lists,id_num'
                 : 'nullable',
-            'param_01' => 'required|integer',
-            'param_02' => 'required|integer',
-            'param_03' => 'required|integer',
-            'param_04' => 'required|integer',
-            'param_05' => 'required|integer',
-            'param_06' => 'required|integer',
-            'param_07' => 'required|integer',
-            'param_08' => 'required|integer',
-            'param_09' => 'required|integer',
-            'param_10' => 'required|integer',
+            'param_01' => 'required|numeric|min:0.01',
+            'param_02' => 'required|numeric|min:0.01',
+            'param_03' => 'required|numeric|min:0.01',
+            'param_04' => 'required|numeric|min:0.01',
+            'param_05' => 'required|numeric|min:0.01',
+            'param_06' => 'required|numeric|min:0.01',
+            'param_07' => 'required|numeric|min:0.01',
+            'param_08' => 'required|numeric|min:0.01',
+            'param_09' => 'required|numeric|min:0.01',
+            'param_10' => 'required|numeric|min:0.01',
             'judgement' => 'required|string|in:OK,NG,Disposal',
             'certificate' => $request->calibration_type === 'External'
                 ? 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
@@ -46,6 +46,11 @@ class CalibrationDataController extends Controller
 
         $validated['id_num'] = strtoupper($request->id_num);
         $validated['created_by'] = auth()->user()->employeeID;
+
+        foreach (range(1, 9) as $i) {
+            $validated["param_0{$i}"] = (float) $validated["param_0{$i}"];
+        }
+        $validated['param_10'] = (float) $validated['param_10'];
 
         if (isNull($validated['calibration_date'])) {
             $validated['calibration_date'] = now()->toDateString();
@@ -78,6 +83,9 @@ class CalibrationDataController extends Controller
         foreach ($oldResults as $old) {
             $old->delete();
         }
+
+        // Hapus session pending_result
+        session()->forget('pending_result');
 
         return redirect()->route('input.calibration.data')->with('success', 'Calibration result were successfully saved.');
     }

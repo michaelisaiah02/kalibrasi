@@ -7,7 +7,6 @@
         }
     </style>
 @endsection
-
 @section('content')
     <div class="container mt-1 mt-md-3">
         <form action="{{ route('store.calibration') }}" method="POST" enctype="multipart/form-data">
@@ -18,7 +17,7 @@
                         <span class="input-group-text bg-primary text-light width-label-1">ID / SN Number</span>
                         <input type="text" aria-label="No ID" placeholder="-"
                             class="form-control text-center @error('id_num') is-invalid @enderror {{ old('id_num') ? 'is-valid' : '' }}"
-                            name="id_num" id="id-num" required value="{{ old('id_num') }}">
+                            name="id_num" id="id-num" required value="{{ old('id_num') ?? session('pending_result') }}">
                         <input type="text" aria-label="No SN" placeholder="No SN"
                             class="form-control text-center width-label-1" id="sn-num" disabled>
                     </div>
@@ -76,84 +75,95 @@
                         <div class="col">
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 1</span>
-                                <input type="number" class="form-control" id="std-1" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-1" placeholder="std" step="any"
+                                    min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_01') is-invalid @enderror {{ old('param_01') ? 'is-valid' : '' }}"
-                                    id="act-1" name="param_01" required placeholder="act" value="{{ old('param_01') }}">
+                                    id="act-1" name="param_01" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_01') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 2</span>
-                                <input type="number" class="form-control" id="std-2" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-2" placeholder="std"
+                                    step="any" min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_02') is-invalid @enderror {{ old('param_02') ? 'is-valid' : '' }}"
-                                    id="act-2" name="param_02" required placeholder="act"
-                                    value="{{ old('param_02') }}">
+                                    id="act-2" name="param_02" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_02') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 3</span>
-                                <input type="number" class="form-control" id="std-3" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-3" placeholder="std"
+                                    step="any" min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_03') is-invalid @enderror {{ old('param_03') ? 'is-valid' : '' }}"
-                                    id="act-3" name="param_03" required placeholder="act"
-                                    value="{{ old('param_03') }}">
+                                    id="act-3" name="param_03" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_03') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 4</span>
-                                <input type="number" class="form-control" id="std-4" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-4" placeholder="std"
+                                    step="any" min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_04') is-invalid @enderror {{ old('param_04') ? 'is-valid' : '' }}"
-                                    id="act-4" name="param_04" required placeholder="act"
-                                    value="{{ old('param_04') }}">
+                                    id="act-4" name="param_04" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_04') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 5</span>
-                                <input type="number" class="form-control" id="std-5" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-5" placeholder="std"
+                                    step="any" min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_05') is-invalid @enderror {{ old('param_05') ? 'is-valid' : '' }}"
-                                    id="act-5" name="param_05" required placeholder="act"
-                                    value="{{ old('param_05') }}">
+                                    id="act-5" name="param_05" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_05') }}">
                             </div>
                         </div>
                         <div class="col">
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 6</span>
-                                <input type="number" class="form-control" id="std-6" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-6" placeholder="std"
+                                    step="any" min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_06') is-invalid @enderror {{ old('param_06') ? 'is-valid' : '' }}"
-                                    id="act-6" name="param_06" required placeholder="act"
-                                    value="{{ old('param_06') }}">
+                                    id="act-6" name="param_06" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_06') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 7</span>
-                                <input type="number" class="form-control" id="std-7" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-7" placeholder="std"
+                                    step="any" min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_07') is-invalid @enderror {{ old('param_07') ? 'is-valid' : '' }}"
-                                    id="act-7" name="param_07" required placeholder="act"
-                                    value="{{ old('param_07') }}">
+                                    id="act-7" name="param_07" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_07') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 8</span>
-                                <input type="number" class="form-control" id="std-8" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-8" placeholder="std"
+                                    step="any" min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_08') is-invalid @enderror {{ old('param_08') ? 'is-valid' : '' }}"
-                                    id="act-8" name="param_08" required placeholder="act"
-                                    value="{{ old('param_08') }}">
+                                    id="act-8" name="param_08" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_08') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 9</span>
-                                <input type="number" class="form-control" id="std-9" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-9" placeholder="std"
+                                    step="any" min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_09') is-invalid @enderror {{ old('param_09') ? 'is-valid' : '' }}"
-                                    id="act-9" name="param_09" required placeholder="act"
-                                    value="{{ old('param_09') }}">
+                                    id="act-9" name="param_09" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_09') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 10</span>
-                                <input type="number" class="form-control" id="std-10" placeholder="std" disabled>
+                                <input type="number" class="form-control" id="std-10" placeholder="std"
+                                    step="any" min="0.01" disabled>
                                 <input type="number"
                                     class="form-control @error('param_10') is-invalid @enderror {{ old('param_10') ? 'is-valid' : '' }}"
-                                    id="act-10" name="param_10" required placeholder="act"
-                                    value="{{ old('param_10') }}">
+                                    id="act-10" name="param_10" required placeholder="act" step="any"
+                                    min="0.01" value="{{ old('param_10') }}">
                             </div>
                         </div>
                         <div class="col-md-2 align-content-center">
@@ -266,9 +276,12 @@
                     </tbody>
                 </table>
             </div>
+            {{-- @dd(session())
+            @dd(session()->has('pending_result')) --}}
             <div class="row justify-content-end">
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
-                    <a href="{{ route('dashboard', ['key' => 'menu-input']) }}" class="btn btn-primary">Close</a>
+                    <a href="{{ route('dashboard', ['key' => 'menu-input']) }}"
+                        class="btn btn-primary {{ session()->has('pending_result') ? 'disabled' : '' }}">Close</a>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -378,7 +391,6 @@
         </div>
     </div>
 
-
     <x-toast />
 @endsection
 
@@ -393,10 +405,9 @@
             if (currentAjax) currentAjax.abort();
 
             currentAjax = $.ajax({
-                url: `/get-masterlist/${idNum}`,
+                url: `{{ url('/') }}/get-masterlist/${idNum}`,
                 method: 'GET',
                 success: function(data) {
-                    console.log(data);
                     $('#sn-num').val(data.sn_num);
                     $('#equipment-name').val(data.equipment_name);
                     $('#capacity').val(data.capacity);
@@ -427,6 +438,7 @@
                         $('#certificate').next('button').prop('required', false).prop('disabled', true).hide();
                         $('#certificate').val('');
                     }
+                    console.log(data.standard);
                     $('#std-1').val(data.standard.param_01);
                     $('#std-2').val(data.standard.param_02);
                     $('#std-3').val(data.standard.param_03);
@@ -544,4 +556,24 @@
             }
         });
     </script>
+    @session('pending_result')
+        <script>
+            // Cegah back dan refresh
+            history.pushState(null, null, location.href);
+            window.onpopstate = () => history.pushState(null, null, location.href);
+
+            // Aktifkan warning kalau mau refresh
+            window.addEventListener('beforeunload', function(e) {
+                if ({{ session()->has('pending_result') ? 'true' : 'false' }}) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+
+            // Nonaktifkan warning saat form dikirim
+            document.querySelector('form').addEventListener('submit', function() {
+                window.removeEventListener('beforeunload', () => {});
+            });
+        </script>
+    @endsession
 @endsection

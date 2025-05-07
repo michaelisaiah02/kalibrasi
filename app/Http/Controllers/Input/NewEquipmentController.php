@@ -42,15 +42,10 @@ class NewEquipmentController extends Controller
             'location' => ['required', 'string'],
         ]);
 
-        $masterList = MasterList::create($validated);
+        $master = MasterList::create($validated);
 
-        // Buat data result otomatis (anggap semua alat baru pasti "OK")
-        // Result::create([
-        //     'id_num' => $masterList->id_num,
-        //     'calibration_date' => $masterList->first_used,
-        //     'judgement' => 'OK',
-        //     'created_by' => $validated['created_by'], // dari request
-        // ]);
+        // Flag untuk memaksa modal acceptance criteria
+        session(['pending_acceptance' => $master->id_num]);
 
         return redirect()->route('print.label', $validated['id_num'])->with([
             'success' => 'The equipment was successfully added.',

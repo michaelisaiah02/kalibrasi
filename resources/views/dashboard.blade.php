@@ -104,6 +104,124 @@
             </div>
         </div>
     </div>
+    @if (session('pending_acceptance'))
+        <!-- Modal tidak bisa ditutup -->
+        <div class="modal fade" id="acceptanceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="acceptanceModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content needs-validation" method="POST" id="standardForm"
+                    action="{{ route('standards.store') }}" novalidate>
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="standardModalLabel">Add Standard</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id-num" name="id_num" hidden
+                                value="{{ $masterList->id_num }}">
+                            <input class="form-control"
+                                value="{{ $masterList->id_num }} - {{ $masterList->sn_num }} - {{ $masterList->equipment->name }}"
+                                disabled>
+                            <label for="id-num" class="form-label">ID Number</label>
+                        </div>
+                        <div class="mb-3">
+                            <div class="invalid-feedback">ID Number is required.</div>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control form-control-sm" id="param-01"
+                                    placeholder="Parameter 1" name="param_01" step="any" min="0.01" required>
+                                <label for="param-01">Parameter 1</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="number" class="form-control form-control-sm" id="param-02"
+                                    placeholder="Parameter 2" name="param_02" step="any" min="0.01" required>
+                                <label for="param-02">Parameter 2</label>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="param-03" placeholder="Parameter 3"
+                                    name="param_03" step="any" min="0.01" required>
+                                <label for="param-03">Parameter 3</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="param-04" placeholder="Parameter 4"
+                                    name="param_04" step="any" min="0.01" required>
+                                <label for="param-04">Parameter 4</label>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="param-05" placeholder="Parameter 5"
+                                    name="param_05" step="any" min="0.01" required>
+                                <label for="param-05">Parameter 5</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="param-06" placeholder="Parameter 6"
+                                    name="param_06" step="any" min="0.01" required>
+                                <label for="param-06">Parameter 6</label>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="param-07" placeholder="Parameter 7"
+                                    name="param_07" step="any" min="0.01" required>
+                                <label for="param-07">Parameter 7</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="param-08" placeholder="Parameter 8"
+                                    name="param_08" step="any" min="0.01" required>
+                                <label for="param-08">Parameter 8</label>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="param-09" placeholder="Parameter 9"
+                                    name="param_09" step="any" min="0.01" required>
+                                <label for="param-09">Parameter 9</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="param-10" placeholder="Parameter 10"
+                                    name="param_10" step="any" min="0.01" required>
+                                <label for="param-10">Parameter 10</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="module">
+            // Matikan backdrop & ESC
+            const modalEl = document.getElementById('acceptanceModal');
+            const modalInstance = new bootstrap.Modal(modalEl, {
+                backdrop: 'static',
+                keyboard: false,
+            });
+            modalEl.addEventListener('shown.bs.modal', () => {
+                modalEl.querySelector('input').focus();
+            });
+
+            // Tampilkan modal saat halaman dimuat
+            document.addEventListener('DOMContentLoaded', () => {
+                modalInstance.show();
+            });
+
+            $('.needs-validation').on('submit', function(e) {
+                if (!this.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                $(this).addClass('was-validated');
+            });
+        </script>
+    @endif
+
+
     <div class="toast-container position-fixed bottom-0 end-0 p-3 z-3"></div>
     <x-toast />
 @endsection
@@ -283,5 +401,4 @@
             }
         });
     </script>
-
 @endsection

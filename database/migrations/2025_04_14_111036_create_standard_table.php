@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('standards', function (Blueprint $table) {
             $table->id();
             $table->string('id_num')->foreign('id_num')->references('id_num')->on('master_lists')->onDelete('cascade');
-            $table->integer('param_01')->unsigned();
-            $table->integer('param_02')->unsigned();
-            $table->integer('param_03')->unsigned();
-            $table->integer('param_04')->unsigned();
-            $table->integer('param_05')->unsigned();
-            $table->integer('param_06')->unsigned();
-            $table->integer('param_07')->unsigned();
-            $table->integer('param_08')->unsigned();
-            $table->integer('param_09')->unsigned();
-            $table->integer('param_10')->unsigned();
+            $table->float('param_01', 8, 2)->unsigned();
+            $table->float('param_02', 8, 2)->unsigned();
+            $table->float('param_03', 8, 2)->unsigned();
+            $table->float('param_04', 8, 2)->unsigned();
+            $table->float('param_05', 8, 2)->unsigned();
+            $table->float('param_06', 8, 2)->unsigned();
+            $table->float('param_07', 8, 2)->unsigned();
+            $table->float('param_08', 8, 2)->unsigned();
+            $table->float('param_09', 8, 2)->unsigned();
+            $table->float('param_10', 8, 2)->unsigned();
             $table->timestamps();
         });
     }

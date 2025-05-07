@@ -23,39 +23,74 @@ class StandardController extends Controller
     {
         $validated = $request->validate([
             'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num'],
-            'param_01' => ['required', 'integer', 'min:1'],
-            'param_02' => ['required', 'integer', 'min:1'],
-            'param_03' => ['required', 'integer', 'min:1'],
-            'param_04' => ['required', 'integer', 'min:1'],
-            'param_05' => ['required', 'integer', 'min:1'],
-            'param_06' => ['required', 'integer', 'min:1'],
-            'param_07' => ['required', 'integer', 'min:1'],
-            'param_08' => ['required', 'integer', 'min:1'],
-            'param_09' => ['required', 'integer', 'min:1'],
-            'param_10' => ['required', 'integer', 'min:1'],
+            'param_01' => ['required', 'numeric', 'min:0.01'],
+            'param_02' => ['required', 'numeric', 'min:0.01'],
+            'param_03' => ['required', 'numeric', 'min:0.01'],
+            'param_04' => ['required', 'numeric', 'min:0.01'],
+            'param_05' => ['required', 'numeric', 'min:0.01'],
+            'param_06' => ['required', 'numeric', 'min:0.01'],
+            'param_07' => ['required', 'numeric', 'min:0.01'],
+            'param_08' => ['required', 'numeric', 'min:0.01'],
+            'param_09' => ['required', 'numeric', 'min:0.01'],
+            'param_10' => ['required', 'numeric', 'min:0.01'],
         ]);
 
+        // Ensure numeric values are properly cast
+        foreach (range(1, 9) as $i) {
+            $validated["param_0{$i}"] = (float) $validated["param_0{$i}"];
+        }
+        $validated['param_10'] = (float) $validated['param_10'];
+
+        // Simpan acceptance criteria
         Standard::create($validated);
 
-        return redirect()->route('admin.standards.index')->with('success', 'Standard berhasil ditambahkan.');
+        // Bersihkan flag acceptance, set flag result
+        session()->forget('pending_acceptance');
+        session(['pending_result' => $validated['id_num']]);
+
+        return redirect()->route('input.calibration.data')->with([
+            'success' => 'Please input the calibration data.'
+        ]);
     }
+
+
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num'],
+    //         'param_01' => ['required', 'integer', 'min:0.01'],
+    //         'param_02' => ['required', 'integer', 'min:0.01'],
+    //         'param_03' => ['required', 'integer', 'min:0.01'],
+    //         'param_04' => ['required', 'integer', 'min:0.01'],
+    //         'param_05' => ['required', 'integer', 'min:0.01'],
+    //         'param_06' => ['required', 'integer', 'min:0.01'],
+    //         'param_07' => ['required', 'integer', 'min:0.01'],
+    //         'param_08' => ['required', 'integer', 'min:0.01'],
+    //         'param_09' => ['required', 'integer', 'min:0.01'],
+    //         'param_10' => ['required', 'integer', 'min:0.01'],
+    //     ]);
+
+    //     Standard::create($validated);
+
+    //     return redirect()->route('admin.standards.index')->with('success', 'Standard berhasil ditambahkan.');
+    // }
 
     public function update(Request $request, $id)
     {
         $standard = Standard::findOrFail($id);
 
         $validated = $request->validate([
-            'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num,'.$standard->id],
-            'param_01' => ['required', 'integer', 'min:1'],
-            'param_02' => ['required', 'integer', 'min:1'],
-            'param_03' => ['required', 'integer', 'min:1'],
-            'param_04' => ['required', 'integer', 'min:1'],
-            'param_05' => ['required', 'integer', 'min:1'],
-            'param_06' => ['required', 'integer', 'min:1'],
-            'param_07' => ['required', 'integer', 'min:1'],
-            'param_08' => ['required', 'integer', 'min:1'],
-            'param_09' => ['required', 'integer', 'min:1'],
-            'param_10' => ['required', 'integer', 'min:1'],
+            'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num,' . $standard->id],
+            'param_01' => ['required', 'numeric', 'min:0.01'],
+            'param_02' => ['required', 'numeric', 'min:0.01'],
+            'param_03' => ['required', 'numeric', 'min:0.01'],
+            'param_04' => ['required', 'numeric', 'min:0.01'],
+            'param_05' => ['required', 'numeric', 'min:0.01'],
+            'param_06' => ['required', 'numeric', 'min:0.01'],
+            'param_07' => ['required', 'numeric', 'min:0.01'],
+            'param_08' => ['required', 'numeric', 'min:0.01'],
+            'param_09' => ['required', 'numeric', 'min:0.01'],
+            'param_10' => ['required', 'numeric', 'min:0.01'],
         ]);
 
         $standard->update($validated);
