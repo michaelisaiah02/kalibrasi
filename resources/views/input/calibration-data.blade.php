@@ -9,7 +9,7 @@
 @endsection
 @section('content')
     <div class="container mt-1 mt-md-3">
-        <form action="{{ route('store.calibration') }}" method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" id="calibration-form">
             @csrf
             <div class="row justify-content-center mb-1">
                 <div class="col-md-6">
@@ -22,7 +22,8 @@
                             class="form-control text-center width-label-1" id="sn-num" disabled>
                     </div>
                     <div class="input-group input-group-sm mb-1">
-                        <label class="input-group-text bg-primary text-light width-label-1" for="Name-alat-ukur">Calibration
+                        <label class="input-group-text bg-primary text-light width-label-1"
+                            for="calibration-date">Calibration
                             Date</label>
                         <input type="date" aria-label="Date Now" placeholder="Date Now"
                             class="form-control width-label-1" id="calibration-date" name="calibration_date"
@@ -284,7 +285,10 @@
                         class="btn btn-primary {{ session()->has('pending_result') ? 'disabled' : '' }}">Close</a>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary" data-submit="edit">Edit</button>
+                </div>
+                <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
+                    <button type="submit" class="btn btn-primary" data-submit="save">Save</button>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -366,7 +370,18 @@
                                     <td>{{ $result->masterList->calibration_freq }}</td>
                                     <td>{{ $result->masterList->acceptance_criteria }}</td>
                                     <td>{{ $result->judgement }}</td>
-                                    <td><button class="btn btn-primary">Show</button></td>
+                                    <td>
+                                        @if ($result->certificate)
+                                            <button class="btn btn-primary btn-view-certificate" data-bs-toggle="modal"
+                                                data-bs-target="#certificateModal"
+                                                data-path="{{ asset('storage/' . $result->certificate) }}"
+                                                data-ext="{{ pathinfo($result->certificate, PATHINFO_EXTENSION) }}">
+                                                Show
+                                            </button>
+                                        @else
+                                            <span class="text-muted">-</span>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -438,7 +453,6 @@
                         $('#certificate').next('button').prop('required', false).prop('disabled', true).hide();
                         $('#certificate').val('');
                     }
-                    console.log(data.standard);
                     $('#std-1').val(data.standard.param_01);
                     $('#std-2').val(data.standard.param_02);
                     $('#std-3').val(data.standard.param_03);
@@ -510,7 +524,34 @@
             if ($input.val().trim().length === 7) {
                 fetchMasterList($input.val().trim());
             }
-        })
+
+            $('button[type="submit"]').on('click', function(e) {
+                const $this = $(this);
+                const idNum = $('#id-num').val();
+                const submitType = $this.data('submit');
+                console.log(submitType);
+                const form = $('#calibration-form');
+
+                // Cegah form submit default
+                e.preventDefault();
+
+                // Cek apakah ada input yang tidak valid
+                if (form[0].checkValidity() === false) {
+                    form.addClass('was-validated');
+                    return;
+                }
+
+                if (submitType === 'save') {
+                    form.attr('action', '{{ route('store.calibration') }}');
+                } else if (submitType === 'edit') {
+                    // Logic for editing the form
+                    form.attr('action', `{{ url('/input/calibration-data') }}/${idNum}`);
+                }
+
+                // Trigger submit event
+                form.trigger('submit');
+            });
+        });
 
         $(document).on('click', '.btn-select-id', function() {
             const selectedId = $(this).data('id');

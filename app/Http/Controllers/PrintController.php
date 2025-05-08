@@ -15,8 +15,9 @@ class PrintController extends Controller
 
     public function report($id)
     {
-        $equipment = MasterList::with(['equipment', 'unit', 'results', 'standard'])->where('id_num', $id)->firstOrFail();
+        $repair = MasterList::with(['equipment', 'unit', 'results', 'standard'])->where('id_num', $id)->firstOrFail();
+        // dd($repair);
 
-        return view('print-report', compact('equipment'));
+        return view('print-report', compact('repair'));
     }
 }

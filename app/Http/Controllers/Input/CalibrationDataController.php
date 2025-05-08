@@ -89,4 +89,50 @@ class CalibrationDataController extends Controller
 
         return redirect()->route('input.calibration.data')->with('success', 'Calibration result were successfully saved.');
     }
+
+    public function edit(Request $request, Result $result, $idNum)
+    {
+        $validated = $request->validate([
+            'id_num' => 'required|exists:master_lists,id_num',
+            'calibration_date' => 'nullable|date',
+            'calibrator_equipment' => $request->calibration_type === 'Internal'
+                ? 'required|exists:master_lists,id_num'
+                : 'nullable',
+            'param_01' => 'required|numeric|min:0.01',
+            'param_02' => 'required|numeric|min:0.01',
+            'param_03' => 'required|numeric|min:0.01',
+            'param_04' => 'required|numeric|min:0.01',
+            'param_05' => 'required|numeric|min:0.01',
+            'param_06' => 'required|numeric|min:0.01',
+            'param_07' => 'required|numeric|min:0.01',
+            'param_08' => 'required|numeric|min:0.01',
+            'param_09' => 'required|numeric|min:0.01',
+            'param_10' => 'required|numeric|min:0.01',
+            'judgement' => 'required|string|in:OK,NG,Disposal',
+        ]);
+
+        $validated['id_num'] = strtoupper($request->id_num);
+        $validated['created_by'] = auth()->user()->employeeID;
+
+        foreach (range(1, 9) as $i) {
+            $validated["param_0{$i}"] = (float) $validated["param_0{$i}"];
+        }
+        $validated['param_10'] = (float) $validated['param_10'];
+
+        if (isNull($validated['calibration_date'])) {
+            $validated['calibration_date'] = now()->toDateString();
+        }
+
+        // dd($result);
+        // Cek data yang mau diubah ada atau tidak, kalau tidak buat data baru & Simpan hasil kalibrasi
+        $result = Result::where('id_num', $idNum)->first();
+
+        if ($result) {
+            $result->update($validated);
+        } else {
+            $result = Result::create($validated);
+        }
+
+        return redirect()->route('input.calibration.data')->with('success', 'Calibration result were successfully updated.');
+    }
 }

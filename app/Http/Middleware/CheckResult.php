@@ -12,6 +12,7 @@ class CheckResult
         if (session()->has('pending_result')) {
             return redirect()->route('input.calibration.data');
         }
+
         return $next($request);
     }
 }

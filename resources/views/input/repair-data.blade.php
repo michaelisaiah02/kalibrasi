@@ -1,13 +1,5 @@
 @extends('layouts.app')
 
-@section('styles')
-    <style>
-        /* #id-num::placeholder {
-                                                                                                                                                                                                                                                    color: white;
-                                                                                                                                                                                                                                                } */
-    </style>
-@endsection
-
 @section('content')
     <div class="container mt-1 mt-md-3">
         <form action="{{ route('store.repair.data') }}" method="POST">
@@ -132,7 +124,7 @@
                         data-bs-target="#repairModal">Show All Data</button>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
-                    <button type="button" class="btn btn-primary">Print Report</button>
+                    <a class="btn btn-primary disabled" id="print">Print Report</a>
                 </div>
             </div>
         </form>
@@ -215,6 +207,9 @@
                     $('#brand').val(data.brand);
                     $('#location').val(data.location);
                     $('#pic').val(data.pic);
+
+                    $('#print').attr('href', `/print-report/${idNum}`);
+                    $('#print').removeClass('disabled');
                 },
                 error: function(xhr) {
                     if (xhr.status !== 0) {
@@ -226,6 +221,9 @@
                         $('#brand').val('');
                         $('#pic').val('');
                         $('#location').val('');
+
+                        $('#print').attr('href', '#');
+                        $('#print').removeClass('disabled');
                     }
                 }
             });

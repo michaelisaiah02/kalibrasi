@@ -13,7 +13,6 @@ use App\Http\Controllers\Input\NewEquipmentController;
 use App\Http\Controllers\Input\RepairDataController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\ReportController;
-use App\Http\Middleware\CheckResult;
 use App\Http\Middleware\CheckRoleIsAdmin;
 use App\Http\Middleware\CheckRoleMinUser;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/input/calibration-data', [CalibrationDataController::class, 'create'])->name('input.calibration.data');
         Route::post('/input/calibration-data', [CalibrationDataController::class, 'store'])->name('store.calibration');
+        Route::post('/input/calibration-data/{idNum}', [CalibrationDataController::class, 'edit'])->name('edit.calibration');
 
         Route::get('/input/repair-data', [RepairDataController::class, 'create'])->name('input.repair.data');
         Route::post('/input/repair-data', [RepairDataController::class, 'store'])->name('store.repair.data');
