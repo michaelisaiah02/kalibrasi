@@ -28,7 +28,8 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/print-label/{id}', [PrintController::class, 'label'])->name('print.label');
-    Route::get('/print-report/{id}', [PrintController::class, 'report'])->name('print.report');
+    Route::get('/print-report-masterlist/{id}', [PrintController::class, 'reportMasterlist'])->name('print.report.masterlist');
+    Route::get('/print-report-repair/{id}', [PrintController::class, 'reportRepair'])->name('print.report.repair');
     Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/report', [ReportController::class, 'menu'])->name('report.menu');
@@ -43,16 +44,20 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/input/calibration-data', [CalibrationDataController::class, 'create'])->name('input.calibration.data');
         Route::post('/input/calibration-data', [CalibrationDataController::class, 'store'])->name('store.calibration');
-        Route::post('/input/calibration-data/{idNum}', [CalibrationDataController::class, 'edit'])->name('edit.calibration');
+        Route::post('/input/calibration-data/{id}', [CalibrationDataController::class, 'edit'])->name('edit.calibration');
 
-        Route::get('/input/repair-data', [RepairDataController::class, 'create'])->name('input.repair.data');
-        Route::post('/input/repair-data', [RepairDataController::class, 'store'])->name('store.repair.data');
+        Route::get('/input/repair-data', [RepairDataController::class, 'create'])->name('input.repair');
+        Route::post('/input/repair-data', [RepairDataController::class, 'store'])->name('store.repair');
+        Route::post('/input/repair-data/{id}', [RepairDataController::class, 'edit'])->name('edit.repair');
 
         Route::post('/standards/store', [StandardController::class, 'store'])->name('standards.store');
 
         // API data
         Route::get('/count-equipments/{type_id}', [APIController::class, 'countEquipments'])->name('api.count.equipments');
         Route::get('/get-masterlist/{id_num}', [APIController::class, 'getMasterList'])->name('api.get.masterlist');
+        Route::get('/get-actual-value/{id}', [APIController::class, 'getActualValue'])->name('api.get.actual.value');
+        // get repair data
+        Route::get('/get-repair-data/{id}', [APIController::class, 'getRepairData'])->name('api.get.repair.data');
     });
     // hanya admin
     Route::middleware(CheckRoleIsAdmin::class)->group(function () {

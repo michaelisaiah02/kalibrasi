@@ -20,8 +20,8 @@ class RepairDataController extends Controller
     {
         $validated = $request->validate([
             'id_num' => ['required', 'string', 'max:255'],
-            'problem_date' => ['required', 'date'],
-            'repair_date' => ['required', 'date'],
+            'problem_date' => ['required', 'date', 'before_or_equal:repair_date'],
+            'repair_date' => ['required', 'date', 'before_or_equal:now'],
             'problem' => ['required', 'string'],
             'countermeasure' => ['required', 'string'],
             'judgement' => ['required', 'string', 'in:OK,NG,Disposal'],
@@ -30,6 +30,24 @@ class RepairDataController extends Controller
 
         Repair::create($validated);
 
-        return redirect()->route('input.repair.data')->with('success', 'Repair data successfully added.');
+        return redirect()->route('input.repair')->with('success', 'Repair data successfully added.');
+    }
+
+    public function edit(Request $request, Repair $repair, $id)
+    {
+        // dd($repair);
+        $validated = $request->validate([
+            'problem_date' => ['required', 'date', 'before_or_equal:repair_date'],
+            'repair_date' => ['required', 'date', 'before_or_equal:now'],
+            'problem' => ['required', 'string'],
+            'countermeasure' => ['required', 'string'],
+            'judgement' => ['required', 'string', 'in:OK,NG,Disposal'],
+        ]);
+        $validated['pic_repair'] = auth()->user()->name;
+
+        $repair = Repair::find($id);
+        $repair->update($validated);
+
+        return redirect()->route('input.repair')->with('success', 'Repair data successfully updated.');
     }
 }

@@ -2,10 +2,12 @@
 
 @section('content')
     <div class="container mt-1 mt-md-3">
-        <form action="{{ route('store.repair.data') }}" method="POST">
+        <form method="POST" id="repair-form">
             @csrf
+            <input type="hidden" name="form_type" id="form-type" value="{{ old('form_type') ?? 'save' }}">
+            <input type="hidden" name="id" id="repair-id" value="{{ old('id') }}">
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-md-6 ps-0 pe-1">
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">ID / SN Number</span>
                         <input type="text" aria-label="ID Num" placeholder="-"
@@ -35,13 +37,13 @@
                             class="form-control @error('problem_date') is-invalid @enderror {{ old('problem_date') ? 'is-valid' : '' }}"
                             id="problem-date" name="problem_date" value="{{ old('problem_date') }}" required>
                         <span class="input-group-text bg-primary text-light">Repair Date</span>
-                        <input type="text" class="form-control" id="repair-date" name="repair_date"
-                            value="{{ now() }}" hidden>
-                        <input type="text" class="form-control" id="repair-date-display"
-                            value="{{ now()->isoFormat('D MMMM Y') }}" readonly>
+                        <input type="date"
+                            class="form-control @error('repair_date') is-invalid @enderror {{ old('repair_date') ? 'is-valid' : '' }}"
+                            id="repair-date" name="repair_date" value="{{ old('repair_date') ?? now()->format('Y-m-d') }}"
+                            required>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 ps-1 pe-0">
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">PIC</span>
                         <input type="text" class="form-control" id="pic" placeholder="Name" disabled>
@@ -64,19 +66,23 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Judgement</span>
-                        <select class="form-select" id="judgement" name="judgement" required>
-                            <option disabled>OK / NG / Disposal</option>
-                            <option value="OK">OK</option>
-                            <option value="NG">NG</option>
-                            <option value="Disposal">Disposal</option>
+                        <select
+                            class="form-select @error('judgement') is-invalid @enderror {{ old('judgement') ? 'is-valid' : '' }}"
+                            id="judgement" name="judgement" required>
+                            <option disabled {{ old('judgement') ? '' : 'selected' }}>OK / NG / Disposal</option>
+                            <option value="OK" {{ old('judgement') === 'OK' ? 'selected' : '' }}>OK</option>
+                            <option value="NG" {{ old('judgement') === 'NG' ? 'selected' : '' }}>NG</option>
+                            <option value="Disposal" {{ old('judgement') === 'Disposal' ? 'selected' : '' }}>Disposal
+                            </option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="row table-responsive mb-1">
+            <div class="row table-responsive mb-3" style="max-height: 85px; overflow-y: auto;">
                 <table class="table table-sm table-bordered align-middle text-nowrap">
-                    <thead class="table-primary">
+                    <thead class="table-primary sticky-top">
                         <tr class="align-middle text-center">
+                            <th scope="col">No</th>
                             <th scope="col">No ID</th>
                             <th scope="col">Equipment Name</th>
                             <th scope="col">Brand</th>
@@ -92,10 +98,13 @@
                     <tbody class="table-group-divider">
                         @foreach ($repairs as $repair)
                             <tr>
+                                <td><button type="button" class="btn btn-primary btn-select-id"
+                                        data-num="{{ $repair->id }}"
+                                        data-id="{{ $repair->id_num }}">{{ $loop->iteration }}</button></td>
                                 <td>{{ $repair->id_num }}</td>
                                 <td>{{ $repair->masterList->equipment->name }}</td>
                                 <td>{{ $repair->masterList->brand }}</td>
-                                <td>{{ $repair->problem_date }}</td>
+                                <td>{{ $repair->problem_date->format('j M Y') }}</td>
                                 <td>{{ $repair->repair_date->format('j M Y') }}</td>
                                 <td>{{ $repair->masterList->location }}</td>
                                 <td>{{ $repair->problem }}</td>
@@ -139,11 +148,12 @@
                     <input type="text" class="form-control w-25 ms-3" placeholder="Cari..." id="search-table">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
-                <div class="modal-body p-0 m-0">
-                    <table class="table table-sm table-bordered align-middle" id="modal-table">
+                <div class="modal-body p-0 m-0 table-responsive">
+                    <table class="table table-sm table-bordered align-middle text-nowrap" id="modal-table">
                         <thead class="table-primary sticky-top">
                             <tr class="align-middle text-center">
-                                <th scope="col">ID Num</th>
+                                <th scope="col">No</th>
+                                <th scope="col">No ID</th>
                                 <th scope="col">Equipment Name</th>
                                 <th scope="col">Brand</th>
                                 <th scope="col">Problem Date</th>
@@ -155,27 +165,29 @@
                                 <th scope="col">PIC Repair</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="table-group-divider">
                             @foreach ($repairs as $repair)
                                 <tr>
-                                    <td><button class="btn btn-primary btn-select-id" data-id="{{ $repair->id_num }}"
-                                            data-bs-dismiss="modal">{{ $loop->iteration }}</button></td>
-                                    <td>{{ $repair->calibration_date }}</td>
-                                    <td>{{ $repair->id_num }} / {{ $repair->masterList->sn_num }}</td>
+                                    <td><button type="button" class="btn btn-primary btn-select-id"
+                                            data-num="{{ $repair->id }}"
+                                            data-id="{{ $repair->id_num }}">{{ $loop->iteration }}</button></td>
+                                    <td>{{ $repair->id_num }}</td>
                                     <td>{{ $repair->masterList->equipment->name }}</td>
-                                    <td>{{ $repair->masterList->capacity }} {{ $repair->masterList->unit->symbol }}</td>
-                                    <td>± {{ $repair->masterList->accuracy }} {{ $repair->masterList->unit->symbol }}</td>
                                     <td>{{ $repair->masterList->brand }}</td>
+                                    <td>{{ $repair->problem_date->format('j M Y') }}</td>
+                                    <td>{{ $repair->repair_date->format('j M Y') }}</td>
                                     <td>{{ $repair->masterList->location }}</td>
-                                    <td>{{ $repair->masterList->pic }}</td>
-                                    <td>{{ $repair->masterList->calibration_type }}</td>
-                                    <td>{{ $repair->masterList->rank }}</td>
-                                    <td>{{ $repair->masterList->calibration_freq }}</td>
-                                    <td>{{ $repair->masterList->acceptance_criteria }}</td>
+                                    <td>{{ $repair->problem }}</td>
+                                    <td>{{ $repair->countermeasure }}</td>
                                     <td>{{ $repair->judgement }}</td>
-                                    <td><button class="btn btn-primary">Show</button></td>
+                                    <td>{{ $repair->pic_repair }}</td>
                                 </tr>
                             @endforeach
+                            @if ($repairs->isEmpty())
+                                <tr>
+                                    <td colspan="10" class="text-center">No data available</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -229,6 +241,31 @@
             });
         }
 
+        function fetchRepairData(id) {
+            $.ajax({
+                url: `/get-repair-data/${id}`,
+                method: 'GET',
+                success: function(data) {
+                    console.log(data);
+                    $('#problem').val(data.problem);
+                    $('#countermeasure').val(data.countermeasure);
+                    $('#judgement').val(data.judgement);
+                    $('#problem-date').val(data.problem_date);
+                    $('#repair-date').val(data.repair_date);
+                },
+                error: function(xhr) {
+                    if (xhr.status !== 0) {
+                        // tampilkan error hanya jika bukan karena abort
+                        $('#problem').val('Data Tidak Ditemukan');
+                        $('#countermeasure').val('');
+                        $('#judgement').val('');
+                        $('#problem-date').val('');
+                        $('#repair-date').val('');
+                    }
+                }
+            });
+        }
+
         $input.on('input', function() {
             const val = $(this).val().trim();
             clearTimeout(debounceTimer);
@@ -256,10 +293,19 @@
             if ($input.val().trim().length === 7) {
                 fetchMasterList($input.val().trim());
             }
+            // jika ada error cek kembali apakah tipe formnya save atau edit
+            if ($('#form-type').val() === 'edit') {
+                const num = $('#repair-id').val();
+                $('#repair-form').attr('action',
+                    `{{ url('/input/repair-data') }}/${num}`);
+            } else {
+                $('#repair-form').attr('action', '{{ route('store.repair') }}');
+            }
         })
 
         $(document).on('click', '.btn-select-id', function() {
             const selectedId = $(this).data('id');
+            const num = $(this).data('num');
 
             // trigger autofill
             $('#id-num').val(selectedId).trigger('input');
@@ -267,6 +313,12 @@
             // highlight baris terpilih
             $('.table tbody tr').removeClass('selected-row'); // reset
             $(this).closest('tr').addClass('selected-row'); // tandai baris aktif
+
+            $('#form-type').val('edit');
+            $('#repair-id').val(num);
+            $('#repair-form').attr('action',
+                `{{ url('/input/repair-data') }}/${num}`);
+            fetchRepairData(num);
         });
 
 
@@ -277,6 +329,12 @@
                 const rowText = $(this).text().toLowerCase();
                 $(this).toggle(rowText.includes(keyword));
             });
+        });
+
+        $('#id-num').on('focus', function() {
+            $('#form-type').val('save');
+            $('#repair-id').val('');
+            $('#repair-form').attr('action', '{{ route('store.repair') }}');
         });
     </script>
 @endsection

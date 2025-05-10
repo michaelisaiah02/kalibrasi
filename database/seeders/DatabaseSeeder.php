@@ -18,8 +18,26 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Michael',
             'employeeID' => '12025',
-            'password' => '200302',
+            'password' => '00000',
             'role' => 'admin',
+        ]);
+        User::factory()->create([
+            'name' => 'Freddy',
+            'employeeID' => '12345',
+            'password' => '00000',
+            'role' => 'user',
+        ]);
+        User::factory()->create([
+            'name' => 'Feisal',
+            'employeeID' => '54321',
+            'password' => '00000',
+            'role' => 'user',
+        ]);
+        User::factory()->create([
+            'name' => 'Zainal',
+            'employeeID' => '99999',
+            'password' => '00000',
+            'role' => 'guest',
         ]);
 
         $this->call([

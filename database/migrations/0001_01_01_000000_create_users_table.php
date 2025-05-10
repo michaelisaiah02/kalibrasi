@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->char('employeeID', 5)->unique();
             $table->string('password');
+            $table->enum('role', ['admin', 'user', 'guest'])->default('guest');
+            $table->boolean('approved')->default(false);
+            $table->boolean('checked')->default(false);
             $table->timestamps();
         });
 

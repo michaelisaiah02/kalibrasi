@@ -2,13 +2,11 @@
 
 @section('content')
     <div class="container mt-4">
-        <h3 class="mb-4">Report: Masterlist</h3>
-        {{-- @dd($results) --}}
         @if ($results->isEmpty())
-            <div class="alert alert-info">Tidak ada data Masterlist.</div>
+            <div class="alert alert-info">No Masterlist data available.</div>
         @else
             <div class="table-responsive mb-3">
-                <table class="table table-striped table-bordered align-middle">
+                <table class="table table-striped table-bordered align-middle text-nowrap">
                     <thead class="table-primary text-center">
                         <tr>
                             <th>No</th>
@@ -25,8 +23,10 @@
                             <th>Acceptance Criteria</th>
                             <th>PIC</th>
                             <th>Location</th>
+                            <th>Last Result</th>
                         </tr>
                     </thead>
+                    {{-- @dd($results) --}}
                     <tbody>
                         @foreach ($results as $i => $item)
                             <tr class="text-center">
@@ -44,6 +44,16 @@
                                 <td>{{ $item->acceptance_criteria }}</td>
                                 <td>{{ $item->pic }}</td>
                                 <td>{{ $item->location }}</td>
+                                <td>
+                                    @if ($item->results->first())
+                                        <a class="btn btn-sm btn-primary"
+                                            href="{{ route('print.report.masterlist', $item->id_num) }}">
+                                            {{ $item->results->first()->judgement }}
+                                        </a>
+                                    @else
+                                        <span class="text-muted"><i class="bi bi-dash"></i></span>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -52,9 +62,19 @@
         @endif
 
         <div class="d-flex justify-content-between align-items-center">
-            <a href="{{ route('dashboard') }}" class="btn btn-primary">Back</a>
-            {{-- Jika mau pagination --}}
-            {{-- {{ $results->links() }} --}}
+            <div class="pagination">
+                {{ $results->links() }}
+            </div>
+            <a href="{{ route('report.menu') }}" class="btn btn-primary">Back</a>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script type="module">
+        $(document).ready(function() {
+            $('.pagination nav').addClass('w-100');
+            $('.pagination nav ul').addClass('my-0 me-3');
+        })
+    </script>
 @endsection

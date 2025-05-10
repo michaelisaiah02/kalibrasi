@@ -26,8 +26,27 @@ class UserController extends Controller
             'employeeID' => ['required', 'size:5', 'unique:users,employeeID'],
             'role' => ['required', 'in:admin,user,guest'],
             'password' => ['required', 'string', 'min:6'],
+            'approved' => ['boolean'],
+            'checked' => ['boolean'],
         ]);
 
+        if ($validated['role'] !== 'admin' && $validated['approved']) {
+            return back()->withErrors(['approved' => 'Approved can only be true if the role is admin.']);
+        }
+
+        if ($validated['role'] === 'guest' && $validated['checked']) {
+            return back()->withErrors(['checked' => 'Checked can only be true if the role is not guest.']);
+        }
+
+        // approved dan checked dari semua user hanya satu yang boleh true, jadi jika ada yang true, maka yang lain otomatis di ubah jadi false
+        if ($validated['approved']) {
+            User::where('approved', true)->update(['approved' => false]);
+        }
+        if ($validated['checked']) {
+            User::where('checked', true)->update(['checked' => false]);
+        }
+
+        // Hash password
         $validated['password'] = Hash::make($validated['password']);
 
         User::create($validated);
@@ -40,19 +59,54 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'employeeID' => [
-                'required',
-                'size:5',
-                Rule::unique('users', 'employeeID')->ignore($user->id),
-            ],
-            'role' => ['required', 'in:admin,user,guest'],
+            'name'        => 'required|string|max:255',
+            'employeeID'  => ['required', 'size:5', Rule::unique('users', 'employeeID')->ignore($user->id)],
+            'role'        => 'required|in:admin,user,guest',
+            'password'    => 'nullable|string|min:6',
+            // no need to validate approved/checked here
         ]);
 
-        $user->update($validated);
+        // read them as booleans
+        $approved = $request->boolean('approved');
+        $checked  = $request->boolean('checked');
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil diperbarui.');
+        // role-based rules
+        if ($validated['role'] !== 'admin' && $approved) {
+            return back()->withErrors(['approved' => 'Only admin can be approved']);
+        }
+        if ($validated['role'] === 'guest' && $checked) {
+            return back()->withErrors(['checked' => 'Guest cannot be checked']);
+        }
+
+        // enforce uniqueness: only one approved & one checked
+        if ($approved) {
+            User::where('approved', true)->update(['approved' => false]);
+        }
+        if ($checked) {
+            User::where('checked', true)->update(['checked' => false]);
+        }
+
+        // put everything into $data for update
+        $data = $validated;
+        $data['approved'] = $approved;
+        $data['checked']  = $checked;
+
+        // hash password if provided
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        // if password is null, remove it from $data to avoid updating it
+        if (is_null($request->password)) {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User berhasil diperbarui.');
     }
+
 
     public function destroy($id)
     {

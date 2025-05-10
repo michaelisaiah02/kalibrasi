@@ -18,7 +18,7 @@
         </td>
         <td>{{ $masterlist->brand }}</td>
         <td>{{ $masterlist->calibration_type }}</td>
-        <td>{{ $masterlist->first_used }}</td>
+        <td>{{ $masterlist->first_used->format('d F Y') }}</td>
         <td>{{ $masterlist->rank }}</td>
         <td>{{ $masterlist->calibration_freq }}</td>
         <td>{{ $masterlist->acceptance_criteria }}</td>

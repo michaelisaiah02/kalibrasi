@@ -12,7 +12,7 @@
         <form method="POST" enctype="multipart/form-data" id="calibration-form">
             @csrf
             <div class="row justify-content-center mb-1">
-                <div class="col-md-6">
+                <div class="col-md-6 ps-0 pe-1">
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light width-label-1">ID / SN Number</span>
                         <input type="text" aria-label="No ID" placeholder="-"
@@ -57,7 +57,7 @@
                             disabled>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 ps-1 pe-0">
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light width-label-2">Standar
                             Keberterimaan</span>
@@ -69,7 +69,7 @@
                         <select type="text"
                             class="form-select @error('calibrator_equipment') is-invalid @enderror {{ old('calibrator_equipment') ? 'is-valid' : '' }}"
                             id="calibrator-equipment" name="calibrator_equipment" required>
-                            <option selected>Choose...</option>
+                            <option {{ old('calibrator_equipment') ? '' : 'selected' }}>Choose...</option>
                         </select>
                     </div>
                     <div class="row g-1">
@@ -195,8 +195,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row table-responsive mb-1" style="max-height: 110px; overflow-y: auto;">
-                <table class="table table-sm table-bordered align-middle">
+            <div class="row table-responsive mb-3" style="max-height: 85px; overflow-y: auto;">
+                <table class="table table-sm table-bordered align-middle text-nowrap">
                     <thead class="table-primary sticky-top">
                         <tr class="align-middle text-center">
                             <th scope="col">No
@@ -221,17 +221,18 @@
                         @foreach ($results as $result)
                             <tr>
                                 <td><button type="button" class="btn btn-primary btn-select-id"
+                                        data-num="{{ $result->id }}"
                                         data-id="{{ $result->id_num }}">{{ $loop->iteration }}</button></td>
-                                <td class="text-nowrap"> {{ $result->calibration_date->format('d-m-Y') }} </td>
-                                <td class="text-nowrap"> {{ $result->id_num }} / {{ $result->masterList->sn_num }} </td>
-                                <td class="text-nowrap">
+                                <td> {{ $result->calibration_date->format('d-m-Y') }} </td>
+                                <td> {{ $result->id_num }} / {{ $result->masterList->sn_num }} </td>
+                                <td>
                                     @isset($result->masterList->equipment->name)
                                         {{ $result->masterList->equipment->name }}
                                     @else
                                         <span class="text-danger">has been deleted</span>
                                     @endisset
                                 </td>
-                                <td class="text-nowrap">
+                                <td>
                                     {{ $result->masterList->capacity }}
                                     @isset($result->masterList->unit->symbol)
                                         {{ $result->masterList->unit->symbol }}
@@ -239,7 +240,7 @@
                                         <span class="text-danger">N/A</span>
                                     @endisset
                                 </td>
-                                <td class="text-nowrap">
+                                <td>
                                     ± {{ $result->masterList->accuracy }}
                                     @isset($result->masterList->unit->symbol)
                                         {{ $result->masterList->unit->symbol }}
@@ -247,14 +248,14 @@
                                         <span class="text-danger">N/A</span>
                                     @endisset
                                 </td>
-                                <td class="text-nowrap"> {{ $result->masterList->brand }} </td>
-                                <td class="text-nowrap"> {{ $result->masterList->location }} </td>
-                                <td class="text-nowrap"> {{ $result->masterList->pic }} </td>
-                                <td class="text-nowrap"> {{ $result->masterList->calibration_type }} </td>
-                                <td class="text-nowrap"> {{ $result->masterList->rank }} </td>
-                                <td class="text-nowrap"> {{ $result->masterList->calibration_freq }} </td>
-                                <td class="text-nowrap"> {{ $result->masterList->acceptance_criteria }} </td>
-                                <td class="text-nowrap"> {{ $result->judgement }} </td>
+                                <td> {{ $result->masterList->brand }} </td>
+                                <td> {{ $result->masterList->location }} </td>
+                                <td> {{ $result->masterList->pic }} </td>
+                                <td> {{ $result->masterList->calibration_type }} </td>
+                                <td> {{ $result->masterList->rank }} </td>
+                                <td> {{ $result->masterList->calibration_freq }} </td>
+                                <td> {{ $result->masterList->acceptance_criteria }} </td>
+                                <td> {{ $result->judgement }} </td>
                                 <td>
                                     @if ($result->certificate)
                                         <button class="btn btn-primary btn-view-certificate" data-bs-toggle="modal"
@@ -285,10 +286,7 @@
                         class="btn btn-primary {{ session()->has('pending_result') ? 'disabled' : '' }}">Close</a>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
-                    <button type="submit" class="btn btn-primary" data-submit="edit">Edit</button>
-                </div>
-                <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
-                    <button type="submit" class="btn btn-primary" data-submit="save">Save</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -317,8 +315,8 @@
                     <input type="text" class="form-control w-25 ms-3" placeholder="Cari..." id="search-table">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
-                <div class="modal-body p-0 m-0">
-                    <table class="table table-sm table-bordered align-middle" id="modal-table">
+                <div class="modal-body p-0 m-0 table-responsive">
+                    <table class="table table-sm table-bordered align-middle text-nowrap" id="modal-table">
                         <thead class="table-primary sticky-top">
                             <tr class="align-middle text-center">
                                 <th scope="col">No</th>
@@ -372,8 +370,8 @@
                                     <td>{{ $result->judgement }}</td>
                                     <td>
                                         @if ($result->certificate)
-                                            <button class="btn btn-primary btn-view-certificate" data-bs-toggle="modal"
-                                                data-bs-target="#certificateModal"
+                                            <button type="button" class="btn btn-primary btn-view-certificate"
+                                                data-bs-toggle="modal" data-bs-target="#certificateModal"
                                                 data-path="{{ asset('storage/' . $result->certificate) }}"
                                                 data-ext="{{ pathinfo($result->certificate, PATHINFO_EXTENSION) }}">
                                                 Show
@@ -497,6 +495,48 @@
             });
         }
 
+        function fetchActualValue(id) {
+            $.ajax({
+                url: `{{ url('/') }}/get-actual-value/${id}`,
+                method: 'GET',
+                success: function(data) {
+                    console.log(data);
+                    $('#calibration-date').val(new Date(data.calibration_date).toISOString().split('T')[0]);
+                    $('#calibrator-equipment').val(data.calibrator_equipment);
+                    $('#judgement').val(data.judgement);
+                    $('#act-1').val(data.param_01);
+                    $('#act-2').val(data.param_02);
+                    $('#act-3').val(data.param_03);
+                    $('#act-4').val(data.param_04);
+                    $('#act-5').val(data.param_05);
+                    $('#act-6').val(data.param_06);
+                    $('#act-7').val(data.param_07);
+                    $('#act-8').val(data.param_08);
+                    $('#act-9').val(data.param_09);
+                    $('#act-10').val(data.param_10);
+                },
+                error: function(xhr) {
+                    if (xhr.status !== 0) {
+                        // tampilkan error hanya jika bukan karena abort
+                        $('#calibration-date').val('');
+                        $('#calibrator-equipment').val('');
+                        $('#judgement').val('');
+                        $('#created_by').val({{ auth()->user()->name }}).attr('disabled', true);
+                        $('#act-1').val('');
+                        $('#act-2').val('');
+                        $('#act-3').val('');
+                        $('#act-4').val('');
+                        $('#act-5').val('');
+                        $('#act-6').val('');
+                        $('#act-7').val('');
+                        $('#act-8').val('');
+                        $('#act-9').val('');
+                        $('#act-10').val('');
+                    }
+                }
+            });
+        }
+
         $input.on('input', function() {
             const val = $(this).val().trim();
             clearTimeout(debounceTimer);
@@ -520,41 +560,9 @@
             }
         });
 
-        $(document).ready(function() {
-            if ($input.val().trim().length === 7) {
-                fetchMasterList($input.val().trim());
-            }
-
-            $('button[type="submit"]').on('click', function(e) {
-                const $this = $(this);
-                const idNum = $('#id-num').val();
-                const submitType = $this.data('submit');
-                console.log(submitType);
-                const form = $('#calibration-form');
-
-                // Cegah form submit default
-                e.preventDefault();
-
-                // Cek apakah ada input yang tidak valid
-                if (form[0].checkValidity() === false) {
-                    form.addClass('was-validated');
-                    return;
-                }
-
-                if (submitType === 'save') {
-                    form.attr('action', '{{ route('store.calibration') }}');
-                } else if (submitType === 'edit') {
-                    // Logic for editing the form
-                    form.attr('action', `{{ url('/input/calibration-data') }}/${idNum}`);
-                }
-
-                // Trigger submit event
-                form.trigger('submit');
-            });
-        });
-
         $(document).on('click', '.btn-select-id', function() {
             const selectedId = $(this).data('id');
+            const num = $(this).data('num');
 
             // trigger autofill
             $('#id-num').val(selectedId).trigger('input');
@@ -562,6 +570,10 @@
             // highlight baris terpilih
             $('.table tbody tr').removeClass('selected-row'); // reset
             $(this).closest('tr').addClass('selected-row'); // tandai baris aktif
+
+            $('#calibration-form').attr('action',
+                `{{ url('/input/calibration-data') }}/${num}`);
+            fetchActualValue(num);
         });
 
 
@@ -596,25 +608,23 @@
                 window.open(`/print-label/${idNum}`, '_self');
             }
         });
+
+        // focus pada input ID atau calibration date maka ubah action form jadi insert
+        $('#id-num, #calibration-date').on('focus', function() {
+            $('#calibration-form').attr('action', '{{ route('store.calibration') }}');
+        });
+
+        $(document).ready(function() {
+            if ($input.val().trim().length === 7) {
+                fetchMasterList($input.val().trim());
+            }
+        });
     </script>
     @session('pending_result')
         <script>
             // Cegah back dan refresh
             history.pushState(null, null, location.href);
             window.onpopstate = () => history.pushState(null, null, location.href);
-
-            // Aktifkan warning kalau mau refresh
-            window.addEventListener('beforeunload', function(e) {
-                if ({{ session()->has('pending_result') ? 'true' : 'false' }}) {
-                    e.preventDefault();
-                    e.returnValue = '';
-                }
-            });
-
-            // Nonaktifkan warning saat form dikirim
-            document.querySelector('form').addEventListener('submit', function() {
-                window.removeEventListener('beforeunload', () => {});
-            });
         </script>
     @endsession
 @endsection

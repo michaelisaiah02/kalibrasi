@@ -78,7 +78,7 @@ class CalibrationDataController extends Controller
         // Cek dan hapus jika lebih dari 3
         $oldResults = Result::where('id_num', $validated['id_num'])
             ->orderByDesc('calibration_date')
-            ->skip(4)->take(PHP_INT_MAX)->get();
+            ->skip(3)->take(PHP_INT_MAX)->get();
 
         foreach ($oldResults as $old) {
             $old->delete();
@@ -90,7 +90,7 @@ class CalibrationDataController extends Controller
         return redirect()->route('input.calibration.data')->with('success', 'Calibration result were successfully saved.');
     }
 
-    public function edit(Request $request, Result $result, $idNum)
+    public function edit(Request $request, Result $result, $id)
     {
         $validated = $request->validate([
             'id_num' => 'required|exists:master_lists,id_num',
@@ -109,10 +109,29 @@ class CalibrationDataController extends Controller
             'param_09' => 'required|numeric|min:0.01',
             'param_10' => 'required|numeric|min:0.01',
             'judgement' => 'required|string|in:OK,NG,Disposal',
+            'certificate' => $request->calibration_type === 'External'
+                ? 'file|mimes:pdf,jpg,jpeg,png|max:2048'
+                : 'nullable',
         ]);
 
-        $validated['id_num'] = strtoupper($request->id_num);
         $validated['created_by'] = auth()->user()->employeeID;
+        $validated['id_num'] = strtoupper($request->id_num);
+
+        if ($request->hasFile('certificate')) {
+            if ($result->certificate && Storage::exists($result->certificate)) {
+                Storage::delete($result->certificate);
+            }
+            $idNum = $validated['id_num'];
+            $date = Carbon::parse($validated['calibration_date'])->format('dmY');
+            $ext = $request->file('certificate')->getClientOriginalExtension();
+
+            $filename = "{$idNum}-{$date}.{$ext}";
+            $folder = "certificates/{$idNum}";
+
+            $path = $request->file('certificate')->storeAs($folder, $filename);
+
+            $validated['certificate'] = $path;
+        }
 
         foreach (range(1, 9) as $i) {
             $validated["param_0{$i}"] = (float) $validated["param_0{$i}"];
@@ -123,15 +142,9 @@ class CalibrationDataController extends Controller
             $validated['calibration_date'] = now()->toDateString();
         }
 
-        // dd($result);
-        // Cek data yang mau diubah ada atau tidak, kalau tidak buat data baru & Simpan hasil kalibrasi
-        $result = Result::where('id_num', $idNum)->first();
-
-        if ($result) {
-            $result->update($validated);
-        } else {
-            $result = Result::create($validated);
-        }
+        // Simpan hasil kalibrasi
+        $result = Result::find($id);
+        $result->update($validated);
 
         return redirect()->route('input.calibration.data')->with('success', 'Calibration result were successfully updated.');
     }

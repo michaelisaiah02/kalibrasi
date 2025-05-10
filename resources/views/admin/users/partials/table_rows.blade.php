@@ -13,10 +13,23 @@
         </td>
         <td>{{ $user->created_at->format('j F Y H:i') }}</td>
         <td>
+            @if ($user->approved)
+                <i class="bi bi-check-lg text-success"></i>
+            @else
+            @endif
+        </td>
+        <td>
+            @if ($user->checked)
+                <i class="bi bi-check-lg text-success"></i>
+            @else
+            @endif
+        </td>
+        <td>
             @if (Auth::user()->role === 'admin')
                 <button class="btn btn-sm btn-primary btn-edit-user" data-id="{{ $user->id }}"
                     data-name="{{ $user->name }}" data-employeeid="{{ $user->employeeID }}"
-                    data-role="{{ $user->role }}">
+                    data-role="{{ $user->role }}" data-approved="{{ $user->approved }}"
+                    data-checked="{{ $user->checked }}">
                     Edit
                 </button>
                 <button class="btn btn-sm btn-danger btn-delete-user" data-id="{{ $user->id }}"

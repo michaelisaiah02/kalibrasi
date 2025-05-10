@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Result;
 use App\Models\MasterList;
+use App\Models\Repair;
 
 class PrintController extends Controller
 {
@@ -13,11 +16,27 @@ class PrintController extends Controller
         return view('print-label', compact('equipment'));
     }
 
-    public function report($id)
+    public function reportMasterlist($id)
     {
-        $repair = MasterList::with(['equipment', 'unit', 'results', 'standard'])->where('id_num', $id)->firstOrFail();
-        // dd($repair);
+        $result = Result::with(['masterList'])->where('id_num', $id)->firstOrFail();
+        $approved = User::where('approved', true)->first();
+        $checked = User::where('checked', true)->first();
 
-        return view('print-report', compact('repair'));
+        return view('print-report-masterlist', compact('result'), [
+            'approved' => $approved,
+            'checked' => $checked
+        ]);
+    }
+
+    public function reportRepair($id)
+    {
+        $repair = Repair::with(['masterList'])->where('id_num', $id)->firstOrFail();
+        $approved = User::where('approved', true)->first();
+        $checked = User::where('checked', true)->first();
+
+        return view('print-report-repair', compact('repair'), [
+            'approved' => $approved,
+            'checked' => $checked
+        ]);
     }
 }

@@ -29,6 +29,8 @@
                         <th>Name</th>
                         <th>Role</th>
                         <th>Registered</th>
+                        <th>Approved</th>
+                        <th>Checked</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -79,10 +81,24 @@
                         </select>
                         <div class="invalid-feedback">Role must be selected.</div>
                     </div>
-                    <div class="mb-3" id="password-group">
+                    <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" minlength="6">
                         <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-around">
+                        <div class="col d-flex align-items-center">
+                            <input type="hidden" name="approved" value="0">
+                            <input class="form-check-input mt-0" type="checkbox" value="1" id="approved"
+                                name="approved">
+                            <label for="approved" class="form-label p-0 m-0 ms-2">Approved</label>
+                        </div>
+                        <div class="col d-flex align-items-center">
+                            <input type="hidden" name="checked" value="0">
+                            <input class="form-check-input mt-0" type="checkbox" value="1" id="checked"
+                                name="checked">
+                            <label for="checked" class="form-label p-0 m-0 ms-2">Checked</label>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -92,7 +108,6 @@
             </form>
         </div>
     </div>
-
     <!-- Modal Delete User -->
     <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel"
         aria-hidden="true">
@@ -151,7 +166,6 @@
                 $('#userForm').trigger('reset');
                 $('#userModalLabel').text('Add User');
                 $('#userForm').attr('action', "{{ route('admin.users.store') }}");
-                $('#password-group').show();
             });
 
             // Delegasi tombol Edit
@@ -162,8 +176,17 @@
                 $('#employeeID').val($(this).data('employeeid'));
                 $('#role').val($(this).data('role'));
                 $('#password').val('');
+                if ($(this).data('approved') === 1) {
+                    $('#approved').attr('checked', true);
+                } else {
+                    $('#approved').attr('checked', false);
+                }
+                if ($(this).data('checked') === 1) {
+                    $('#checked').attr('checked', true);
+                } else {
+                    $('#checked').attr('checked', false);
+                }
                 $('#userModalLabel').text('Edit User');
-                $('#password-group').hide();
                 $('#userForm').attr('action', `{{ url('admin/users/update-user') }}/${id}`);
                 new bootstrap.Modal(document.getElementById('userModal')).show();
             });

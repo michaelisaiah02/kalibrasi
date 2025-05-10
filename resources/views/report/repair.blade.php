@@ -2,10 +2,8 @@
 
 @section('content')
     <div class="container mt-4">
-        <h3 class="mb-4">Report: Repair History</h3>
-
-        @if ($results->isEmpty())
-            <div class="alert alert-info">Tidak ada data Repair.</div>
+        @if ($repairs->isEmpty())
+            <div class="alert alert-info">No Repair data available.</div>
         @else
             <div class="table-responsive mb-3">
                 <table class="table table-striped table-bordered align-middle">
@@ -23,17 +21,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($results as $i => $rep)
+                        @foreach ($repairs as $repair)
                             <tr class="text-center">
-                                <td>{{ $i + 1 }}</td>
-                                <td>{{ \Carbon\Carbon::parse($rep->repair_date)->format('d-m-Y') }}</td>
-                                <td>{{ $rep->id_num }} / {{ optional($rep->masterList)->sn_num ?? '-' }}</td>
-                                <td>{{ optional($rep->masterList->equipment)->name ?? '-' }}</td>
-                                <td>{{ $rep->problem }}</td>
-                                <td>{{ $rep->countermeasure }}</td>
-                                <td>{{ $rep->judgement }}</td>
-                                <td>{{ $rep->pic }}</td>
-                                <td>{{ $rep->created_at->format('d-m-Y H:i') }}</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ \Carbon\Carbon::parse($repair->repair_date)->format('d-m-Y') }}</td>
+                                <td>{{ $repair->id_num }} / {{ optional($repair->masterList)->sn_num ?? '-' }}</td>
+                                <td>{{ optional($repair->masterList->equipment)->name ?? '-' }}</td>
+                                <td>{{ $repair->problem }}</td>
+                                <td>{{ $repair->countermeasure }}</td>
+                                <td>{{ $repair->judgement }}</td>
+                                <td>{{ $repair->pic_repair }}</td>
+                                <td>{{ $repair->created_at->format('d-m-Y H:i') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -42,9 +40,19 @@
         @endif
 
         <div class="d-flex justify-content-between align-items-center">
-            <a href="{{ route('dashboard') }}" class="btn btn-primary">Back</a>
-            {{-- Jika mau pagination --}}
-            {{-- {{ $results->links() }} --}}
+            <div class="pagination w-100">
+                {{ $repairs->links() }}
+            </div>
+            <a href="{{ route('report.menu') }}" class="btn btn-primary">Back</a>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script type="module">
+        $(document).ready(function() {
+            $('.pagination nav').addClass('w-100');
+            $('.pagination nav ul').addClass('my-0 me-3');
+        })
+    </script>
 @endsection

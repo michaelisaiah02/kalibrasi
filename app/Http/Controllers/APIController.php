@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterList;
+use App\Models\Repair;
+use App\Models\Result;
 use Illuminate\Http\Request;
 
 class APIController
@@ -56,27 +58,49 @@ class APIController
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function getActualValue($id)
     {
-        //
+        $data = Result::where('id', $id)
+            ->first();
+
+        if (! $data) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
+
+        return response()->json([
+            'calibration_date' => $data->calibration_date->setTimezone('Asia/Jakarta')->format('Y-m-d'),
+            'calibrator_equipment' => $data->calibrator_equipment,
+            'judgement' => $data->judgement,
+            'created_by' => $data->creator->name ?? null,
+            'certificate' => $data->certificate,
+            'param_01' => $data->param_01,
+            'param_02' => $data->param_02,
+            'param_03' => $data->param_03,
+            'param_04' => $data->param_04,
+            'param_05' => $data->param_05,
+            'param_06' => $data->param_06,
+            'param_07' => $data->param_07,
+            'param_08' => $data->param_08,
+            'param_09' => $data->param_09,
+            'param_10' => $data->param_10,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function getRepairData($id)
     {
-        //
-    }
+        $data = Repair::where('id', $id)->first();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if (! $data) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
+
+        return response()->json([
+            'problem' => $data->problem,
+            'problem_date' => $data->problem_date->setTimezone('Asia/Jakarta')->format('Y-m-d'),
+            'repair_date' => $data->repair_date->setTimezone('Asia/Jakarta')->format('Y-m-d'),
+            'countermeasure' => $data->countermeasure,
+            'judgement' => $data->judgement,
+            'pic_repair' => $data->pic_repair,
+        ]);
     }
 }

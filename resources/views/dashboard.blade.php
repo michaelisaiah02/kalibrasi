@@ -52,7 +52,7 @@
                     <div class="menu-input menu-section row d-none mx-1 mx-md-0">
                         <a class="btn btn-primary py-2 my-3 rounded-4 btn1" href="{{ route('input.new.equipment') }}">NEW
                             EQUIPMENT</a>
-                        <a class="btn btn-primary py-2 rounded-4 btn1" href="{{ route('input.repair.data') }}">REPAIR
+                        <a class="btn btn-primary py-2 rounded-4 btn1" href="{{ route('input.repair') }}">REPAIR
                             DATA</a>
                     </div>
                 </div>
@@ -80,8 +80,6 @@
                     href="{{ route('admin.users.index') }}">Users</a>
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
                     href="{{ route('admin.equipments.index') }}">Equipments</a>
-                <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center">Tambahkan Sesuai Tabel di
-                    Database</a>
             </div>
             <div class="col-md-5 d-grid row-gap-1 row-gap-md-3 text-center d-none master-data">
                 <a class="btn btn-primary py-4 rounded-4 menu-btn btn2 align-content-center"
