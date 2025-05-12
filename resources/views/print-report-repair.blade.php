@@ -50,6 +50,17 @@
             button.print-button {
                 display: none;
             }
+
+            @page {
+                size: A4 landscape;
+                /* atau bisa pakai: size: landscape; */
+                margin: 1cm;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
         }
     </style>
 </head>
@@ -68,34 +79,29 @@
                                 PT.CAR
                             </div>
                         </th>
-                        <th scope="col" colspan="5" rowspan="3" class="text-center align-middle fs-4"
+                        <th scope="col" colspan="7" rowspan="3" class="text-center align-middle fs-4"
                             style="font-size: 20pt;">
                             Lembar Penanganan Masalah Alat Ukur</th>
-                        <td scope="col">&nbsp;</td>
-                        <th scope="col">Customer Claim</th>
                         <th scope="col">DISIAPKAN </th>
                         <th scope="col">DIPERIKSA</th>
                         <th scope="col">DISETUJUI</th>
                     </tr>
                     <tr>
                         <td scope="col">&nbsp;</td>
-                        <th scope="col">Internal Claim</th>
-                        <td scope="col">&nbsp;</td>
                         <td scope="col">&nbsp;</td>
                         <td scope="col">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td scope="col">&nbsp;</td>
-                        <th scope="col">Supplier Claim</th>
-                        <td>{{ $approved->name }}</td>
-                        <td>{{ $checked->name }}</td>
                         <td>{{ $repair->pic_repair }}</td>
+                        <td>{{ $checked->name }}</td>
+                        <td>{{ $approved->name }}</td>
                     </tr>
                     <tr>
                         <th scope="col" colspan="2">Equipment Name</th>
                         <td scope="col" colspan="3">{{ $repair->masterList->equipment->name }}</td>
                         <th scope="col">Capacity</th>
-                        <td scope="col">{{ $repair->masterList->capacity }} {{ $repair->masterList->unit->symbol }}
+                        <td scope="col">{{ $repair->masterList->capacity }}
+                            {{ $repair->masterList->unit->symbol ?? 'N/A' }}
                         </td>
                         <th scope="col">Repair Date</th>
                         <td scope="col" colspan="3">
@@ -106,14 +112,17 @@
                         <td scope="col" colspan="3">{{ $repair->id_num }}</td>
                         <th scope="col">PIC</th>
                         <td scope="col">{{ $repair->pic_repair }}</td>
-                        <th scope="col" rowspan="2">Judgement</th>
-                        <td scope="col" rowspan="2" colspan="3">{{ $repair->judgement }}</td>
+                        <th scope="col">Problem Date</th>
+                        <td scope="col" colspan="3">
+                            {{ $repair->problem_date->locale('id')->translatedFormat('d F Y') }}</td>
                     </tr>
                     <tr>
                         <th scope="col" colspan="2">Merk</th>
                         <td scope="col" colspan="3">{{ $repair->masterList->brand }}</td>
                         <th scope="col">Location</th>
                         <td scope="col">{{ $repair->masterList->location }}</td>
+                        <th scope="col">Judgement</th>
+                        <td scope="col" colspan="3">{{ $repair->judgement }}</td>
                     </tr>
                     <tr>
                         <th scope="col" colspan="5">Problem</th>
@@ -123,8 +132,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="5" rowspan="6" style="height: 300px;">&nbsp;</td>
-                        <td colspan="6" rowspan="6" style="height: 300px;">&nbsp;</td>
+                        <td colspan="5" rowspan="6" style="height: 300px;">{{ $repair->problem }}</td>
+                        <td colspan="6" rowspan="6" style="height: 300px;">{{ $repair->countermeasure }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -132,6 +141,10 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            let route = document.referrer || "{{ route('report.menu') }}";
+            if (route === "{{ url('/report/search') }}") {
+                route = "{{ route('report.menu') }}"
+            }
             const printButton = document.createElement('button');
             printButton.textContent = 'Print';
             printButton.style.position = 'fixed';
@@ -149,7 +162,7 @@
             printButton.addEventListener('click', function() {
                 window.print();
                 setTimeout(() => {
-                    window.location.href = "{{ route('report.menu') }}";
+                    window.location.href = route;
                 }, 1000);
             });
 

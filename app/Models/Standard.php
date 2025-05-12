@@ -24,19 +24,6 @@ class Standard extends Model
         'param_10',
     ];
 
-    protected $casts = [
-        'param_01' => 'integer',
-        'param_02' => 'integer',
-        'param_03' => 'integer',
-        'param_04' => 'integer',
-        'param_05' => 'integer',
-        'param_06' => 'integer',
-        'param_07' => 'integer',
-        'param_08' => 'integer',
-        'param_09' => 'integer',
-        'param_10' => 'integer',
-    ];
-
     public function masterList()
     {
         return $this->belongsTo(MasterList::class, 'id_num', 'id_num');

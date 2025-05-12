@@ -3,15 +3,15 @@
         <td>{{ $standard->id_num }}</td>
         <td>{{ $standard->masterList->equipment->name }}</td>
         <td>{{ $standard->masterList->capacity }}
-            @isset($result->masterList->unit->symbol)
-                {{ $result->masterList->unit->symbol }}
+            @isset($standard->masterList->unit->symbol)
+                {{ $standard->masterList->unit->symbol }}
             @else
                 <span class="text-danger">N/A</span>
             @endisset
         </td>
         <td>{{ $standard->masterList->accuracy }}
-            @isset($result->masterList->unit->symbol)
-                {{ $result->masterList->unit->symbol }}
+            @isset($standard->masterList->unit->symbol)
+                {{ $standard->masterList->unit->symbol }}
             @else
                 <span class="text-danger">N/A</span>
             @endisset
@@ -27,12 +27,13 @@
         <td>{{ $standard->param_09 }}</td>
         <td>{{ $standard->param_10 }}</td>
         <td>
-            <button class="btn btn-primary btn-sm btn-edit-standard" data-id="{{ $standard->masterList->id_num }}"
-                data-param01="{{ $standard->param_01 }}" data-param02="{{ $standard->param_02 }}"
-                data-param03="{{ $standard->param_03 }}" data-param04="{{ $standard->param_04 }}"
-                data-param05="{{ $standard->param_05 }}" data-param06="{{ $standard->param_06 }}"
-                data-param07="{{ $standard->param_07 }}" data-param08="{{ $standard->param_08 }}"
-                data-param09="{{ $standard->param_09 }}" data-param10="{{ $standard->param_10 }}">
+            <button class="btn btn-primary btn-sm btn-edit-standard" data-id="{{ $standard->id }}"
+                data-id-num="{{ $standard->id_num }}" data-param01="{{ $standard->param_01 }}"
+                data-param02="{{ $standard->param_02 }}" data-param03="{{ $standard->param_03 }}"
+                data-param04="{{ $standard->param_04 }}" data-param05="{{ $standard->param_05 }}"
+                data-param06="{{ $standard->param_06 }}" data-param07="{{ $standard->param_07 }}"
+                data-param08="{{ $standard->param_08 }}" data-param09="{{ $standard->param_09 }}"
+                data-param10="{{ $standard->param_10 }}">
                 Edit
             </button>
             <button class="btn btn-danger btn-sm btn-delete-standard" data-id="{{ $standard->id }}"

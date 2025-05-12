@@ -51,6 +51,17 @@
             button.print-button {
                 display: none;
             }
+
+            @page {
+                size: A4 landscape;
+                /* atau bisa pakai: size: landscape; */
+                margin: 1cm;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
         }
     </style>
 </head>
@@ -104,13 +115,13 @@
                     <tr>
                         <th scope="col" colspan="2">Calibration Date</th>
                         <th scope="col" colspan="4">
-                            {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}</th>
+                            {{ $result->calibration_date->locale('id')->translatedFormat('d F Y') }}</th>
                         <th scope="col">Std Keberterimaan</th>
                         <th scope="col">:</th>
                         <th scope="col">{{ $result->masterList->acceptance_criteria }}</th>
                     </tr>
                     <tr>
-                        <th scope="col" style="width: 10px;">No</th>
+                        <th scope="col" style="width: 15px;">No</th>
                         <th scope="col" colspan="2">Standard Indication ({{ $result->masterList->unit->symbol }})
                         </th>
                         <th scope="col" colspan="2">Actual Indication ({{ $result->masterList->unit->symbol }})

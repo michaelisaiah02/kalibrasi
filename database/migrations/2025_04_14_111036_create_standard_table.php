@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('standards', function (Blueprint $table) {
             $table->id();
             $table->string('id_num')->foreign('id_num')->references('id_num')->on('master_lists')->onDelete('cascade');
-            $table->float('param_01', 8, 2)->unsigned();
-            $table->float('param_02', 8, 2)->unsigned();
-            $table->float('param_03', 8, 2)->unsigned();
-            $table->float('param_04', 8, 2)->unsigned();
-            $table->float('param_05', 8, 2)->unsigned();
-            $table->float('param_06', 8, 2)->unsigned();
-            $table->float('param_07', 8, 2)->unsigned();
-            $table->float('param_08', 8, 2)->unsigned();
-            $table->float('param_09', 8, 2)->unsigned();
-            $table->float('param_10', 8, 2)->unsigned();
+            $table->decimal('param_01', 10, 2);
+            $table->decimal('param_02', 10, 2);
+            $table->decimal('param_03', 10, 2);
+            $table->decimal('param_04', 10, 2);
+            $table->decimal('param_05', 10, 2);
+            $table->decimal('param_06', 10, 2);
+            $table->decimal('param_07', 10, 2);
+            $table->decimal('param_08', 10, 2);
+            $table->decimal('param_09', 10, 2);
+            $table->decimal('param_10', 10, 2);
             $table->timestamps();
         });
     }

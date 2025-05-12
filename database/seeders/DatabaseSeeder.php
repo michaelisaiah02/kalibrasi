@@ -20,12 +20,14 @@ class DatabaseSeeder extends Seeder
             'employeeID' => '12025',
             'password' => '00000',
             'role' => 'admin',
+            'approved' => true
         ]);
         User::factory()->create([
             'name' => 'Freddy',
             'employeeID' => '12345',
             'password' => '00000',
             'role' => 'user',
+            'checked' => true
         ]);
         User::factory()->create([
             'name' => 'Feisal',
@@ -45,6 +47,7 @@ class DatabaseSeeder extends Seeder
             UnitSeeder::class,
             MasterListSeeder::class,
             StandardSeeder::class,
+            ResultSeeder::class,
         ]);
     }
 }

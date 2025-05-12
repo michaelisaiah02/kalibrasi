@@ -1,1 +1,1 @@
-SELECT * FROM repairs
+SELECT * FROM users

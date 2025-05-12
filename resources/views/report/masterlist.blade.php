@@ -45,14 +45,10 @@
                                 <td>{{ $item->pic }}</td>
                                 <td>{{ $item->location }}</td>
                                 <td>
-                                    @if ($item->results->first())
-                                        <a class="btn btn-sm btn-primary"
-                                            href="{{ route('print.report.masterlist', $item->id_num) }}">
-                                            {{ $item->results->first()->judgement }}
-                                        </a>
-                                    @else
-                                        <span class="text-muted"><i class="bi bi-dash"></i></span>
-                                    @endif
+                                    <a class="btn btn-sm btn-primary"
+                                        href="{{ route('print.report.masterlist', $item->id_num) }}">
+                                        {{ $item->results->first()->judgement }}
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

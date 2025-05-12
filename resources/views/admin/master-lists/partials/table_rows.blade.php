@@ -3,15 +3,15 @@
         <td>{{ $masterlist->id_num }}</td>
         <td>{{ $masterlist->sn_num }}</td>
         <td>{{ $masterlist->capacity }}
-            @isset($result->masterList->unit->symbol)
-                {{ $result->masterList->unit->symbol }}
+            @isset($masterlist->unit->symbol)
+                {{ $masterlist->unit->symbol }}
             @else
                 <span class="text-danger">N/A</span>
             @endisset
         </td>
         <td>{{ $masterlist->accuracy }}
-            @isset($result->masterList->unit->symbol)
-                {{ $result->masterList->unit->symbol }}
+            @isset($masterlist->unit->symbol)
+                {{ $masterlist->unit->symbol }}
             @else
                 <span class="text-danger">N/A</span>
             @endisset
@@ -23,13 +23,22 @@
         <td>{{ $masterlist->calibration_freq }}</td>
         <td>{{ $masterlist->acceptance_criteria }}</td>
         <td>{{ $masterlist->pic }}</td>
+        <td>{{ $masterlist->location }}</td>
         <td>
             <button class="btn btn-primary btn-sm btn-edit-masterlist" data-id="{{ $masterlist->id }}"
-                data-id-num="{{ $masterlist->id_num }}" data-sn-num="{{ $masterlist->sn_num }}">
+                data-id-num="{{ $masterlist->id_num }}" data-sn-num="{{ $masterlist->sn_num }}"
+                data-id-unit="{{ $masterlist->unit->id }}" data-capacity="{{ $masterlist->capacity }}"
+                data-accuracy="{{ $masterlist->accuracy }}" data-brand="{{ $masterlist->brand }}"
+                data-calibration-type="{{ $masterlist->calibration_type }}"
+                data-first-used="{{ $masterlist->first_used->format('Y-m-d') }}" data-rank="{{ $masterlist->rank }}"
+                data-calibration-freq="{{ $masterlist->calibration_freq }}"
+                data-acceptance-criteria="{{ $masterlist->acceptance_criteria }}" data-pic="{{ $masterlist->pic }}"
+                data-location="{{ $masterlist->location }}">
                 Edit
             </button>
-            <button class="btn btn-danger btn-sm btn-delete-masterlist" data-id="{{ $masterlist->id }}"
-                data-id-num="{{ $masterlist->id_num }}" data-sn-num="{{ $masterlist->sn_num }}" data-bs-toggle="modal"
+            <button class="btn btn-danger btn-sm btn-delete-master-list" data-id="{{ $masterlist->id }}"
+                data-id-num="{{ $masterlist->id_num }}" data-sn-num="{{ $masterlist->sn_num }}"
+                data-name="{{ $masterlist->equipment->name }}" data-bs-toggle="modal"
                 data-bs-target="#deleteMasterListModal">
                 Delete
             </button>

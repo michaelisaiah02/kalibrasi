@@ -6,10 +6,11 @@
             <div class="alert alert-info">No Repair data available.</div>
         @else
             <div class="table-responsive mb-3">
-                <table class="table table-striped table-bordered align-middle">
+                <table class="table table-striped table-bordered align-middle text-nowrap">
                     <thead class="table-primary text-center">
                         <tr>
                             <th>No</th>
+                            <th>Problem Date</th>
                             <th>Repair Date</th>
                             <th>ID Num / SN</th>
                             <th>Equipment Name</th>
@@ -17,13 +18,16 @@
                             <th>Countermeasure</th>
                             <th>Judgement</th>
                             <th>PIC</th>
-                            <th>Created At</th>
+                            <th>Location</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($repairs as $repair)
                             <tr class="text-center">
-                                <td>{{ $loop->iteration }}</td>
+                                <td><a class="btn btn-primary btn-select-id"
+                                        href="{{ route('print.report.repair', ['id' => $repair->id_num]) }}">{{ $loop->iteration }}</a>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($repair->problem_date)->format('d-m-Y') }}</td>
                                 <td>{{ \Carbon\Carbon::parse($repair->repair_date)->format('d-m-Y') }}</td>
                                 <td>{{ $repair->id_num }} / {{ optional($repair->masterList)->sn_num ?? '-' }}</td>
                                 <td>{{ optional($repair->masterList->equipment)->name ?? '-' }}</td>
@@ -31,7 +35,7 @@
                                 <td>{{ $repair->countermeasure }}</td>
                                 <td>{{ $repair->judgement }}</td>
                                 <td>{{ $repair->pic_repair }}</td>
-                                <td>{{ $repair->created_at->format('d-m-Y H:i') }}</td>
+                                <td>{{ $repair->masterList->location }}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -5,16 +5,18 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class StandardSeeder extends Seeder
+class ResultSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        // Ambil semua id_num dari master_lists
-        $masterLists = DB::table('master_lists')->pluck('id_num');
+        // Fetch all master lists
+        $masterLists = DB::table('master_lists')->get();
 
-        foreach ($masterLists as $id_num) {
-            DB::table('standards')->insert([
-                'id_num' => $id_num,
+        foreach ($masterLists as $masterList) {
+            DB::table('results')->insert([
+                'id_num' => $masterList->id_num,
+                'calibration_date' => now(),
+                'calibrator_equipment' => null, // Assuming no calibrator equipment initially
                 'param_01' => rand(1, 100) / 10 ?: 0.1,
                 'param_02' => rand(1, 100) / 10 ?: 0.1,
                 'param_03' => rand(1, 100) / 10 ?: 0.1,
@@ -25,6 +27,9 @@ class StandardSeeder extends Seeder
                 'param_08' => rand(1, 100) / 10 ?: 0.1,
                 'param_09' => rand(1, 100) / 10 ?: 0.1,
                 'param_10' => rand(1, 100) / 10 ?: 0.1,
+                'judgement' => ['OK', 'NG', 'Disposal'][array_rand(['OK', 'NG', 'Disposal'])],
+                'created_by' => DB::table('users')->inRandomOrder()->value('employeeID'),
+                'certificate' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

@@ -33,6 +33,7 @@
                         <th>Acc Criteria</th>
                         <th>PIC</th>
                         <th>Location</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="master-list-table-body">
@@ -52,25 +53,102 @@
     </div>
 
     <!-- Modal Tambah/Edit MasterList -->
-    <div class="modal fade" id="master-listModal" tabindex="-1" aria-labelledby="master-listModalLabel" aria-hidden="true">
+    <div class="modal fade" id="masterlistModal" tabindex="-1" aria-labelledby="masterlistModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form class="modal-content needs-validation" method="POST" id="master-listForm" novalidate>
+            <form class="modal-content needs-validation" method="POST" id="masterlistForm" novalidate>
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="master-listModalLabel">Add Master List</h5>
+                    <h5 class="modal-title" id="masterlistModalLabel">Add Masterlist</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="master-list_id" id="master-list-id">
-                    <div class="mb-3">
-                        <label for="symbol" class="form-label">Symbol</label>
-                        <input type="text" class="form-control" id="symbol" name="symbol" required>
-                        <div class="invalid-feedback">Symbol is required.</div>
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control form-control-sm" id="id-num" placeholder="ID Num"
+                                name="id_num" disabled>
+                            <label for="id-num">ID Num</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="text" class="form-control form-control-sm" id="sn-num" placeholder="SN Num"
+                                name="sn_num" required>
+                            <label for="sn-num">SN Num</label>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                        <div class="invalid-feedback">Name is required.</div>
+                    <div class="input-group mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="capacity" placeholder="Capacity" name="capacity"
+                                required>
+                            <label for="capacity">Capacity</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="accuracy" placeholder="Accuracy" name="accuracy"
+                                required>
+                            <label for="accuracy">Accuracy</label>
+                        </div>
+                        <div class="form-floating">
+                            <select class="form-select" id="id-unit" name="unit_id" required>
+                                <option value="" disabled>Choose...</option>
+                                @foreach ($units as $unit)
+                                    <option value="{{ $unit->id }}">{{ $unit->symbol }} -
+                                        {{ $unit->name }}</option>
+                                @endforeach
+                            </select>
+                            <label for="id-unit" class="form-label">Unit</label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="brand" placeholder="Brand" name="brand"
+                                required>
+                            <label for="brand">Brand</label>
+                        </div>
+                        <div class="form-floating">
+                            <select class="form-select" id="calibration-type" name="calibration_type" required>
+                                <option value="" disabled>Choose...</option>
+                                <option value="External">External</option>
+                                <option value="Internal">Internal</option>
+                            </select>
+                            <label for="calibration-type" class="form-label">Calibration Type</label>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="form-floating">
+                            <input type="date" class="form-control" id="first-used" placeholder="First Used"
+                                name="first_used" required>
+                            <label for="first-used">1st Used</label>
+                        </div>
+                        <div class="form-floating">
+                            <select class="form-select" id="rank" name="rank" required>
+                                <option value="">Choose...</option>
+                                <option value="AA">AA</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
+                            <label for="rank" class="form-label">Rank</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="calibration-freq"
+                                placeholder="Calibration Freq" name="calibration_freq" required>
+                            <label for="calibration-freq">Calibration Freq</label>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="acceptance-criteria" placeholder="Acceptance Criteria" name="acceptance_criteria"
+                            required></textarea>
+                        <label for="acceptance-criteria">Acceptance Criteria</label>
+                    </div>
+                    <div class="input-group mb-1">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="pic" placeholder="PIC" name="pic"
+                                required>
+                            <label for="pic">PIC</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="location" placeholder="Location"
+                                name="location" required>
+                            <label for="location">Location</label>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -93,7 +171,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete the master-list named <strong id="deleteMasterListName"></strong>?
+                    <p>Are you sure you want to delete the masterlist <strong id="deleteMasterListName"></strong>?
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -136,13 +214,14 @@
 
         $(document).ready(function() {
             // Delegasi tombol Edit
-            $(document).on('click', '.btn-edit-master-list', function() {
+            $(document).on('click', '.btn-edit-masterlist', function() {
                 const id = $(this).data('id');
                 $('#master-list-id').val(id);
                 $('#id-num').val($(this).data('id-num'));
                 $('#sn-num').val($(this).data('sn-num'));
                 $('#capacity').val($(this).data('capacity'));
                 $('#accuracy').val($(this).data('accuracy'));
+                $('#id-unit').val($(this).data('id-unit'));
                 $('#brand').val($(this).data('brand'));
                 $('#calibration-type').val($(this).data('calibration-type'));
                 $('#first-used').val($(this).data('first-used'));
@@ -151,18 +230,22 @@
                 $('#acceptance-criteria').val($(this).data('acceptance-criteria'));
                 $('#pic').val($(this).data('pic'));
                 $('#location').val($(this).data('location'));
-                $('#master-listForm').attr('action',
+                $('#masterlistForm').attr('action',
                     `{{ url('admin/master-lists/update-master-list') }}/${id}`);
-                new bootstrap.Modal(document.getElementById('master-listModal')).show();
+                new bootstrap.Modal(document.getElementById('masterlistModal')).show();
             });
 
             // Delegasi tombol Delete
             $(document).on('click', '.btn-delete-master-list', function() {
+                console.log('yes');
                 const id = $(this).data('id');
+                const idNum = $(this).data('id-num');
+                const snNum = $(this).data('sn-num');
                 const name = $(this).data('name');
                 $('#deleteMasterListForm').attr('action',
                     `{{ url('admin/master-lists/delete-master-list') }}/${id}`);
-                $('#deleteMasterListName').text(name);
+                $('#deleteMasterListName').text(idNum + '/' + snNum + '/' + name);
+                console.log(idNum, snNum, name);
             });
 
             // Form Validation

@@ -83,61 +83,61 @@
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <div class="form-floating">
-                            <input type="number" class="form-control form-control-sm" id="param-01"
-                                placeholder="Parameter 1" name="param_01" required>
+                            <input type="number" step="any" min="0.01" class="form-control form-control-sm"
+                                id="param-01" placeholder="Parameter 1" name="param_01" required>
                             <label for="param-01">Parameter 1</label>
                         </div>
                         <div class="form-floating">
-                            <input type="number" class="form-control form-control-sm" id="param-02"
-                                placeholder="Parameter 2" name="param_02" required>
+                            <input type="number" step="any" min="0.01" class="form-control form-control-sm"
+                                id="param-02" placeholder="Parameter 2" name="param_02" required>
                             <label for="param-02">Parameter 2</label>
                         </div>
                     </div>
                     <div class="input-group mb-3">
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="param-03" placeholder="Parameter 3"
-                                name="param_03" required>
+                            <input type="number" step="any" min="0.01" class="form-control" id="param-03"
+                                placeholder="Parameter 3" name="param_03" required>
                             <label for="param-03">Parameter 3</label>
                         </div>
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="param-04" placeholder="Parameter 4"
-                                name="param_04" required>
+                            <input type="number" step="any" min="0.01" class="form-control" id="param-04"
+                                placeholder="Parameter 4" name="param_04" required>
                             <label for="param-04">Parameter 4</label>
                         </div>
                     </div>
                     <div class="input-group mb-3">
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="param-05" placeholder="Parameter 5"
-                                name="param_05" required>
+                            <input type="number" step="any" min="0.01" class="form-control" id="param-05"
+                                placeholder="Parameter 5" name="param_05" required>
                             <label for="param-05">Parameter 5</label>
                         </div>
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="param-06" placeholder="Parameter 6"
-                                name="param_06" required>
+                            <input type="number" step="any" min="0.01" class="form-control" id="param-06"
+                                placeholder="Parameter 6" name="param_06" required>
                             <label for="param-06">Parameter 6</label>
                         </div>
                     </div>
                     <div class="input-group mb-3">
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="param-07" placeholder="Parameter 7"
-                                name="param_07" required>
+                            <input type="number" step="any" min="0.01" class="form-control" id="param-07"
+                                placeholder="Parameter 7" name="param_07" required>
                             <label for="param-07">Parameter 7</label>
                         </div>
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="param-08" placeholder="Parameter 8"
-                                name="param_08" required>
+                            <input type="number" step="any" min="0.01" class="form-control" id="param-08"
+                                placeholder="Parameter 8" name="param_08" required>
                             <label for="param-08">Parameter 8</label>
                         </div>
                     </div>
                     <div class="input-group mb-3">
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="param-09" placeholder="Parameter 9"
-                                name="param_09" required>
+                            <input type="number" step="any" min="0.01" class="form-control" id="param-09"
+                                placeholder="Parameter 9" name="param_09" required>
                             <label for="param-09">Parameter 9</label>
                         </div>
                         <div class="form-floating">
-                            <input type="number" class="form-control" id="param-10" placeholder="Parameter 10"
-                                name="param_10" required>
+                            <input type="number" step="any" min="0.01" class="form-control" id="param-10"
+                                placeholder="Parameter 10" name="param_10" required>
                             <label for="param-10">Parameter 10</label>
                         </div>
                     </div>
@@ -215,8 +215,9 @@
             // Delegasi tombol Edit
             $(document).on('click', '.btn-edit-standard', function() {
                 const id = $(this).data('id');
+                const idNum = $(this).data('id-num');
                 $('#standard-id').val(id);
-                $('#id-num').val(id).change();
+                $('#id-num').val(idNum).change();
                 $('#param-01').val($(this).data('param01'));
                 $('#param-02').val($(this).data('param02'));
                 $('#param-03').val($(this).data('param03'));

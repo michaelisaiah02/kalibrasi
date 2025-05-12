@@ -17,7 +17,8 @@
                         <span class="input-group-text bg-primary text-light width-label-1">ID / SN Number</span>
                         <input type="text" aria-label="No ID" placeholder="-"
                             class="form-control text-center @error('id_num') is-invalid @enderror {{ old('id_num') ? 'is-valid' : '' }}"
-                            name="id_num" id="id-num" required value="{{ old('id_num') ?? session('pending_result') }}">
+                            name="id_num" id="id-num" required value="{{ old('id_num') ?? session('pending_result') }}"
+                            autofocus>
                         <input type="text" aria-label="No SN" placeholder="No SN"
                             class="form-control text-center width-label-1" id="sn-num" disabled>
                     </div>
@@ -258,8 +259,8 @@
                                 <td> {{ $result->judgement }} </td>
                                 <td>
                                     @if ($result->certificate)
-                                        <button class="btn btn-primary btn-view-certificate" data-bs-toggle="modal"
-                                            data-bs-target="#certificateModal"
+                                        <button type="button" class="btn btn-primary btn-view-certificate"
+                                            data-bs-toggle="modal" data-bs-target="#certificateModal"
                                             data-path="{{ asset('storage/' . $result->certificate) }}"
                                             data-ext="{{ pathinfo($result->certificate, PATHINFO_EXTENSION) }}">
                                             Show
@@ -278,8 +279,6 @@
                     </tbody>
                 </table>
             </div>
-            {{-- @dd(session())
-            @dd(session()->has('pending_result')) --}}
             <div class="row justify-content-end">
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <a href="{{ route('dashboard', ['key' => 'menu-input']) }}"
@@ -297,9 +296,9 @@
                 </div>
                 <div class="col-12 col-md-auto text-center mb-1 mb-md-0">
                     <input class="form-control form-control-sm" id="certificate" name="certificate" type="file"
-                        hidden>
-                    <button type="button" class="btn btn-primary"
-                        onclick="document.getElementById('certificate').click()">Upload Calibration External
+                        hidden onchange="updateCertificateLabel(this)">
+                    <button type="button" class="btn btn-primary" id="certificate-label"
+                        onclick="document.getElementById('certificate').click()" disabled>Upload Calibration External
                         Certificate</button>
                 </div>
             </div>
@@ -617,6 +616,31 @@
         $(document).ready(function() {
             if ($input.val().trim().length === 7) {
                 fetchMasterList($input.val().trim());
+            }
+        });
+    </script>
+    <script>
+        function updateCertificateLabel(input) {
+            const fileName = input.files[0]?.name || 'Upload Calibration External Certificate';
+            document.getElementById('certificate-label').textContent = fileName;
+            const certificateLabel = document.getElementById('certificate-label');
+            certificateLabel.classList.remove('btn-primary');
+            certificateLabel.classList.add('btn-success');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const tag = e.target.tagName.toLowerCase();
+                console.log(tag);
+                // Hanya submit kalau fokus di input atau select (bukan button/table/etc)
+                if (['input', 'textarea', 'button'].includes(tag)) {
+                    const invalidElement = document.querySelector('.is-invalid');
+                    if (invalidElement) {
+                        invalidElement.focus();
+                    } else {
+                        document.getElementById('calibration-form').submit();
+                    }
+                }
             }
         });
     </script>

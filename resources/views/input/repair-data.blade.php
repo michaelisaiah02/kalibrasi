@@ -220,7 +220,7 @@
                     $('#location').val(data.location);
                     $('#pic').val(data.pic);
 
-                    $('#print').attr('href', `/print-report/${idNum}`);
+                    $('#print').attr('href', `/print-report-repair/${idNum}`);
                     $('#print').removeClass('disabled');
                 },
                 error: function(xhr) {

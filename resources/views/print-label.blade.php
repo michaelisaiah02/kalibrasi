@@ -20,11 +20,31 @@
             box-sizing: border-box;
             font-size: 5px;
         }
+
+        @media print {
+            @page {
+                size: 3.5cm 1cm;
+                margin: 0;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+            }
+
+            .print-wrapper {
+                width: 100%;
+                max-width: 3.5cm;
+                /* Lebar A4 */
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid py-0 px-1">
+    <div class="container-fluid py-0 px-1 print-wrapper">
         <div class="row justify-content-center">
             <div class="col-auto">
                 <strong>Valid :

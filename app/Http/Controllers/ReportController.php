@@ -21,8 +21,7 @@ class ReportController extends Controller
     {
         $from  = $request->input('date_from');
         $to    = $request->input('date_to');
-        $sn    = $request->input('no_sn');
-        $type  = $request->input('type_id');
+        $loc  = $request->input('location');
         $cal   = $request->input('calibration_type');
         $judg  = $request->input('judgement');
 
@@ -42,12 +41,8 @@ class ReportController extends Controller
                 $query->where('first_used', '<=', $to);
             }
 
-            // Filter lainnya
-            if ($sn) {
-                $query->where('sn_num', 'like', "%{$sn}%");
-            }
-            if ($type) {
-                $query->where('type_id', $type);
+            if ($loc) {
+                $query->where('location', $loc);
             }
             if ($cal) {
                 $query->where('calibration_type', $cal);
@@ -70,7 +65,7 @@ class ReportController extends Controller
         // Jika tombol Repair diklik
         if ($request->has('repairs')) {
             $query = Repair::query()->with(['masterList']);
-
+            // dd($query->get());
             if ($from && $to) {
                 $query->whereBetween('repair_date', [$from, $to]);
             } elseif ($from) {
@@ -79,11 +74,8 @@ class ReportController extends Controller
                 $query->where('repair_date', '<=', $to);
             }
 
-            if ($sn) {
-                $query->where('sn_num', 'like', "%{$sn}%");
-            }
-            if ($type) {
-                $query->where('type_id', $type);
+            if ($loc) {
+                $query->where('location', $loc);
             }
             if ($judg) {
                 $query->where('judgement', $judg);
