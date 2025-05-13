@@ -48,14 +48,12 @@ class ReportController extends Controller
                 $query->where('calibration_type', $cal);
             }
 
-            // Filter berdasarkan judgement terakhir
             if ($judg) {
                 $query->whereHas('results', function ($q) use ($judg) {
                     $q->latest('calibration_date')->limit(1)
                         ->where('judgement', $judg);
                 });
             }
-
             $results = $query->paginate(5)->withQueryString();
 
             return view('report.masterlist', compact('results'))

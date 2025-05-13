@@ -51,7 +51,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal Tambah/Edit MasterList -->
     <div class="modal fade" id="masterlistModal" tabindex="-1" aria-labelledby="masterlistModalLabel" aria-hidden="true">
         <div class="modal-dialog">

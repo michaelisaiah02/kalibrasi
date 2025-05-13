@@ -58,12 +58,14 @@
                     <input type="hidden" name="unit_id" id="unit-id">
                     <div class="mb-3">
                         <label for="symbol" class="form-label">Symbol</label>
-                        <input type="text" class="form-control" id="symbol" name="symbol" required>
+                        <input type="text" class="form-control" id="symbol" name="symbol" autocomplete="off"
+                            required>
                         <div class="invalid-feedback">Symbol is required.</div>
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" autocomplete="off"
+                            required>
                         <div class="invalid-feedback">Name is required.</div>
                     </div>
                 </div>

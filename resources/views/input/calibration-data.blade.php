@@ -17,8 +17,8 @@
                         <span class="input-group-text bg-primary text-light width-label-1">ID / SN Number</span>
                         <input type="text" aria-label="No ID" placeholder="-"
                             class="form-control text-center @error('id_num') is-invalid @enderror {{ old('id_num') ? 'is-valid' : '' }}"
-                            name="id_num" id="id-num" required value="{{ old('id_num') ?? session('pending_result') }}"
-                            autofocus>
+                            name="id_num" id="id-num" autocomplete="id_num" required
+                            value="{{ old('id_num') ?? session('pending_result') }}" autofocus>
                         <input type="text" aria-label="No SN" placeholder="No SN"
                             class="form-control text-center width-label-1" id="sn-num" disabled>
                     </div>
@@ -27,8 +27,10 @@
                             for="calibration-date">Calibration
                             Date</label>
                         <input type="date" aria-label="Date Now" placeholder="Date Now"
-                            class="form-control width-label-1" id="calibration-date" name="calibration_date"
-                            value="{{ now()->toDateString() }}">
+                            class="form-control width-label-1 @error('calibration_date') is-invalid @enderror"
+                            id="calibration-date" name="calibration_date"
+                            value="{{ old('calibration_date') ?? now()->toDateString() }}"
+                            max="{{ now()->toDateString() }}">
                     </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light width-label-1">Equipment Name</span>

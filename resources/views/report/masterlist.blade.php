@@ -17,12 +17,13 @@
                             <th>Unit</th>
                             <th>Brand</th>
                             <th>Calib. Type</th>
-                            <th>First Used</th>
+                            <th>1<sup>st</sup> Used</th>
                             <th>Rank</th>
                             <th>Freq (bln)</th>
                             <th>Acceptance Criteria</th>
                             <th>PIC</th>
                             <th>Location</th>
+                            <th>Last Certificate</th>
                             <th>Last Result</th>
                         </tr>
                     </thead>
@@ -45,6 +46,18 @@
                                 <td>{{ $item->pic }}</td>
                                 <td>{{ $item->location }}</td>
                                 <td>
+                                    @if ($item->results->last()->certificate)
+                                        <button type="button" class="btn btn-sm btn-primary btn-view-certificate"
+                                            data-bs-toggle="modal" data-bs-target="#certificateModal"
+                                            data-path="{{ asset('storage/' . $item->results->last()->certificate) }}"
+                                            data-ext="{{ pathinfo($item->results->last()->certificate, PATHINFO_EXTENSION) }}">
+                                            Show
+                                        </button>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td>
                                     <a class="btn btn-sm btn-primary"
                                         href="{{ route('print.report.masterlist', $item->id_num) }}">
                                         {{ $item->results->first()->judgement }}
@@ -56,7 +69,20 @@
                 </table>
             </div>
         @endif
-
+        <div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Calibration Certificate</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
+                    <div class="modal-body text-center vh-100" id="certificateContent">
+                        <div class="text-muted">Loading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="d-flex justify-content-between align-items-center">
             <div class="pagination">
                 {{ $results->links() }}
@@ -72,5 +98,20 @@
             $('.pagination nav').addClass('w-100');
             $('.pagination nav ul').addClass('my-0 me-3');
         })
+        $(document).on('click', '.btn-view-certificate', function() {
+            const path = $(this).data('path');
+            const ext = $(this).data('ext').toLowerCase();
+            const container = $('#certificateContent');
+
+            container.html('<div class="text-muted">Loading...</div>'); // reset dulu
+
+            if (['jpg', 'jpeg', 'png'].includes(ext)) {
+                container.html(`<img src="${path}" class="img-fluid" alt="Certificate">`);
+            } else if (ext === 'pdf') {
+                container.html(`<iframe src="${path}" style="border: none;"></iframe>`);
+            } else {
+                container.html(`<div class="text-danger">Format file tidak dikenali: .${ext}</div>`);
+            }
+        });
     </script>
 @endsection

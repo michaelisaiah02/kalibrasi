@@ -41,6 +41,8 @@ class NewEquipmentController extends Controller
             'location' => ['required', 'string'],
         ]);
 
+        $validated['id_num'] = strtoupper($validated['id_num']);
+
         $master = MasterList::create($validated);
 
         // Flag untuk memaksa modal acceptance criteria

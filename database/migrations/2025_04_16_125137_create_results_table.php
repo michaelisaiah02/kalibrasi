@@ -16,11 +16,11 @@ return new class extends Migration
 
             // Foreign key ke master_lists
             $table->string('id_num');
-            $table->foreign('id_num')->references('id_num')->on('master_lists')->onDelete('cascade');
+            $table->foreign('id_num')->references('id_num')->on('master_lists')->onUpdate('cascade')->onDelete('restrict');
 
             $table->date('calibration_date')->default(now());
             $table->string('calibrator_equipment')->nullable()->default(null);
-            $table->foreign('calibrator_equipment')->references('id_num')->on('master_lists')->onDelete('cascade');
+            $table->foreign('calibrator_equipment')->references('id_num')->on('master_lists')->onUpdate('cascade')->onDelete('restrict');
 
             $table->decimal('param_01', 10, 2)->nullable();
             $table->decimal('param_02', 10, 2)->nullable();

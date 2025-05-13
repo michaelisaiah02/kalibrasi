@@ -51,7 +51,7 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan.');
+        return redirect()->route('admin.users.index')->with('success', 'User added successfully.');
     }
 
     public function update(Request $request, $id)
@@ -86,6 +86,17 @@ class UserController extends Controller
             User::where('checked', true)->update(['checked' => false]);
         }
 
+        // Jika tidak ada user lain yang approved dan user ini tidak ingin di-approve, tolak
+        if (!User::where('approved', true)->where('id', '!=', $user->id)->exists() && $approved === false) {
+            return back()->withErrors(['approved' => 'At least one user must be approved.']);
+        }
+
+        // Jika tidak ada user lain yang checked dan user ini tidak ingin di-check, tolak
+        if (!User::where('checked', true)->where('id', '!=', $user->id)->exists() && $checked === false) {
+            return back()->withErrors(['checked' => 'At least one user must be checked.']);
+        }
+
+
         // put everything into $data for update
         $data = $validated;
         $data['approved'] = $approved;
@@ -104,7 +115,7 @@ class UserController extends Controller
         $user->update($data);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User berhasil diperbarui.');
+            ->with('success', 'User updated successfully.');
     }
 
 
@@ -113,7 +124,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+        return redirect()->route('admin.users.index')->with('success', 'User has been successfully deleted.');
     }
 
     public function search(Request $request)

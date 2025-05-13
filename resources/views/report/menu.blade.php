@@ -9,10 +9,11 @@
                     <div class="input-group mb-md-5 mb-1">
                         <span class="input-group-text bg-primary text-light">Date</span>
                         <input type="date" aria-label="Date" placeholder="Search" class="form-control text-center"
-                            name="date_from" id="date-from">
+                            name="date_from" id="date-from" max="{{ now()->toDateString() }}">
                         <span class="input-group-text bg-primary text-light">to</span>
                         <input type="date" aria-label="Date" placeholder="Search" class="form-control text-center"
-                            name="date_to" id="date-to">
+                            name="date_to" id="date-to" max="{{ now()->toDateString() }}">
+                        <div class="invalid-feedback">The "From" date must be earlier than the "To" date.</div>
                     </div>
                     <div class="input-group mb-md-5 mb-1">
                         <label class="input-group-text bg-primary text-light" for="Name-alat-ukur">Location</label>
@@ -66,4 +67,33 @@
 @endsection
 
 @section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateFrom = document.getElementById('date-from');
+            const dateTo = document.getElementById('date-to');
+            const now = new Date().toISOString().split('T')[0];
+
+            dateFrom.addEventListener('change', function() {
+                if (dateFrom.value && dateTo.value && dateFrom.value > dateTo.value) {
+                    const invalidFeedback = document.querySelector('.invalid-feedback');
+                    invalidFeedback.style.display = 'block';
+                    setTimeout(() => {
+                        invalidFeedback.style.display = 'none';
+                    }, 3000);
+                    dateTo.value = '';
+                }
+            });
+
+            dateTo.addEventListener('change', function() {
+                if (dateFrom.value && dateTo.value && dateFrom.value > dateTo.value) {
+                    const invalidFeedback = document.querySelector('.invalid-feedback');
+                    invalidFeedback.style.display = 'block';
+                    setTimeout(() => {
+                        invalidFeedback.style.display = 'none';
+                    }, 3000);
+                    dateTo.value = '';
+                }
+            });
+        });
+    </script>
 @endsection

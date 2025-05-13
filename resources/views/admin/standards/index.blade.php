@@ -273,4 +273,27 @@
             fetchStandards();
         });
     </script>
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const tag = e.target.tagName.toLowerCase();
+                if (['input', 'textarea', 'select'].includes(tag)) {
+                    e.preventDefault(); // Hindari submit default
+
+                    const form = e.target.closest('form');
+                    const elements = Array.from(form.querySelectorAll('input, textarea, select'))
+                        .filter(el => el.type !== 'hidden' && !el.disabled);
+
+                    // Cek apakah ada yang kosong
+                    const emptyElement = elements.find(el => !el.value.trim());
+
+                    if (emptyElement) {
+                        emptyElement.focus();
+                    } else {
+                        form.submit(); // Semua terisi, submit form
+                    }
+                }
+            }
+        });
+    </script>
 @endsection

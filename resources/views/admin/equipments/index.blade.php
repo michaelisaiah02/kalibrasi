@@ -60,12 +60,14 @@
                     <input type="hidden" name="equipment_id" id="equipment-id">
                     <div class="mb-3">
                         <label for="type-id" class="form-label">Type ID</label>
-                        <input type="text" class="form-control" id="type-id" name="type_id" required>
+                        <input type="text" class="form-control" id="type-id" name="type_id" maxlength="3"
+                            autocomplete="off" required>
                         <div class="invalid-feedback">Type ID is required.</div>
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" autocomplete="off"
+                            required>
                         <div class="invalid-feedback">Name is required.</div>
                     </div>
                 </div>

@@ -122,11 +122,13 @@
                     </tr>
                     <tr>
                         <th scope="col" style="width: 15px;">No</th>
-                        <th scope="col" colspan="2">Standard Indication ({{ $result->masterList->unit->symbol }})
+                        <th scope="col" colspan="2">Standard Indication
+                            ({{ optional($result->masterList->unit)->symbol ?? 'N/A' }})
                         </th>
-                        <th scope="col" colspan="2">Actual Indication ({{ $result->masterList->unit->symbol }})
+                        <th scope="col" colspan="2">Actual Indication
+                            ({{ optional($result->masterList->unit)->symbol ?? 'N/A' }})
                         </th>
-                        <th scope="col">Correction ({{ $result->masterList->unit->symbol }})</th>
+                        <th scope="col">Correction ({{ optional($result->masterList->unit)->symbol ?? 'N/A' }})</th>
                         <th scope="col" colspan="3">Judgment</th>
                     </tr>
                 </thead>

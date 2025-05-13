@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Equipment;
+use App\Models\MasterList;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 
 class EquipmentController extends Controller
 {
@@ -25,34 +26,51 @@ class EquipmentController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
+        $validated['type_id'] = strtoupper($validated['type_id']);
+
         Equipment::create($validated);
 
-        return redirect()->route('admin.equipments.index')->with('success', 'Equipment berhasil ditambahkan.');
+        return redirect()->route('admin.equipments.index')->with('success', 'Equipment added successfully.');
     }
 
     public function update(Request $request, $id)
     {
-        $unit = Equipment::findOrFail($id);
+        $equipment = Equipment::findOrFail($id);
+        $oldTypeId = $equipment->type_id;
 
         $validated = $request->validate([
             'type_id' => [
                 'required',
-                Rule::unique('equipments', 'type_id')->ignore($unit->id),
+                Rule::unique('equipments', 'type_id')->ignore($equipment->id),
             ],
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        $unit->update($validated);
+        $validated['type_id'] = strtoupper($validated['type_id']);
 
-        return redirect()->route('admin.equipments.index')->with('success', 'Equipment berhasil diperbarui.');
+        $equipment->update($validated);
+
+        // Update id_num di master_lists
+        if ($oldTypeId !== $equipment->type_id) {
+            $masterLists = MasterList::where('type_id', $equipment->type_id)->get();
+            foreach ($masterLists as $ml) {
+                // Ambil nomor urutnya dari id_num (misal: TIM-005 → 005)
+                $no = substr($ml->id_num, -3);
+                $ml->type_id = $equipment->type_id;
+                $ml->id_num = $equipment->type_id . '-' . $no;
+                $ml->save();
+            }
+        }
+
+        return redirect()->route('admin.equipments.index')->with('success', 'Equipment updated successfully.');
     }
 
     public function destroy($id)
     {
-        $unit = Equipment::findOrFail($id);
-        $unit->delete();
+        $equipment = Equipment::findOrFail($id);
+        $equipment->delete();
 
-        return redirect()->route('admin.equipments.index')->with('success', 'Equipment berhasil dihapus.');
+        return redirect()->route('admin.equipments.index')->with('success', 'Equipment deleted successfully.');
     }
 
     public function search(Request $request)

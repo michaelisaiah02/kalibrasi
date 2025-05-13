@@ -23,8 +23,8 @@ class MasterListController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            // 'type_id' => ['required', 'exists:equipments,type_id'],
-            // 'id_num' => ['required', 'string', 'unique:master_lists,id_num'],
+            'type_id' => ['required', 'exists:equipments,type_id'],
+            'id_num' => ['required', 'string', 'unique:master_lists,id_num'],
             'sn_num' => ['required', 'string'],
             'capacity' => ['required', 'string'],
             'accuracy' => ['required', 'integer', 'min:0'],
@@ -41,7 +41,7 @@ class MasterListController extends Controller
 
         MasterList::create($validated);
 
-        return redirect()->route('admin.master-lists.index')->with('success', 'Master List berhasil ditambahkan.');
+        return redirect()->route('admin.master-lists.index')->with('success', 'Master List successfully added.');
     }
 
     public function update(Request $request, $id)
@@ -65,7 +65,7 @@ class MasterListController extends Controller
 
         $unit->update($validated);
 
-        return redirect()->route('admin.master-lists.index')->with('success', 'Master List berhasil diperbarui.');
+        return redirect()->route('admin.master-lists.index')->with('success', 'Master List successfully updated.');
     }
 
     public function destroy($id)
@@ -73,7 +73,7 @@ class MasterListController extends Controller
         $unit = MasterList::findOrFail($id);
         $unit->delete();
 
-        return redirect()->route('admin.master-lists.index')->with('success', 'Master List berhasil dihapus.');
+        return redirect()->route('admin.master-lists.index')->with('success', 'Master List was successfully deleted.');
     }
 
     public function search(Request $request)

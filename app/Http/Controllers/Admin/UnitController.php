@@ -21,13 +21,29 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'symbol' => ['required', 'string', 'unique:units,symbol'],
+            'symbol' => [
+                'required',
+                'string',
+                Rule::unique('units')->whereNull('deleted_at'),
+            ],
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        Unit::create($validated);
+        $existing = Unit::withTrashed()->where('symbol', $validated['symbol'])->first();
 
-        return redirect()->route('admin.units.index')->with('success', 'Unit berhasil ditambahkan.');
+        if ($existing) {
+            // Unit pernah ada, tinggal reaktivasi
+            $existing->restore(); // kalau pakai soft delete
+
+            $existing->update([
+                'name' => $validated['name'],
+            ]);
+        } else {
+            Unit::create($validated);
+        }
+
+
+        return redirect()->route('admin.units.index')->with('success', 'Unit added successfully.');
     }
 
     public function update(Request $request, $id)
@@ -44,7 +60,7 @@ class UnitController extends Controller
 
         $unit->update($validated);
 
-        return redirect()->route('admin.units.index')->with('success', 'Unit berhasil diperbarui.');
+        return redirect()->route('admin.units.index')->with('success', 'Unit updated successfully.');
     }
 
     public function destroy($id)
@@ -52,7 +68,7 @@ class UnitController extends Controller
         $unit = Unit::findOrFail($id);
         $unit->delete();
 
-        return redirect()->route('admin.units.index')->with('success', 'Unit berhasil dihapus.');
+        return redirect()->route('admin.units.index')->with('success', 'Unit was successfully deleted.');
     }
 
     public function search(Request $request)

@@ -13,12 +13,21 @@ return new class extends Migration
     {
         Schema::create('master_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('type_id')->foreign('type_id')->references('type_id')->on('equipments');
+
+            $table->string('type_id'); // Buat kolom dulu
+            $table->foreign('type_id') // Baru buat foreign key-nya
+                ->references('type_id')->on('equipments')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
             $table->string('id_num')->unique();
             $table->string('sn_num');
             $table->string('capacity');
             $table->integer('accuracy')->unsigned();
-            $table->foreignId('unit_id');
+
+            $table->foreignId('unit_id')->nullable()->constrained('units')
+                ->onUpdate('cascade')->onDelete('set null');
+
             $table->string('brand');
             $table->enum('calibration_type', ['Internal', 'External']);
             $table->date('first_used');
@@ -27,6 +36,7 @@ return new class extends Migration
             $table->string('acceptance_criteria');
             $table->string('pic');
             $table->string('location');
+
             $table->timestamps();
         });
     }

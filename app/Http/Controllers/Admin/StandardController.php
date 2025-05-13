@@ -53,33 +53,12 @@ class StandardController extends Controller
         ]);
     }
 
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num'],
-    //         'param_01' => ['required', 'integer', 'min:0.01'],
-    //         'param_02' => ['required', 'integer', 'min:0.01'],
-    //         'param_03' => ['required', 'integer', 'min:0.01'],
-    //         'param_04' => ['required', 'integer', 'min:0.01'],
-    //         'param_05' => ['required', 'integer', 'min:0.01'],
-    //         'param_06' => ['required', 'integer', 'min:0.01'],
-    //         'param_07' => ['required', 'integer', 'min:0.01'],
-    //         'param_08' => ['required', 'integer', 'min:0.01'],
-    //         'param_09' => ['required', 'integer', 'min:0.01'],
-    //         'param_10' => ['required', 'integer', 'min:0.01'],
-    //     ]);
-
-    //     Standard::create($validated);
-
-    //     return redirect()->route('admin.standards.index')->with('success', 'Standard berhasil ditambahkan.');
-    // }
-
     public function update(Request $request, $id)
     {
         $standard = Standard::findOrFail($id);
 
         $validated = $request->validate([
-            'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num,'.$standard->id],
+            'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num,' . $standard->id],
             'param_01' => ['required', 'numeric', 'min:0.01'],
             'param_02' => ['required', 'numeric', 'min:0.01'],
             'param_03' => ['required', 'numeric', 'min:0.01'],
@@ -94,7 +73,7 @@ class StandardController extends Controller
 
         $standard->update($validated);
 
-        return redirect()->route('admin.standards.index')->with('success', 'Standard berhasil diperbarui.');
+        return redirect()->route('admin.standards.index')->with('success', 'Standard updated successfully.');
     }
 
     public function destroy($id)
@@ -102,7 +81,7 @@ class StandardController extends Controller
         $standard = Standard::findOrFail($id);
         $standard->delete();
 
-        return redirect()->route('admin.standards.index')->with('success', 'Standard berhasil dihapus.');
+        return redirect()->route('admin.standards.index')->with('success', 'Standard has been successfully deleted.');
     }
 
     public function search(Request $request)

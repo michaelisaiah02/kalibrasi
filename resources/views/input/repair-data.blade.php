@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('styles')
+    <style>
+        textarea {
+            height: 25px;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container mt-1 mt-md-3">
         <form method="POST" id="repair-form">
@@ -12,7 +20,7 @@
                         <span class="input-group-text bg-primary text-light">ID / SN Number</span>
                         <input type="text" aria-label="ID Num" placeholder="-"
                             class="form-control text-center @error('id_num') is-invalid @enderror {{ old('id_num') ? 'is-valid' : '' }}"
-                            name="id_num" id="id-num" value="{{ old('id_num') }}" required>
+                            name="id_num" id="id-num" value="{{ old('id_num') }}" autocomplete="id_num" required>
                         <input type="text" aria-label="SN Num" placeholder="SN Num" class="form-control w-25 text-center"
                             id="sn-num" disabled>
                     </div>
@@ -35,12 +43,13 @@
                         <span class="input-group-text bg-primary text-light">Problem Date</span>
                         <input type="date"
                             class="form-control @error('problem_date') is-invalid @enderror {{ old('problem_date') ? 'is-valid' : '' }}"
-                            id="problem-date" name="problem_date" value="{{ old('problem_date') }}" required>
+                            id="problem-date" name="problem_date" value="{{ old('problem_date') }}"
+                            max="{{ now()->toDateString() }}" required>
                         <span class="input-group-text bg-primary text-light">Repair Date</span>
                         <input type="date"
                             class="form-control @error('repair_date') is-invalid @enderror {{ old('repair_date') ? 'is-valid' : '' }}"
                             id="repair-date" name="repair_date" value="{{ old('repair_date') ?? now()->format('Y-m-d') }}"
-                            required>
+                            max="{{ now()->toDateString() }}" required>
                     </div>
                 </div>
                 <div class="col-md-6 ps-1 pe-0">
@@ -54,15 +63,14 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Problem</span>
-                        <input type="text"
-                            class="form-control @error('problem') is-invalid @enderror {{ old('problem') ? 'is-valid' : '' }}"
-                            id="problem" name="problem" value="{{ old('problem') }}" required>
+                        <textarea class="form-control @error('problem') is-invalid @enderror {{ old('problem') ? 'is-valid' : '' }}"
+                            id="problem" name="problem" value="{{ old('problem') }}" required></textarea>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Countermeasure</span>
-                        <input type="text"
+                        <textarea
                             class="form-control @error('countermeasure') is-invalid @enderror {{ old('countermeasure') ? 'is-valid' : '' }}"
-                            id="countermeasure" name="countermeasure" value="{{ old('countermeasure') }}" required>
+                            id="countermeasure" name="countermeasure" value="{{ old('countermeasure') }}" required></textarea>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Judgement</span>

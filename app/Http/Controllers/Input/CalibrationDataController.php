@@ -110,7 +110,7 @@ class CalibrationDataController extends Controller
             'param_10' => 'required|numeric|min:0.01',
             'judgement' => 'required|string|in:OK,NG,Disposal',
             'certificate' => $request->calibration_type === 'External'
-                ? 'file|mimes:pdf,jpg,jpeg,png|max:2048'
+                ? 'file|mimes:jpg,jpeg|max:2048'
                 : 'nullable',
         ]);
 

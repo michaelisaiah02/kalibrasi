@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('standards', function (Blueprint $table) {
             $table->id();
-            $table->string('id_num')->foreign('id_num')->references('id_num')->on('master_lists')->onDelete('cascade');
+            $table->string('id_num');
+            $table->foreign('id_num')->references('id_num')->on('master_lists')->onUpdate('cascade')->onDelete('restrict');
             $table->decimal('param_01', 10, 2);
             $table->decimal('param_02', 10, 2);
             $table->decimal('param_03', 10, 2);
