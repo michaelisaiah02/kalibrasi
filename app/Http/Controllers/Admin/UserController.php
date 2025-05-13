@@ -59,16 +59,16 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
-            'employeeID'  => ['required', 'size:5', Rule::unique('users', 'employeeID')->ignore($user->id)],
-            'role'        => 'required|in:admin,user,guest',
-            'password'    => 'nullable|string|min:6',
+            'name' => 'required|string|max:255',
+            'employeeID' => ['required', 'size:5', Rule::unique('users', 'employeeID')->ignore($user->id)],
+            'role' => 'required|in:admin,user,guest',
+            'password' => 'nullable|string|min:6',
             // no need to validate approved/checked here
         ]);
 
         // read them as booleans
         $approved = $request->boolean('approved');
-        $checked  = $request->boolean('checked');
+        $checked = $request->boolean('checked');
 
         // role-based rules
         if ($validated['role'] !== 'admin' && $approved) {
@@ -87,20 +87,19 @@ class UserController extends Controller
         }
 
         // Jika tidak ada user lain yang approved dan user ini tidak ingin di-approve, tolak
-        if (!User::where('approved', true)->where('id', '!=', $user->id)->exists() && $approved === false) {
+        if (! User::where('approved', true)->where('id', '!=', $user->id)->exists() && $approved === false) {
             return back()->withErrors(['approved' => 'At least one user must be approved.']);
         }
 
         // Jika tidak ada user lain yang checked dan user ini tidak ingin di-check, tolak
-        if (!User::where('checked', true)->where('id', '!=', $user->id)->exists() && $checked === false) {
+        if (! User::where('checked', true)->where('id', '!=', $user->id)->exists() && $checked === false) {
             return back()->withErrors(['checked' => 'At least one user must be checked.']);
         }
-
 
         // put everything into $data for update
         $data = $validated;
         $data['approved'] = $approved;
-        $data['checked']  = $checked;
+        $data['checked'] = $checked;
 
         // hash password if provided
         if ($request->filled('password')) {
@@ -117,7 +116,6 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')
             ->with('success', 'User updated successfully.');
     }
-
 
     public function destroy($id)
     {

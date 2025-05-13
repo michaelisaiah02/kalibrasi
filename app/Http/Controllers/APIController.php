@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\MasterList;
 use App\Models\Repair;
 use App\Models\Result;
-use Illuminate\Http\Request;
 
 class APIController
 {

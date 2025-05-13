@@ -501,7 +501,6 @@
                 url: `{{ url('/') }}/get-actual-value/${id}`,
                 method: 'GET',
                 success: function(data) {
-                    console.log(data);
                     $('#calibration-date').val(new Date(data.calibration_date).toISOString().split('T')[0]);
                     $('#calibrator-equipment').val(data.calibrator_equipment);
                     $('#judgement').val(data.judgement);
@@ -633,7 +632,6 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 const tag = e.target.tagName.toLowerCase();
-                console.log(tag);
                 // Hanya submit kalau fokus di input atau select (bukan button/table/etc)
                 if (['input', 'textarea', 'button'].includes(tag)) {
                     const invalidElement = document.querySelector('.is-invalid');

@@ -58,7 +58,7 @@ class StandardController extends Controller
         $standard = Standard::findOrFail($id);
 
         $validated = $request->validate([
-            'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num,' . $standard->id],
+            'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num,'.$standard->id],
             'param_01' => ['required', 'numeric', 'min:0.01'],
             'param_02' => ['required', 'numeric', 'min:0.01'],
             'param_03' => ['required', 'numeric', 'min:0.01'],

@@ -19,11 +19,11 @@ class ReportController extends Controller
 
     public function search(Request $request)
     {
-        $from  = $request->input('date_from');
-        $to    = $request->input('date_to');
-        $loc  = $request->input('location');
-        $cal   = $request->input('calibration_type');
-        $judg  = $request->input('judgement');
+        $from = $request->input('date_from');
+        $to = $request->input('date_to');
+        $loc = $request->input('location');
+        $cal = $request->input('calibration_type');
+        $judg = $request->input('judgement');
 
         // Jika tombol Masterlist diklik
         if ($request->has('master_lists')) {

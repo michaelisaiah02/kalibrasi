@@ -42,7 +42,6 @@ class UnitController extends Controller
             Unit::create($validated);
         }
 
-
         return redirect()->route('admin.units.index')->with('success', 'Unit added successfully.');
     }
 

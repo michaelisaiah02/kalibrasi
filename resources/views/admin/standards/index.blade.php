@@ -237,7 +237,6 @@
                 const id = $(this).data('id');
                 const idNum = $(this).data('id-num');
                 const equipment = $(this).data('equipment');
-                console.log($(this).data());
                 $('#deleteStandardForm').attr('action',
                     `{{ url('admin/standards/delete-standard') }}/${id}`);
                 $('#deleteEquipmentName').text(`${idNum} - ${equipment}`);

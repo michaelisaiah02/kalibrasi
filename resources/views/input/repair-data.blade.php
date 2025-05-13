@@ -254,7 +254,6 @@
                 url: `/get-repair-data/${id}`,
                 method: 'GET',
                 success: function(data) {
-                    console.log(data);
                     $('#problem').val(data.problem);
                     $('#countermeasure').val(data.countermeasure);
                     $('#judgement').val(data.judgement);

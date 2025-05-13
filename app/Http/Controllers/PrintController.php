@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Result;
 use App\Models\MasterList;
 use App\Models\Repair;
+use App\Models\Result;
+use App\Models\User;
 
 class PrintController extends Controller
 {
@@ -24,7 +24,7 @@ class PrintController extends Controller
 
         return view('print-report-masterlist', compact('result'), [
             'approved' => $approved,
-            'checked' => $checked
+            'checked' => $checked,
         ]);
     }
 
@@ -36,7 +36,7 @@ class PrintController extends Controller
 
         return view('print-report-repair', compact('repair'), [
             'approved' => $approved,
-            'checked' => $checked
+            'checked' => $checked,
         ]);
     }
 }

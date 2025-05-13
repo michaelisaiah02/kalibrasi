@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\MasterList;
 use App\Models\Unit;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class MasterListController extends Controller
 {

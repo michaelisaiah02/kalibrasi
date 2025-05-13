@@ -97,5 +97,4 @@ Route::middleware('auth')->group(function () {
             Route::get('/search', [MasterListController::class, 'search'])->name('admin.master-lists.search');
         });
     });
-    // Route::post('/input-new-alat-ukur', [AlatUkurController::class, 'store'])->middleware('auth')->name('store.equipment');
 });

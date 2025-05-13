@@ -236,7 +236,6 @@
 
             // Delegasi tombol Delete
             $(document).on('click', '.btn-delete-master-list', function() {
-                console.log('yes');
                 const id = $(this).data('id');
                 const idNum = $(this).data('id-num');
                 const snNum = $(this).data('sn-num');
@@ -244,7 +243,6 @@
                 $('#deleteMasterListForm').attr('action',
                     `{{ url('admin/master-lists/delete-master-list') }}/${id}`);
                 $('#deleteMasterListName').text(idNum + '/' + snNum + '/' + name);
-                console.log(idNum, snNum, name);
             });
 
             // Form Validation
