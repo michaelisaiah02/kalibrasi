@@ -18,7 +18,7 @@
                         <input type="text" aria-label="No ID" placeholder="-"
                             class="form-control text-center @error('id_num') is-invalid @enderror {{ old('id_num') ? 'is-valid' : '' }}"
                             name="id_num" id="id-num" autocomplete="id_num" required
-                            value="{{ old('id_num') ?? session('pending_result') }}" autofocus>
+                            value="{{ old('id_num') ?? session('pending_result') }}" {{ old('id_num') ? '' : 'autofocus' }}>
                         <input type="text" aria-label="No SN" placeholder="No SN"
                             class="form-control text-center width-label-1" id="sn-num" disabled>
                     </div>
@@ -340,7 +340,8 @@
                         <tbody>
                             @foreach ($results as $result)
                                 <tr>
-                                    <td><button class="btn btn-primary btn-select-id" data-id="{{ $result->id_num }}"
+                                    <td><button class="btn btn-primary btn-select-id" data-num="{{ $result->id }}"
+                                            data-id="{{ $result->id_num }}"
                                             data-bs-dismiss="modal">{{ $loop->iteration }}</button></td>
                                     <td>{{ $result->calibration_date->format('d-m-Y') }}</td>
                                     <td>{{ $result->id_num }} / {{ $result->masterList->sn_num }}</td>
@@ -573,6 +574,7 @@
 
             $('#calibration-form').attr('action',
                 `{{ url('/input/calibration-data') }}/${num}`);
+            console.log(num);
             fetchActualValue(num);
         });
 

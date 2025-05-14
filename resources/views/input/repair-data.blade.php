@@ -177,8 +177,8 @@
                             @foreach ($repairs as $repair)
                                 <tr>
                                     <td><button type="button" class="btn btn-primary btn-select-id"
-                                            data-num="{{ $repair->id }}"
-                                            data-id="{{ $repair->id_num }}">{{ $loop->iteration }}</button></td>
+                                            data-num="{{ $repair->id }}" data-id="{{ $repair->id_num }}"
+                                            data-bs-dismiss="modal">{{ $loop->iteration }}</button></td>
                                     <td>{{ $repair->id_num }}</td>
                                     <td>{{ $repair->masterList->equipment->name }}</td>
                                     <td>{{ $repair->masterList->brand }}</td>

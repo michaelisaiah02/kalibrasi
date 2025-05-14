@@ -26,6 +26,8 @@ class RepairDataController extends Controller
             'countermeasure' => ['required', 'string'],
             'judgement' => ['required', 'string', 'in:OK,NG,Disposal'],
         ]);
+
+        $validated['id_num'] = strtoupper($request->id_num);
         $validated['pic_repair'] = auth()->user()->name;
 
         Repair::create($validated);
