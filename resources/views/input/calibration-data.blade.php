@@ -574,7 +574,6 @@
 
             $('#calibration-form').attr('action',
                 `{{ url('/input/calibration-data') }}/${num}`);
-            console.log(num);
             fetchActualValue(num);
         });
 
@@ -635,7 +634,7 @@
             if (e.key === 'Enter') {
                 const tag = e.target.tagName.toLowerCase();
                 // Hanya submit kalau fokus di input atau select (bukan button/table/etc)
-                if (['input', 'textarea', 'button'].includes(tag)) {
+                if (['input', 'textarea', 'button', 'select'].includes(tag)) {
                     const invalidElement = document.querySelector('.is-invalid');
                     if (invalidElement) {
                         invalidElement.focus();

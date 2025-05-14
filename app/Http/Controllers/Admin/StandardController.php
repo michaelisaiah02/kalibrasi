@@ -44,12 +44,8 @@ class StandardController extends Controller
         // Simpan acceptance criteria
         Standard::create($validated);
 
-        // Bersihkan flag acceptance, set flag result
-        session()->forget('pending_acceptance');
-        session(['pending_result' => $validated['id_num']]);
-
-        return redirect()->route('input.calibration.data')->with([
-            'success' => 'Please input the calibration data.',
+        return redirect()->route('admin.standards.index')->with([
+            'success' => 'Standard added successfully.',
         ]);
     }
 

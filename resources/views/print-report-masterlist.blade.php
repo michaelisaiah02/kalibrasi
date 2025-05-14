@@ -57,6 +57,10 @@
                 display: none;
             }
 
+            button.back-button {
+                display: none;
+            }
+
             @page {
                 size: A4 landscape;
                 /* atau bisa pakai: size: landscape; */
@@ -252,6 +256,28 @@
             });
 
             document.body.appendChild(printButton);
+
+            const backButton = document.createElement('button');
+            backButton.textContent = 'Back';
+            backButton.style.position = 'fixed';
+            backButton.style.bottom = '20px';
+            backButton.style.left = '50%';
+            backButton.style.transform = 'translateX(-180%)';
+            backButton.style.cursor = 'pointer';
+            backButton.classList.add('back-button');
+            backButton.style.padding = '10px 20px';
+            backButton.style.backgroundColor = '#181d3d';
+            backButton.style.color = '#fff';
+            backButton.style.border = 'none';
+            backButton.style.borderRadius = '5px';
+
+            backButton.addEventListener('click', function() {
+                setTimeout(() => {
+                    window.location.href = "{{ route('report.menu') }}";
+                }, 1000);
+            });
+
+            document.body.appendChild(backButton);
         });
     </script>
 </body>

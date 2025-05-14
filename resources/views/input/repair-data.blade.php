@@ -64,13 +64,13 @@
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Problem</span>
                         <textarea class="form-control @error('problem') is-invalid @enderror {{ old('problem') ? 'is-valid' : '' }}"
-                            id="problem" name="problem" value="{{ old('problem') }}" required></textarea>
+                            id="problem" name="problem" required>{{ old('problem') }}</textarea>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Countermeasure</span>
                         <textarea
                             class="form-control @error('countermeasure') is-invalid @enderror {{ old('countermeasure') ? 'is-valid' : '' }}"
-                            id="countermeasure" name="countermeasure" value="{{ old('countermeasure') }}" required></textarea>
+                            id="countermeasure" name="countermeasure" required>{{ old('countermeasure') }}</textarea>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-primary text-light">Judgement</span>

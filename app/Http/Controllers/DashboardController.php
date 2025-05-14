@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterList;
+use App\Models\Standard;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -63,6 +64,40 @@ class DashboardController extends Controller
 
         return view('dashboard', compact('warnings', 'dangers'), [
             'masterList' => $masterList ?? null,
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num'],
+            'param_01' => ['required', 'numeric', 'min:0.01'],
+            'param_02' => ['required', 'numeric', 'min:0.01'],
+            'param_03' => ['required', 'numeric', 'min:0.01'],
+            'param_04' => ['required', 'numeric', 'min:0.01'],
+            'param_05' => ['required', 'numeric', 'min:0.01'],
+            'param_06' => ['required', 'numeric', 'min:0.01'],
+            'param_07' => ['required', 'numeric', 'min:0.01'],
+            'param_08' => ['required', 'numeric', 'min:0.01'],
+            'param_09' => ['required', 'numeric', 'min:0.01'],
+            'param_10' => ['required', 'numeric', 'min:0.01'],
+        ]);
+
+        // Ensure numeric values are properly cast
+        foreach (range(1, 9) as $i) {
+            $validated["param_0{$i}"] = (float) $validated["param_0{$i}"];
+        }
+        $validated['param_10'] = (float) $validated['param_10'];
+
+        // Simpan acceptance criteria
+        Standard::create($validated);
+
+        // Bersihkan flag acceptance, set flag result
+        session()->forget('pending_acceptance');
+        session(['pending_result' => $validated['id_num']]);
+
+        return redirect()->route('input.calibration.data')->with([
+            'success' => 'Please input the calibration data.',
         ]);
     }
 }

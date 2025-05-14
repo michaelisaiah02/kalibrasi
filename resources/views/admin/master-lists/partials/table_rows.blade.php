@@ -38,12 +38,6 @@
                 data-location="{{ $masterlist->location }}">
                 Edit
             </button>
-            <button class="btn btn-danger btn-sm btn-delete-master-list" data-id="{{ $masterlist->id }}"
-                data-id-num="{{ $masterlist->id_num }}" data-sn-num="{{ $masterlist->sn_num }}"
-                data-name="{{ $masterlist->equipment->name }}" data-bs-toggle="modal"
-                data-bs-target="#deleteMasterListModal">
-                Delete
-            </button>
         </td>
     </tr>
 @empty

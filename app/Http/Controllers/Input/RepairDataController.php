@@ -21,7 +21,7 @@ class RepairDataController extends Controller
         $validated = $request->validate([
             'id_num' => ['required', 'string', 'max:255'],
             'problem_date' => ['required', 'date', 'before_or_equal:repair_date'],
-            'repair_date' => ['required', 'date', 'before_or_equal:now'],
+            'repair_date' => ['required', 'date', 'after_or_equal:problem_date', 'before_or_equal:now'],
             'problem' => ['required', 'string'],
             'countermeasure' => ['required', 'string'],
             'judgement' => ['required', 'string', 'in:OK,NG,Disposal'],
@@ -37,10 +37,10 @@ class RepairDataController extends Controller
 
     public function edit(Request $request, Repair $repair, $id)
     {
-        // dd($repair);
+        // dd($request->all());
         $validated = $request->validate([
             'problem_date' => ['required', 'date', 'before_or_equal:repair_date'],
-            'repair_date' => ['required', 'date', 'before_or_equal:now'],
+            'repair_date' => ['required', 'date', 'after_or_equal:problem_date', 'before_or_equal:now'],
             'problem' => ['required', 'string'],
             'countermeasure' => ['required', 'string'],
             'judgement' => ['required', 'string', 'in:OK,NG,Disposal'],

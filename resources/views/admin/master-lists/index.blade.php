@@ -234,17 +234,6 @@
                 new bootstrap.Modal(document.getElementById('masterlistModal')).show();
             });
 
-            // Delegasi tombol Delete
-            $(document).on('click', '.btn-delete-master-list', function() {
-                const id = $(this).data('id');
-                const idNum = $(this).data('id-num');
-                const snNum = $(this).data('sn-num');
-                const name = $(this).data('name');
-                $('#deleteMasterListForm').attr('action',
-                    `{{ url('admin/master-lists/delete-master-list') }}/${id}`);
-                $('#deleteMasterListName').text(idNum + '/' + snNum + '/' + name);
-            });
-
             // Form Validation
             $('.needs-validation').on('submit', function(e) {
                 if (!this.checkValidity()) {

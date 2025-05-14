@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/input/repair-data', [RepairDataController::class, 'store'])->name('store.repair');
         Route::post('/input/repair-data/{id}', [RepairDataController::class, 'edit'])->name('edit.repair');
 
-        Route::post('/standards/store', [StandardController::class, 'store'])->name('standards.store');
+        Route::post('/standards/store', [DashboardController::class, 'store'])->name('standards.store');
 
         // API data
         Route::get('/count-equipments/{type_id}', [APIController::class, 'countEquipments'])->name('api.count.equipments');
@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('admin/standards')->group(function () {
             Route::get('/', [StandardController::class, 'index'])->name('admin.standards.index');
             Route::post('/update-standard/{id}', [StandardController::class, 'update'])->name('admin.standards.update');
+            Route::post('/store', [StandardController::class, 'store'])->name('admin.standards.store');
             Route::delete('/delete-standard/{id}', [StandardController::class, 'destroy']);
             Route::get('/search', [StandardController::class, 'search'])->name('admin.standards.search');
         });
