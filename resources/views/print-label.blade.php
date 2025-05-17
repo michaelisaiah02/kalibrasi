@@ -109,12 +109,12 @@
         <p class="text-center">{{ $equipment->id_num }}</p>
     </div>
     <script>
-        // window.onload = function() {
-        //     window.print();
-        //     setTimeout(() => {
-        //         window.location.href = "{{ route('dashboard', ['key' => 'menu-input']) }}";
-        //     }, 1000); // Delay biar gak ke-redirect sebelum sempat print
-        // }
+        window.onload = function() {
+            window.print();
+            setTimeout(() => {
+                window.location.href = "{{ route('dashboard', ['key' => 'menu-input']) }}";
+            }, 1000); // Delay biar gak ke-redirect sebelum sempat print
+        }
     </script>
 </body>
 
