@@ -30,12 +30,12 @@
             font-family: Arial, Helvetica, sans-serif;
             border: 1px solid black;
             box-sizing: border-box;
-            font-size: 5px;
+            font-size: 5pt;
         }
 
         .barcode {
             font-family: 'Free3of9', monospace;
-            font-size: 24pt;
+            font-size: 20pt;
             margin: 0;
             padding: 0;
             line-height: 0.7;
@@ -47,27 +47,30 @@
 
         @media print {
             @page {
-                size: 1cm 3.5cm;
+                size: 3.5cm 1cm;
                 margin: 0;
+            }
+
+            body {
+                width: 3.5cm;
+                height: 0.95cm;
+                margin: 0 auto;
+                font-family: Arial, Helvetica, sans-serif;
+                border: 1px solid black;
+                box-sizing: border-box;
+                font-size: 5.6pt;
+                transform: translateY(0.7px);
             }
 
             .barcode {
                 font-family: 'Free3of9', monospace;
-                font-size: 24pt;
+                font-size: 16pt;
                 margin: 0;
                 padding: 0;
-                line-height: 0.73;
+                line-height: 0.65;
                 /* display: inline-block; */
                 vertical-align: middle;
                 text-align: center;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                transform: translateX(-30px) translateY(50px) rotate(90deg);
             }
 
             .print-wrapper {
@@ -79,10 +82,10 @@
 </head>
 
 <body>
-    <div class="container-fluid py-0 px-1 print-wrapper">
-        <div class="row justify-content-center">
+    <div class="print-wrapper">
+        <div style="display: flex; justify-content: center; padding-right: 0; padding-left: 0; column-gap: 5px;">
             <div class="col-auto">
-                <strong>Valid :
+                <strong>Valid:
                     @if ($equipment->results->count() > 0)
                         {{ $equipment->results->last()->calibration_date->format('d-m-Y') }}
                     @else
@@ -91,7 +94,7 @@
                 </strong>
             </div>
             <div class="col-auto">
-                <strong>Until :
+                <strong>Until:
                     @if ($equipment->results->count() > 0)
                         {{ $equipment->results->last()->calibration_date->addMonth($equipment->calibration_freq)->format('d-m-Y') }}
                     @else
@@ -106,12 +109,12 @@
         <p class="text-center">{{ $equipment->id_num }}</p>
     </div>
     <script>
-        window.onload = function() {
-            window.print();
-            setTimeout(() => {
-                window.location.href = "{{ route('dashboard', ['key' => 'menu-input']) }}";
-            }, 1000); // Delay biar gak ke-redirect sebelum sempat print
-        }
+        // window.onload = function() {
+        //     window.print();
+        //     setTimeout(() => {
+        //         window.location.href = "{{ route('dashboard', ['key' => 'menu-input']) }}";
+        //     }, 1000); // Delay biar gak ke-redirect sebelum sempat print
+        // }
     </script>
 </body>
 
