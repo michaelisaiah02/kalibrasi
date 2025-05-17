@@ -12,6 +12,13 @@
     <link rel="manifest" href="/site.webmanifest" />
     @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
     <style>
+        @font-face {
+            font-family: 'Free3of9';
+            src: url('/fonts/Free3of9.woff') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         @page {
             size: 3.5cm 1cm;
             margin: 0;
@@ -26,10 +33,33 @@
             font-size: 5px;
         }
 
+        .barcode {
+            font-family: 'Free3of9', monospace;
+            font-size: 24pt;
+            margin: 0;
+            padding: 0;
+            line-height: 0.7;
+            /* display: inline-block; */
+            vertical-align: middle;
+            text-align: center;
+        }
+
+
         @media print {
             @page {
-                size: 3.5cm 1cm;
+                size: 1cm 3.5cm;
                 margin: 0;
+            }
+
+            .barcode {
+                font-family: 'Free3of9', monospace;
+                font-size: 24pt;
+                margin: 0;
+                padding: 0;
+                line-height: 0.73;
+                /* display: inline-block; */
+                vertical-align: middle;
+                text-align: center;
             }
 
             body {
@@ -37,12 +67,12 @@
                 padding: 0;
                 display: flex;
                 justify-content: center;
+                transform: translateX(-30px) translateY(50px) rotate(90deg);
             }
 
             .print-wrapper {
                 width: 100%;
                 max-width: 3.5cm;
-                /* Lebar A4 */
             }
         }
     </style>
@@ -70,18 +100,18 @@
                 </strong>
             </div>
         </div>
-        <div class="barcode row justify-content-center">
-            {!! DNS1D::getBarcodeHTML($equipment->id_num, 'C128', 1.1, 20) !!}
-        </div>
+        <p class="barcode row justify-content-center">
+            {{ '*' . $equipment->id_num . '*' }}
+        </p>
         <p class="text-center">{{ $equipment->id_num }}</p>
     </div>
     <script>
-        window.onload = function() {
-            window.print();
-            setTimeout(() => {
-                window.location.href = "{{ route('dashboard', ['key' => 'menu-input']) }}";
-            }, 1000); // Delay biar gak ke-redirect sebelum sempat print
-        }
+        // window.onload = function() {
+        //     window.print();
+        //     setTimeout(() => {
+        //         window.location.href = "{{ route('dashboard', ['key' => 'menu-input']) }}";
+        //     }, 1000); // Delay biar gak ke-redirect sebelum sempat print
+        // }
     </script>
 </body>
 
