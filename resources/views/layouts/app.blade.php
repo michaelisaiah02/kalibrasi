@@ -10,7 +10,6 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    {{-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css"> --}}
     @vite(['resources/css/app.css', 'resources/sass/app.scss', 'resources/js/app.js'])
     @yield('styles')
     @if (!request()->is('login'))
@@ -59,10 +58,10 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="logoutModalLabel">Sesi Berakhir</h5>
+                    <h5 class="modal-title" id="logoutModalLabel">Auto Logout</h5>
                 </div>
                 <div class="modal-body">
-                    Sesi berakhir, silahkan login kembali.
+                    No activity detected. You will be logged out automatically in a few seconds...
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary"
@@ -82,29 +81,29 @@
     @yield('scripts')
     @auth
         <script type="module">
-            let idleTime = 0;
-            const maxIdleTime = 5 * 60 * 1000;
-            const idleStartDelay = 5 * 1000;
-
-            let idleTimeout;
-            let idleInterval;
+            const maxIdleTime = 5 * 60 * 1000; // 5 menit
+            const idleStartDelay = 5 * 1000; // 5 detik
+            let idleTimeout, idleInterval;
+            let lastActiveTime = Date.now();
 
             function resetIdleTimer() {
-                // Kalau sebelumnya sudah ditandai harus logout, jangan izinkan reset
                 if (localStorage.getItem('forceLogout') === 'true') return;
-
+                lastActiveTime = Date.now();
                 clearTimeout(idleTimeout);
                 clearInterval(idleInterval);
-                idleTime = 0;
-
                 idleTimeout = setTimeout(startIdleCounter, idleStartDelay);
+                console.log('[Idle Timer] Reset by user activity');
             }
 
             function startIdleCounter() {
+                console.log('[Idle Timer] Start idle counter');
                 idleInterval = setInterval(() => {
-                    idleTime += 1000;
+                    const now = Date.now();
+                    const idleDuration = now - lastActiveTime;
+                    console.log(`[Idle Timer] Idle duration: ${idleDuration}ms`);
 
-                    if (idleTime >= maxIdleTime) {
+                    if (idleDuration >= maxIdleTime) {
+                        console.log('[Idle Timer] Max idle reached. Triggering logout...');
                         localStorage.setItem('forceLogout', 'true');
                         showLogoutModal();
                     }
@@ -112,32 +111,85 @@
             }
 
             function showLogoutModal() {
-                // Hentikan semua timer
                 clearInterval(idleInterval);
                 clearTimeout(idleTimeout);
-                if (document.getElementById('logoutModal').classList.contains('show')) return;
-                const logoutModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+
+                const modalEl = document.getElementById('logoutModal');
+                if (!modalEl || modalEl.classList.contains('show')) return;
+
+                const logoutModal = new bootstrap.Modal(modalEl);
                 logoutModal.show();
 
+                // Auto logout dalam 10 detik
                 setTimeout(() => {
-                    localStorage.removeItem('forceLogout');
-                    document.getElementById('auto-logout-form').submit();
-                }, 30 * 1000); // kasih delay 5 detik biar user tahu
+                    if (document.getElementById('logoutModal').classList.contains('show')) {
+                        localStorage.removeItem('forceLogout');
+                        document.getElementById('auto-logout-form').submit();
+                    }
+                }, 10 * 1000);
             }
 
-            // Cek saat halaman diload
+            // Saat halaman load
             window.addEventListener('load', () => {
                 if (localStorage.getItem('forceLogout') === 'true') {
+                    console.log('[Idle Timer] Detected forceLogout on page load');
                     showLogoutModal();
                 } else {
                     idleTimeout = setTimeout(startIdleCounter, idleStartDelay);
                 }
             });
 
-            // Reset idle kalau user aktif
+            // Dengarkan event storage dari tab lain
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'forceLogout' && event.newValue === 'true') {
+                    console.log('[Idle Timer] Detected forceLogout from another tab');
+                    showLogoutModal();
+                }
+            });
+
+            // Deteksi aktivitas user
             ['mousemove', 'keydown', 'click', 'scroll'].forEach(event => {
                 document.addEventListener(event, resetIdleTimer);
             });
+        </script>
+    @endauth
+    <div id="connection-indicator" style="display: none; position: fixed; bottom: 1rem; right: 1rem; z-index: 9999;">
+        <div class="alert alert-danger mb-0 py-2 px-3" role="alert">
+            ⚠️ Connection was lost...
+        </div>
+    </div>
+    @auth
+        <script>
+            const connectionIndicator = document.getElementById('connection-indicator');
+            let isOffline = false;
+
+            async function checkConnection() {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000); // timeout 5 detik
+                    const response = await fetch("{{ route('ping') }}", {
+                        method: 'GET',
+                        signal: controller.signal,
+                        cache: 'no-store',
+                    });
+                    clearTimeout(timeoutId);
+
+                    if (!response.ok) throw new Error('Server Error');
+
+                    if (isOffline) {
+                        // Koneksi kembali normal
+                        connectionIndicator.style.display = 'none';
+                        isOffline = false;
+                    }
+                } catch (error) {
+                    if (!isOffline) {
+                        connectionIndicator.style.display = 'block';
+                        isOffline = true;
+                    }
+                }
+            }
+
+            setInterval(checkConnection, 10000); // cek tiap 10 detik
         </script>
     @endauth
 </body>

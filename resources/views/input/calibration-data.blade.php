@@ -5,20 +5,32 @@
         .selected-row {
             background-color: #e2f0ff !important;
         }
+
+        #certificateContent iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 @endsection
 @section('content')
     <div class="container mt-1 mt-md-3">
-        <form method="POST" enctype="multipart/form-data" id="calibration-form">
+        <form method="POST" class="needs-validation" enctype="multipart/form-data" id="calibration-form"
+            action="{{ route('store.calibration') }}">
             @csrf
+            @if ($pending)
+                <input type="hidden" name="master_list_id" value="{{ $pending->master_list_id }}">
+            @endif
+            <input type="hidden" id="id-result" name="id" value="{{ old('id') ?? '' }}">
             <div class="row justify-content-center mb-1">
                 <div class="col-md-6 ps-0 pe-1">
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text bg-primary text-light width-label-1">ID / SN Number</span>
                         <input type="text" aria-label="No ID" placeholder="-"
                             class="form-control text-center @error('id_num') is-invalid @enderror {{ old('id_num') ? 'is-valid' : '' }}"
-                            name="id_num" id="id-num" autocomplete="id_num" required
-                            value="{{ old('id_num') ?? session('pending_result') }}" {{ old('id_num') ? '' : 'autofocus' }}>
+                            name="id_num" id="id-num" autocomplete="off" maxlength="7" required
+                            value="{{ old('id_num') ?? $pending?->masterList->id_num }}"
+                            {{ old('id_num') ? '' : 'autofocus' }}>
                         <input type="text" aria-label="No SN" placeholder="No SN"
                             class="form-control text-center width-label-1" id="sn-num" disabled>
                     </div>
@@ -79,95 +91,85 @@
                         <div class="col">
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 1</span>
-                                <input type="number" class="form-control" id="std-1" placeholder="std" step="any"
-                                    min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-1" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_01') is-invalid @enderror {{ old('param_01') ? 'is-valid' : '' }}"
-                                    id="act-1" name="param_01" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_01') }}">
+                                    id="act-1" name="param_01" placeholder="act" step="0.01"
+                                    value="{{ old('param_01') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 2</span>
-                                <input type="number" class="form-control" id="std-2" placeholder="std"
-                                    step="any" min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-2" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_02') is-invalid @enderror {{ old('param_02') ? 'is-valid' : '' }}"
-                                    id="act-2" name="param_02" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_02') }}">
+                                    id="act-2" name="param_02" placeholder="act" step="0.01"
+                                    value="{{ old('param_02') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 3</span>
-                                <input type="number" class="form-control" id="std-3" placeholder="std"
-                                    step="any" min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-3" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_03') is-invalid @enderror {{ old('param_03') ? 'is-valid' : '' }}"
-                                    id="act-3" name="param_03" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_03') }}">
+                                    id="act-3" name="param_03" placeholder="act" step="0.01"
+                                    value="{{ old('param_03') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 4</span>
-                                <input type="number" class="form-control" id="std-4" placeholder="std"
-                                    step="any" min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-4" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_04') is-invalid @enderror {{ old('param_04') ? 'is-valid' : '' }}"
-                                    id="act-4" name="param_04" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_04') }}">
+                                    id="act-4" name="param_04" placeholder="act" step="0.01"
+                                    value="{{ old('param_04') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 5</span>
-                                <input type="number" class="form-control" id="std-5" placeholder="std"
-                                    step="any" min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-5" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_05') is-invalid @enderror {{ old('param_05') ? 'is-valid' : '' }}"
-                                    id="act-5" name="param_05" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_05') }}">
+                                    id="act-5" name="param_05" placeholder="act" step="0.01"
+                                    value="{{ old('param_05') }}">
                             </div>
                         </div>
                         <div class="col">
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 6</span>
-                                <input type="number" class="form-control" id="std-6" placeholder="std"
-                                    step="any" min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-6" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_06') is-invalid @enderror {{ old('param_06') ? 'is-valid' : '' }}"
-                                    id="act-6" name="param_06" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_06') }}">
+                                    id="act-6" name="param_06" placeholder="act" step="0.01"
+                                    value="{{ old('param_06') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 7</span>
-                                <input type="number" class="form-control" id="std-7" placeholder="std"
-                                    step="any" min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-7" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_07') is-invalid @enderror {{ old('param_07') ? 'is-valid' : '' }}"
-                                    id="act-7" name="param_07" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_07') }}">
+                                    id="act-7" name="param_07" placeholder="act" step="0.01"
+                                    value="{{ old('param_07') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 8</span>
-                                <input type="number" class="form-control" id="std-8" placeholder="std"
-                                    step="any" min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-8" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_08') is-invalid @enderror {{ old('param_08') ? 'is-valid' : '' }}"
-                                    id="act-8" name="param_08" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_08') }}">
+                                    id="act-8" name="param_08" placeholder="act" step="0.01"
+                                    value="{{ old('param_08') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter &nbsp; 9</span>
-                                <input type="number" class="form-control" id="std-9" placeholder="std"
-                                    step="any" min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-9" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_09') is-invalid @enderror {{ old('param_09') ? 'is-valid' : '' }}"
-                                    id="act-9" name="param_09" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_09') }}">
+                                    id="act-9" name="param_09" placeholder="act" step="0.01"
+                                    value="{{ old('param_09') }}">
                             </div>
                             <div class="input-group input-group-sm mb-1">
                                 <span class="input-group-text bg-primary text-light">Parameter 10</span>
-                                <input type="number" class="form-control" id="std-10" placeholder="std"
-                                    step="any" min="0.01" disabled>
+                                <input type="text" class="form-control" id="std-10" placeholder="std" disabled>
                                 <input type="number"
                                     class="form-control @error('param_10') is-invalid @enderror {{ old('param_10') ? 'is-valid' : '' }}"
-                                    id="act-10" name="param_10" required placeholder="act" step="any"
-                                    min="0.01" value="{{ old('param_10') }}">
+                                    id="act-10" name="param_10" placeholder="act" step="0.01"
+                                    value="{{ old('param_10') }}">
                             </div>
                         </div>
                         <div class="col-md-2 align-content-center">
@@ -223,7 +225,8 @@
                     <tbody class="table-group-divider">
                         @foreach ($results as $result)
                             <tr>
-                                <td><button type="button" class="btn btn-primary btn-select-id"
+                                <td><button type="button"
+                                        class="btn btn-primary btn-select-id {{ $pending ? 'disabled' : '' }}"
                                         data-num="{{ $result->id }}"
                                         data-id="{{ $result->id_num }}">{{ $loop->iteration }}</button></td>
                                 <td> {{ $result->calibration_date->format('d-m-Y') }} </td>
@@ -284,21 +287,21 @@
             <div class="row justify-content-end">
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <a href="{{ route('dashboard', ['key' => 'menu-input']) }}"
-                        class="btn btn-primary {{ session()->has('pending_result') ? 'disabled' : '' }}">Close</a>
+                        class="btn btn-primary {{ $pending ? 'disabled' : '' }}">Close</a>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#resultModal">Show All Data</button>
+                    <button type="button" class="btn btn-primary {{ $pending ? 'disabled' : '' }}"
+                        data-bs-toggle="modal" data-bs-target="#resultModal">Show All Data</button>
                 </div>
                 <div class="col-6 col-md-auto text-center mb-1 mb-md-0">
                     <button type="button" id="print" class="btn btn-primary" disabled>Print Label</button>
                 </div>
                 <div class="col-12 col-md-auto text-center mb-1 mb-md-0">
                     <input class="form-control form-control-sm" id="certificate" name="certificate" type="file"
-                        hidden onchange="updateCertificateLabel(this)">
+                        accept=".pdf" hidden onchange="updateCertificateLabel(this)">
                     <button type="button" class="btn btn-primary" id="certificate-label"
                         onclick="document.getElementById('certificate').click()" disabled>Upload Calibration External
                         Certificate</button>
@@ -395,9 +398,14 @@
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header d-flex justify-content-between">
                     <h5 class="modal-title">Calibration Certificate</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="printCertificate()">
+                            <i class="bi bi-printer"></i> Print
+                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                    </div>
                 </div>
                 <div class="modal-body text-center vh-100" id="certificateContent">
                     <div class="text-muted">Loading...</div>
@@ -418,10 +426,16 @@
         function fetchMasterList(idNum) {
             // Cancel request sebelumnya kalau masih berjalan
             if (currentAjax) currentAjax.abort();
-
+            if ($('#id-result').val() !== '') {
+                $('#calibration-form').attr('action',
+                    `{{ url('/input/calibration-data') }}/${$('#id-result').val()}`);
+            }
             currentAjax = $.ajax({
                 url: `{{ url('/') }}/get-masterlist/${idNum}`,
                 method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                },
                 success: function(data) {
                     $('#sn-num').val(data.sn_num);
                     $('#equipment-name').val(data.equipment_name);
@@ -447,22 +461,39 @@
                                 `<option value="${item.id_num}" ${item.id_num == "{{ old('calibrator_equipment') }}" ? 'selected' : ''}>${item.id_num} - ${item.equipment_name}</option>`
                             );
                         });
+                        // Pastikan nilai select sesuai:
+                        const currentVal =
+                            "{{ old('calibrator_equipment') ?? '' }}";
+                        if (currentVal) {
+                            $('#calibrator-equipment').val(currentVal);
+                        }
                         $('#calibrator-equipment-section').removeClass('d-none');
                         $('#calibrator-equipment').prop('required', true).prop('disabled', false)
                             .show();
                         $('#certificate').next('button').prop('required', false).prop('disabled', true).hide();
                         $('#certificate').val('');
+
                     }
-                    $('#std-1').val(data.standard.param_01);
-                    $('#std-2').val(data.standard.param_02);
-                    $('#std-3').val(data.standard.param_03);
-                    $('#std-4').val(data.standard.param_04);
-                    $('#std-5').val(data.standard.param_05);
-                    $('#std-6').val(data.standard.param_06);
-                    $('#std-7').val(data.standard.param_07);
-                    $('#std-8').val(data.standard.param_08);
-                    $('#std-9').val(data.standard.param_09);
-                    $('#std-10').val(data.standard.param_10);
+                    // Tambahan di sini:
+                    if ($('#id-result').val()) {
+                        fetchActualValue($('#id-result').val());
+                    }
+                    for (let i = 1; i <= 10; i++) {
+                        const key = 'param_' + String(i).padStart(2, '0');
+                        const stdValue = data.standard[key];
+                        const stdInput = $('#std-' + i);
+                        const actInput = $('#act-' + i);
+
+                        if (stdValue == 99999) {
+                            stdInput.val('-');
+                            actInput.prop('required', false);
+                            actInput.prop('disabled', true).val(''); // nonaktif dan kosongkan input
+                        } else {
+                            stdInput.val(stdValue);
+                            actInput.prop('required', true);
+                            actInput.prop('disabled', false); // aktifkan kembali kalau perlu
+                        }
+                    }
                     $('#print').prop('disabled', false);
                 },
                 error: function(xhr) {
@@ -481,16 +512,9 @@
                         $('#calibrator-equipment').append(
                             `<option disabled selected>Choose...</option>`);
                         $('#certificate').val('');
-                        $('#std-1').val('');
-                        $('#std-2').val('');
-                        $('#std-3').val('');
-                        $('#std-4').val('');
-                        $('#std-5').val('');
-                        $('#std-6').val('');
-                        $('#std-7').val('');
-                        $('#std-8').val('');
-                        $('#std-9').val('');
-                        $('#std-10').val('');
+                        for (let i = 1; i <= 10; i++) {
+                            $('#std-' + i).val('');
+                        }
                         $('#print').prop('disabled', true);
                     }
                 }
@@ -503,36 +527,33 @@
                 method: 'GET',
                 success: function(data) {
                     $('#calibration-date').val(new Date(data.calibration_date).toISOString().split('T')[0]);
-                    $('#calibrator-equipment').val(data.calibrator_equipment);
+                    $('#calibrator-equipment').val(data.calibrator_equipment).change();
                     $('#judgement').val(data.judgement);
-                    $('#act-1').val(data.param_01);
-                    $('#act-2').val(data.param_02);
-                    $('#act-3').val(data.param_03);
-                    $('#act-4').val(data.param_04);
-                    $('#act-5').val(data.param_05);
-                    $('#act-6').val(data.param_06);
-                    $('#act-7').val(data.param_07);
-                    $('#act-8').val(data.param_08);
-                    $('#act-9').val(data.param_09);
-                    $('#act-10').val(data.param_10);
+                    $('#created_by').val(data.created_by).attr('disabled', true);
+
+                    for (let i = 1; i <= 10; i++) {
+                        const key = 'param_' + String(i).padStart(2, '0');
+                        const value = parseFloat(data[key]);
+                        const actInput = $('#act-' + i);
+
+                        if (value == 0.00) {
+                            actInput.val('').prop('disabled', true);
+                        } else {
+                            actInput.val(value).prop('disabled', false);
+                        }
+                    }
                 },
                 error: function(xhr) {
                     if (xhr.status !== 0) {
-                        // tampilkan error hanya jika bukan karena abort
+                        $('#id-result').val('');
                         $('#calibration-date').val('');
                         $('#calibrator-equipment').val('');
                         $('#judgement').val('');
-                        $('#created_by').val({{ auth()->user()->name }}).attr('disabled', true);
-                        $('#act-1').val('');
-                        $('#act-2').val('');
-                        $('#act-3').val('');
-                        $('#act-4').val('');
-                        $('#act-5').val('');
-                        $('#act-6').val('');
-                        $('#act-7').val('');
-                        $('#act-8').val('');
-                        $('#act-9').val('');
-                        $('#act-10').val('');
+                        $('#created_by').val(@json(auth()->user()->name)).attr('disabled', true);
+
+                        for (let i = 1; i <= 10; i++) {
+                            $('#act-' + i).val('').prop('disabled', false);
+                        }
                     }
                 }
             });
@@ -542,7 +563,7 @@
             const val = $(this).val().trim();
             clearTimeout(debounceTimer);
 
-            // validasi minimal 5 karakter misalnya, atau harus ada dash kayak TIM-001
+            // validasi minimal 7 karakter
             if (val.length < 6) return;
 
             debounceTimer = setTimeout(() => {
@@ -565,6 +586,8 @@
             const selectedId = $(this).data('id');
             const num = $(this).data('num');
 
+            $('#id-result').val(num);
+
             // trigger autofill
             $('#id-num').val(selectedId).trigger('input');
 
@@ -574,7 +597,6 @@
 
             $('#calibration-form').attr('action',
                 `{{ url('/input/calibration-data') }}/${num}`);
-            fetchActualValue(num);
         });
 
 
@@ -594,10 +616,8 @@
 
             container.html('<div class="text-muted">Loading...</div>'); // reset dulu
 
-            if (['jpg', 'jpeg', 'png'].includes(ext)) {
-                container.html(`<img src="${path}" class="img-fluid" alt="Certificate">`);
-            } else if (ext === 'pdf') {
-                container.html(`<iframe src="${path}" style="border: none;"></iframe>`);
+            if (ext === 'pdf') {
+                container.html(`<iframe loading="lazy" src="${path}"></iframe>`);
             } else {
                 container.html(`<div class="text-danger">Format file tidak dikenali: .${ext}</div>`);
             }
@@ -611,7 +631,8 @@
         });
 
         // focus pada input ID atau calibration date maka ubah action form jadi insert
-        $('#id-num, #calibration-date').on('focus', function() {
+        $('#id-num').on('focus', function() {
+            $('#id-result').val('');
             $('#calibration-form').attr('action', '{{ route('store.calibration') }}');
         });
 
@@ -635,21 +656,35 @@
                 const tag = e.target.tagName.toLowerCase();
                 // Hanya submit kalau fokus di input atau select (bukan button/table/etc)
                 if (['input', 'textarea', 'button', 'select'].includes(tag)) {
-                    const invalidElement = document.querySelector('.is-invalid');
-                    if (invalidElement) {
-                        invalidElement.focus();
-                    } else {
-                        document.getElementById('calibration-form').submit();
+                    const form = document.querySelector('.needs-validation');
+                    if (!form.checkValidity()) {
+                        e.preventDefault();
+                        const firstInvalid = form.querySelector(':invalid');
+                        if (firstInvalid) {
+                            firstInvalid.focus();
+                            firstInvalid.reportValidity();
+                        }
                     }
                 }
             }
         });
+
+        function printCertificate() {
+            const iframe = document.querySelector('#certificateContent iframe');
+            if (iframe && iframe.src) {
+                const printWindow = window.open(iframe.src, '_blank');
+                // Tidak semua browser bisa langsung print PDF, tapi bisa diarahkan ke preview cetak
+            } else {
+                alert('Tidak ada sertifikat untuk dicetak.');
+            }
+        }
     </script>
-    @session('pending_result')
+
+    @if ($pending)
         <script>
             // Cegah back dan refresh
             history.pushState(null, null, location.href);
             window.onpopstate = () => history.pushState(null, null, location.href);
         </script>
-    @endsession
+    @endif
 @endsection

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('id_num')->unique();
             $table->string('sn_num');
             $table->string('capacity');
-            $table->integer('accuracy')->unsigned();
+            $table->decimal('accuracy', 10, 2);
 
             $table->foreignId('unit_id')->nullable()->constrained('units')
                 ->onUpdate('cascade')->onDelete('set null');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Input;
 
 use App\Http\Controllers\Controller;
+use App\Models\IncompleteInput;
 use App\Models\Result;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,11 +13,14 @@ use function PHPUnit\Framework\isNull;
 
 class CalibrationDataController extends Controller
 {
-    public function create(Result $result)
+    public function create()
     {
         return view('input.calibration-data', [
             'title' => 'CALIBRATION DATA INPUT',
-            'results' => $result->all(),
+            'results' => Result::all(),
+            'pending' => IncompleteInput::forCurrentUser()
+                ->atStage('calibration')
+                ->first(),
         ]);
     }
 
@@ -28,19 +32,19 @@ class CalibrationDataController extends Controller
             'calibrator_equipment' => $request->calibration_type === 'Internal'
                 ? 'required|exists:master_lists,id_num'
                 : 'nullable',
-            'param_01' => 'required|numeric|min:0.01',
-            'param_02' => 'required|numeric|min:0.01',
-            'param_03' => 'required|numeric|min:0.01',
-            'param_04' => 'required|numeric|min:0.01',
-            'param_05' => 'required|numeric|min:0.01',
-            'param_06' => 'required|numeric|min:0.01',
-            'param_07' => 'required|numeric|min:0.01',
-            'param_08' => 'required|numeric|min:0.01',
-            'param_09' => 'required|numeric|min:0.01',
-            'param_10' => 'required|numeric|min:0.01',
+            'param_01' => 'nullable|numeric',
+            'param_02' => 'nullable|numeric',
+            'param_03' => 'nullable|numeric',
+            'param_04' => 'nullable|numeric',
+            'param_05' => 'nullable|numeric',
+            'param_06' => 'nullable|numeric',
+            'param_07' => 'nullable|numeric',
+            'param_08' => 'nullable|numeric',
+            'param_09' => 'nullable|numeric',
+            'param_10' => 'nullable|numeric',
             'judgement' => 'required|string|in:OK,NG,Disposal',
             'certificate' => $request->calibration_type === 'External'
-                ? 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
+                ? 'required|file|mimes:pdf|max:2048'
                 : 'nullable',
         ]);
 
@@ -48,11 +52,18 @@ class CalibrationDataController extends Controller
         $validated['created_by'] = auth()->user()->employeeID;
 
         foreach (range(1, 9) as $i) {
-            $validated["param_0{$i}"] = (float) $validated["param_0{$i}"];
+            $key = "param_0{$i}";
+            if (isset($validated[$key])) {
+                $validated[$key] = (float) $validated[$key];
+            }
         }
-        $validated['param_10'] = (float) $validated['param_10'];
 
-        if (isNull($validated['calibration_date'])) {
+        if (isset($validated['param_10'])) {
+            $validated['param_10'] = (float) $validated['param_10'];
+        }
+
+        if (is_null($validated['calibration_date'])) {
+            dd($validated);
             $validated['calibration_date'] = now()->toDateString();
         }
 
@@ -75,17 +86,18 @@ class CalibrationDataController extends Controller
         // Simpan hasil kalibrasi
         $result = Result::create($validated);
 
-        // Cek dan hapus jika lebih dari 3
+        // Cek dan hapus jika lebih dari 5
         $oldResults = Result::where('id_num', $validated['id_num'])
             ->orderByDesc('calibration_date')
-            ->skip(3)->take(PHP_INT_MAX)->get();
+            ->skip(5)->take(PHP_INT_MAX)->get();
 
         foreach ($oldResults as $old) {
             $old->delete();
         }
 
-        // Hapus session pending_result
-        session()->forget('pending_result');
+        IncompleteInput::forCurrentUser()
+            ->where('master_list_id', $request->master_list_id)
+            ->delete();
 
         return redirect()->route('input.calibration.data')->with('success', 'Calibration result were successfully saved.');
     }
@@ -98,19 +110,19 @@ class CalibrationDataController extends Controller
             'calibrator_equipment' => $request->calibration_type === 'Internal'
                 ? 'required|exists:master_lists,id_num'
                 : 'nullable',
-            'param_01' => 'required|numeric|min:0.01',
-            'param_02' => 'required|numeric|min:0.01',
-            'param_03' => 'required|numeric|min:0.01',
-            'param_04' => 'required|numeric|min:0.01',
-            'param_05' => 'required|numeric|min:0.01',
-            'param_06' => 'required|numeric|min:0.01',
-            'param_07' => 'required|numeric|min:0.01',
-            'param_08' => 'required|numeric|min:0.01',
-            'param_09' => 'required|numeric|min:0.01',
-            'param_10' => 'required|numeric|min:0.01',
+            'param_01' => 'nullable|numeric',
+            'param_02' => 'nullable|numeric',
+            'param_03' => 'nullable|numeric',
+            'param_04' => 'nullable|numeric',
+            'param_05' => 'nullable|numeric',
+            'param_06' => 'nullable|numeric',
+            'param_07' => 'nullable|numeric',
+            'param_08' => 'nullable|numeric',
+            'param_09' => 'nullable|numeric',
+            'param_10' => 'nullable|numeric',
             'judgement' => 'required|string|in:OK,NG,Disposal',
             'certificate' => $request->calibration_type === 'External'
-                ? 'file|mimes:jpg,jpeg|max:2048'
+                ? 'file|mimes:pdf|max:2048'
                 : 'nullable',
         ]);
 
@@ -134,11 +146,17 @@ class CalibrationDataController extends Controller
         }
 
         foreach (range(1, 9) as $i) {
-            $validated["param_0{$i}"] = (float) $validated["param_0{$i}"];
+            $key = "param_0{$i}";
+            if (isset($validated[$key])) {
+                $validated[$key] = (float) $validated[$key];
+            }
         }
-        $validated['param_10'] = (float) $validated['param_10'];
 
-        if (isNull($validated['calibration_date'])) {
+        if (isset($validated['param_10'])) {
+            $validated['param_10'] = (float) $validated['param_10'];
+        }
+
+        if (is_null($validated['calibration_date'])) {
             $validated['calibration_date'] = now()->toDateString();
         }
 

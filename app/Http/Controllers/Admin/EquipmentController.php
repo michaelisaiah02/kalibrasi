@@ -22,7 +22,7 @@ class EquipmentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type_id' => ['required', 'string', 'unique:equipments,type_id'],
+            'type_id' => ['required', 'string', 'min:3', 'unique:equipments,type_id'],
             'name' => ['required', 'string', 'max:255'],
         ]);
 
@@ -40,7 +40,7 @@ class EquipmentController extends Controller
 
         $validated = $request->validate([
             'type_id' => [
-                'required',
+                'required', 'min:3',
                 Rule::unique('equipments', 'type_id')->ignore($equipment->id),
             ],
             'name' => ['required', 'string', 'max:255'],

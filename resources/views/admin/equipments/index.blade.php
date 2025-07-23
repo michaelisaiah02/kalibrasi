@@ -60,9 +60,9 @@
                     <input type="hidden" name="equipment_id" id="equipment-id">
                     <div class="mb-3">
                         <label for="type-id" class="form-label">Type ID</label>
-                        <input type="text" class="form-control" id="type-id" name="type_id" maxlength="3"
+                        <input type="text" class="form-control" id="type-id" name="type_id" minlength="3" maxlength="3"
                             autocomplete="off" required>
-                        <div class="invalid-feedback">Type ID is required.</div>
+                        <div class="invalid-feedback">Type ID is required and must be exactly 3 characters.</div>
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>

@@ -2,8 +2,7 @@
 
 @section('content')
     <div class="container mt-md-3">
-        <form action="{{ route('report.search') }}" method="POST">
-            @csrf
+        <form action="{{ route('report.search') }}" method="GET">
             <div class="row justify-content-md-around justify-content-center my-3">
                 <div class="col-md">
                     <div class="input-group mb-md-5 mb-1">
@@ -18,7 +17,7 @@
                     <div class="input-group mb-md-5 mb-1">
                         <label class="input-group-text bg-primary text-light" for="Name-alat-ukur">Location</label>
                         <input type="text" aria-label="Location" placeholder="Search" class="form-control w-25"
-                            name="no_sn" id="no-sn">
+                            name="location" id="location">
                     </div>
                 </div>
                 <div class="col-md">

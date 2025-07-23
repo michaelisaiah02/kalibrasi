@@ -51,4 +51,9 @@ class MasterList extends Model
     {
         return $this->hasMany(Repair::class, 'id_num', 'id_num');
     }
+
+    public function latestResult()
+    {
+        return $this->hasOne(Result::class, 'id_num', 'id_num')->latestOfMany('calibration_date');
+    }
 }

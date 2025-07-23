@@ -19,18 +19,22 @@ class ReportController extends Controller
 
     public function search(Request $request)
     {
+        $request->validate([
+            'date_from' => 'nullable|date',
+            'date_to' => 'nullable|date|after_or_equal:date_from',
+        ]);
+
         $from = $request->input('date_from');
         $to = $request->input('date_to');
         $loc = $request->input('location');
         $cal = $request->input('calibration_type');
+        $typeId = $request->input('type_id');
         $judg = $request->input('judgement');
 
         // Jika tombol Masterlist diklik
         if ($request->has('master_lists')) {
             $query = MasterList::query()
-                ->with(['equipment', 'unit', 'results' => function ($q) {
-                    $q->latest('calibration_date')->limit(1);
-                }]);
+                ->with(['equipment', 'unit', 'latestResult']);
 
             // Filter tanggal first_used
             if ($from && $to) {
@@ -47,13 +51,16 @@ class ReportController extends Controller
             if ($cal) {
                 $query->where('calibration_type', $cal);
             }
+            if ($typeId) {
+                $query->where('type_id', $typeId);
+            }
 
             if ($judg) {
-                $query->whereHas('results', function ($q) use ($judg) {
-                    $q->latest('calibration_date')->limit(1)
-                        ->where('judgement', $judg);
+                $query->whereHas('latestResult', function ($q) use ($judg) {
+                    $q->where('judgement', $judg);
                 });
             }
+
             $results = $query->paginate(5)->withQueryString();
 
             return view('report.masterlist', compact('results'))
@@ -63,7 +70,6 @@ class ReportController extends Controller
         // Jika tombol Repair diklik
         if ($request->has('repairs')) {
             $query = Repair::query()->with(['masterList']);
-            // dd($query->get());
             if ($from && $to) {
                 $query->whereBetween('repair_date', [$from, $to]);
             } elseif ($from) {
@@ -73,7 +79,19 @@ class ReportController extends Controller
             }
 
             if ($loc) {
-                $query->where('location', $loc);
+                $query->whereHas('masterList', function ($q) use ($loc) {
+                    $q->where('location', $loc);
+                });
+            }
+            if ($cal) {
+                $query->whereHas('masterList', function ($q) use ($cal) {
+                    $q->where('calibration_type', $cal);
+                });
+            }
+            if ($typeId) {
+                $query->whereHas('masterList', function ($q) use ($typeId) {
+                    $q->where('type_id', $typeId);
+                });
             }
             if ($judg) {
                 $query->where('judgement', $judg);
@@ -85,6 +103,6 @@ class ReportController extends Controller
                 ->with('title', 'REPORT - REPAIR');
         }
 
-        return redirect()->back()->with('error', 'Pilih jenis laporan yang ingin ditampilkan.');
+        return redirect()->back()->with('error', 'Select the type of report you want to view.');
     }
 }

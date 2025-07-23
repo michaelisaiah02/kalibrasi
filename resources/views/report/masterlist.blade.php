@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('styles')
+    <style>
+        #certificateContent iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container mt-4">
         @if ($results->isEmpty())
@@ -18,6 +28,7 @@
                             <th>Brand</th>
                             <th>Calib. Type</th>
                             <th>1<sup>st</sup> Used</th>
+                            <th>Last Calib.</th>
                             <th>Rank</th>
                             <th>Freq (bln)</th>
                             <th>Acceptance Criteria</th>
@@ -27,7 +38,6 @@
                             <th>Last Result</th>
                         </tr>
                     </thead>
-                    {{-- @dd($results) --}}
                     <tbody>
                         @foreach ($results as $i => $item)
                             <tr class="text-center">
@@ -39,18 +49,24 @@
                                 <td>{{ optional($item->unit)->symbol ?? '-' }}</td>
                                 <td>{{ $item->brand }}</td>
                                 <td>{{ $item->calibration_type }}</td>
-                                <td>{{ \Carbon\Carbon::parse($item->first_used)->format('d-m-Y') }}</td>
+                                <td>{{ $item->first_used->format('d-m-Y') }}</td>
+                                @if ($item->latestResult)
+                                    <td>{{ $item->latestResult->calibration_date->format('d-m-Y') }}</td>
+                                @else
+                                    <td>{{ $item->first_used->format('d-m-Y') }}</td>
+                                @endif
                                 <td>{{ $item->rank }}</td>
                                 <td>{{ $item->calibration_freq }}</td>
                                 <td>{{ $item->acceptance_criteria }}</td>
                                 <td>{{ $item->pic }}</td>
                                 <td>{{ $item->location }}</td>
                                 <td>
-                                    @if ($item->results->last()->certificate)
+                                    {{-- Last Certificate --}}
+                                    @if ($item->latestResult && $item->latestResult->certificate)
                                         <button type="button" class="btn btn-sm btn-primary btn-view-certificate"
                                             data-bs-toggle="modal" data-bs-target="#certificateModal"
-                                            data-path="{{ asset('storage/' . $item->results->last()->certificate) }}"
-                                            data-ext="{{ pathinfo($item->results->last()->certificate, PATHINFO_EXTENSION) }}">
+                                            data-path="{{ asset('storage/' . $item->latestResult->certificate) }}"
+                                            data-ext="{{ pathinfo($item->latestResult->certificate, PATHINFO_EXTENSION) }}">
                                             Show
                                         </button>
                                     @else
@@ -58,10 +74,15 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="btn btn-sm btn-primary"
-                                        href="{{ route('print.report.masterlist', $item->id_num) }}">
-                                        {{ $item->results->first()->judgement }}
-                                    </a>
+                                    {{-- Last Result --}}
+                                    @if ($item->latestResult && $item->latestResult->judgement)
+                                        <a class="btn btn-sm btn-primary"
+                                            href="{{ route('print.report.masterlist', $item->id_num) }}">
+                                            {{ $item->latestResult->judgement }}
+                                        </a>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -73,9 +94,14 @@
             aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header d-flex justify-content-between">
                         <h5 class="modal-title">Calibration Certificate</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="printCertificate()">
+                                <i class="bi bi-printer"></i> Print
+                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
                     </div>
                     <div class="modal-body text-center vh-100" id="certificateContent">
                         <div class="text-muted">Loading...</div>
@@ -93,6 +119,17 @@
 @endsection
 
 @section('scripts')
+    <script>
+        function printCertificate() {
+            const iframe = document.querySelector('#certificateContent iframe');
+            if (iframe && iframe.src) {
+                const printWindow = window.open(iframe.src, '_blank');
+                // Tidak semua browser bisa langsung print PDF, tapi bisa diarahkan ke preview cetak
+            } else {
+                alert('Tidak ada sertifikat untuk dicetak.');
+            }
+        }
+    </script>
     <script type="module">
         $(document).ready(function() {
             $('.pagination nav').addClass('w-100');
@@ -105,10 +142,8 @@
 
             container.html('<div class="text-muted">Loading...</div>'); // reset dulu
 
-            if (['jpg', 'jpeg', 'png'].includes(ext)) {
-                container.html(`<img src="${path}" class="img-fluid" alt="Certificate">`);
-            } else if (ext === 'pdf') {
-                container.html(`<iframe src="${path}" style="border: none;"></iframe>`);
+            if (ext === 'pdf') {
+                container.html(`<iframe loading="lazy" src="${path}"></iframe>`);
             } else {
                 container.html(`<div class="text-danger">Format file tidak dikenali: .${ext}</div>`);
             }

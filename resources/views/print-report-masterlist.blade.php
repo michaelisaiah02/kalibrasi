@@ -142,67 +142,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_01 }}</td>
-                        <td colspan="2">{{ $result->param_01 }}</td>
-                        <td>{{ $result->param_01 - $result->masterList->standard->param_01 }}</td>
-                        <td colspan="3" rowspan="10">{{ $result->judgement }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_02 }}</td>
-                        <td colspan="2">{{ $result->param_02 }}</td>
-                        <td>{{ $result->param_02 - $result->masterList->standard->param_02 }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_03 }}</td>
-                        <td colspan="2">{{ $result->param_03 }}</td>
-                        <td>{{ $result->param_03 - $result->masterList->standard->param_03 }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_04 }}</td>
-                        <td colspan="2">{{ $result->param_04 }}</td>
-                        <td>{{ $result->param_04 - $result->masterList->standard->param_04 }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">5</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_05 }}</td>
-                        <td colspan="2">{{ $result->param_05 }}</td>
-                        <td>{{ $result->param_05 - $result->masterList->standard->param_05 }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">6</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_06 }}</td>
-                        <td colspan="2">{{ $result->param_06 }}</td>
-                        <td>{{ $result->param_06 - $result->masterList->standard->param_06 }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">7</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_07 }}</td>
-                        <td colspan="2">{{ $result->param_07 }}</td>
-                        <td>{{ $result->param_07 - $result->masterList->standard->param_07 }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">8</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_08 }}</td>
-                        <td colspan="2">{{ $result->param_08 }}</td>
-                        <td>{{ $result->param_08 - $result->masterList->standard->param_08 }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">9</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_09 }}</td>
-                        <td colspan="2">{{ $result->param_09 }}</td>
-                        <td>{{ $result->param_09 - $result->masterList->standard->param_09 }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">10</th>
-                        <td colspan="2">{{ $result->masterList->standard->param_10 }}</td>
-                        <td colspan="2">{{ $result->param_10 }}</td>
-                        <td>{{ $result->param_10 - $result->masterList->standard->param_10 }}</td>
-                    </tr>
+                    @for ($i = 1; $i <= 10; $i++)
+                        @php
+                            $key = 'param_' . str_pad($i, 2, '0', STR_PAD_LEFT);
+                            $std = $result->masterList->standard->$key;
+                            $val = $result->$key;
+                        @endphp
+                        <tr>
+                            <th scope="row">{{ $i }}</th>
+                            @if ($std == 99999)
+                                <td colspan="2">-</td>
+                                <td colspan="2">-</td>
+                                <td>-</td>
+                            @else
+                                <td colspan="2">{{ $std }}</td>
+                                <td colspan="2">{{ $val }}</td>
+                                <td>{{ $val - $std }}</td>
+                            @endif
+
+                            @if ($i == 1)
+                                <td colspan="3" rowspan="10">{{ $result->judgement }}</td>
+                            @endif
+                        </tr>
+                    @endfor
                 </tbody>
             </table>
         </div>

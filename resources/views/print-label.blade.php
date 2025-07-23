@@ -20,46 +20,45 @@
         }
 
         @page {
-            size: 3.5cm 1cm;
+            size: 3.5cm 0.98cm;
             margin: 0;
         }
 
         body {
             width: 3.5cm;
-            height: 1cm;
+            height: 0.93cm;
             font-family: Arial, Helvetica, sans-serif;
-            border: 1px solid black;
+            border: 2px solid black;
             box-sizing: border-box;
-            font-size: 5pt;
+            font-size: 5.8pt;
+            transform: translateY(0.7px);
         }
 
         .barcode {
             font-family: 'Free3of9', monospace;
-            font-size: 20pt;
+            font-size: 16pt;
             margin: 0;
             padding: 0;
-            line-height: 0.7;
-            /* display: inline-block; */
-            vertical-align: middle;
+            line-height: 0.60;
+            vertical-align: text-top;
             text-align: center;
         }
 
 
         @media print {
             @page {
-                size: 3.5cm 1cm;
-                margin: 0;
+                size: 3.5cm 0.98cm;
             }
 
             body {
                 width: 3.5cm;
-                height: 0.95cm;
-                margin: 0 auto;
+                height: 0.93cm;
                 font-family: Arial, Helvetica, sans-serif;
-                border: 1px solid black;
+                border: 2px solid black;
                 box-sizing: border-box;
-                font-size: 5.6pt;
+                font-size: 5.8pt;
                 transform: translateY(0.7px);
+                line-height: 0;
             }
 
             .barcode {
@@ -67,15 +66,16 @@
                 font-size: 16pt;
                 margin: 0;
                 padding: 0;
-                line-height: 0.65;
-                /* display: inline-block; */
-                vertical-align: middle;
+                line-height: 0.6;
+                vertical-align: text-top;
                 text-align: center;
             }
 
             .print-wrapper {
                 width: 100%;
                 max-width: 3.5cm;
+                transform: translateY(-2px);
+                 line-height: 1.5;
             }
         }
     </style>
@@ -83,7 +83,7 @@
 
 <body>
     <div class="print-wrapper">
-        <div style="display: flex; justify-content: center; padding-right: 0; padding-left: 0; column-gap: 5px;">
+        <div style="display: flex; justify-content: center; padding-right: 0; padding-left: 0; column-gap: 2px;">
             <div class="col-auto">
                 <strong>Valid:
                     @if ($equipment->results->count() > 0)
@@ -106,7 +106,8 @@
         <p class="barcode row justify-content-center">
             {{ '*' . $equipment->id_num . '*' }}
         </p>
-        <p class="text-center">{{ $equipment->id_num }}</p>
+        <p class="text-center" style="justify-content: center; font-weight: bold;">
+                {{ $equipment->id_num }}</p>
     </div>
     <script>
         window.onload = function() {

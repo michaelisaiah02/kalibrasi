@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\IncompleteInput;
 use App\Models\MasterList;
 use App\Models\Standard;
 use Carbon\Carbon;
@@ -53,34 +54,30 @@ class DashboardController extends Controller
                 $warnings[] = $msg;
             } elseif ($now->gt($dueDate)) {
                 // sudah lewat due date
-                $dangers[] = $msg." (should be calibrated before: {$dueDate->format('d-m-Y')})";
+                $dangers[] = $msg . " (should be calibrated before: {$dueDate->format('d-m-Y')})";
             }
         }
-        // dd($warnings);
 
-        if (session()->has('pending_acceptance')) {
-            $masterList = MasterList::where('id_num', session('pending_acceptance'))->first();
-        }
+        $pending = IncompleteInput::forCurrentUser()->atStage('standard')->first();
+        $masterList = $pending?->masterList;
 
-        return view('dashboard', compact('warnings', 'dangers'), [
-            'masterList' => $masterList ?? null,
-        ]);
+        return view('dashboard', compact('warnings', 'dangers', 'masterList', 'pending'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'id_num' => ['required', 'string', 'max:255', 'unique:standards,id_num'],
-            'param_01' => ['required', 'numeric', 'min:0.01'],
-            'param_02' => ['required', 'numeric', 'min:0.01'],
-            'param_03' => ['required', 'numeric', 'min:0.01'],
-            'param_04' => ['required', 'numeric', 'min:0.01'],
-            'param_05' => ['required', 'numeric', 'min:0.01'],
-            'param_06' => ['required', 'numeric', 'min:0.01'],
-            'param_07' => ['required', 'numeric', 'min:0.01'],
-            'param_08' => ['required', 'numeric', 'min:0.01'],
-            'param_09' => ['required', 'numeric', 'min:0.01'],
-            'param_10' => ['required', 'numeric', 'min:0.01'],
+            'param_01' => ['required', 'numeric'],
+            'param_02' => ['required', 'numeric'],
+            'param_03' => ['required', 'numeric'],
+            'param_04' => ['required', 'numeric'],
+            'param_05' => ['required', 'numeric'],
+            'param_06' => ['required', 'numeric'],
+            'param_07' => ['required', 'numeric'],
+            'param_08' => ['required', 'numeric'],
+            'param_09' => ['required', 'numeric'],
+            'param_10' => ['required', 'numeric'],
         ]);
 
         // Ensure numeric values are properly cast
@@ -92,9 +89,14 @@ class DashboardController extends Controller
         // Simpan acceptance criteria
         Standard::create($validated);
 
-        // Bersihkan flag acceptance, set flag result
-        session()->forget('pending_acceptance');
-        session(['pending_result' => $validated['id_num']]);
+        // Update jadi tahap calibration
+        IncompleteInput::updateOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'master_list_id' => $request->master_list_id,
+            ],
+            ['stage' => 'calibration']
+        );
 
         return redirect()->route('input.calibration.data')->with([
             'success' => 'Please input the calibration data.',

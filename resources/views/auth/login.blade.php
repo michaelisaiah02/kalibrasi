@@ -47,3 +47,29 @@
         </div>
     </div>
 @endsection
+
+@section('scripts')
+    <script>
+        const MAX_IDLE_TIME = 15 * 60 * 1000; // 15 menit
+        let lastActivity = Date.now();
+
+        function resetActivityTimer() {
+            lastActivity = Date.now();
+        }
+
+        function checkIdleTime() {
+            const now = Date.now();
+            if (now - lastActivity > MAX_IDLE_TIME) {
+                location.reload(); // reload kalau terlalu lama diam
+            }
+        }
+
+        // Dengarkan semua aktivitas user
+        ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
+            document.addEventListener(evt, resetActivityTimer);
+        });
+
+        // Cek setiap 1 menit
+        setInterval(checkIdleTime, 60 * 1000);
+    </script>
+@endsection

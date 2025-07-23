@@ -16,16 +16,16 @@
                 <span class="text-danger">N/A</span>
             @endisset
         </td>
-        <td>{{ $standard->param_01 }}</td>
-        <td>{{ $standard->param_02 }}</td>
-        <td>{{ $standard->param_03 }}</td>
-        <td>{{ $standard->param_04 }}</td>
-        <td>{{ $standard->param_05 }}</td>
-        <td>{{ $standard->param_06 }}</td>
-        <td>{{ $standard->param_07 }}</td>
-        <td>{{ $standard->param_08 }}</td>
-        <td>{{ $standard->param_09 }}</td>
-        <td>{{ $standard->param_10 }}</td>
+        <td>{{ $standard->param_01 == 99999 ? '-' : $standard->param_01 }}</td>
+        <td>{{ $standard->param_02 == 99999 ? '-' : $standard->param_02 }}</td>
+        <td>{{ $standard->param_03 == 99999 ? '-' : $standard->param_03 }}</td>
+        <td>{{ $standard->param_04 == 99999 ? '-' : $standard->param_04 }}</td>
+        <td>{{ $standard->param_05 == 99999 ? '-' : $standard->param_05 }}</td>
+        <td>{{ $standard->param_06 == 99999 ? '-' : $standard->param_06 }}</td>
+        <td>{{ $standard->param_07 == 99999 ? '-' : $standard->param_07 }}</td>
+        <td>{{ $standard->param_08 == 99999 ? '-' : $standard->param_08 }}</td>
+        <td>{{ $standard->param_09 == 99999 ? '-' : $standard->param_09 }}</td>
+        <td>{{ $standard->param_10 == 99999 ? '-' : $standard->param_10 }}</td>
         <td>
             <button class="btn btn-primary btn-sm btn-edit-standard" data-id="{{ $standard->id }}"
                 data-id-num="{{ $standard->id_num }}" data-param01="{{ $standard->param_01 }}"

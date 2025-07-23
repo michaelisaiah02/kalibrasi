@@ -28,7 +28,6 @@
     </style>
 @endsection
 @section('content')
-    {{-- @dd($error) --}}
     <div class="container-fluid overflow-hidden m-0">
         <h5 class="text-center text-primary position-relative m-0" id="warning">
             <span class="bg-warning rounded-3 p-2 m-0" id="warning-text">&nbsp;</span>
@@ -102,7 +101,7 @@
             </div>
         </div>
     </div>
-    @if (session('pending_acceptance'))
+    @if ($pending)
         <!-- Modal tidak bisa ditutup -->
         <div class="modal fade" id="acceptanceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="acceptanceModalLabel" aria-hidden="true">
@@ -110,6 +109,7 @@
                 <form class="modal-content needs-validation" method="POST" id="standardForm"
                     action="{{ route('standards.store') }}" novalidate>
                     @csrf
+                    <input type="hidden" name="master_list_id" value="{{ $pending->master_list_id }}">
                     <div class="modal-header">
                         <h5 class="modal-title" id="standardModalLabel">Add Standard</h5>
                     </div>
@@ -128,63 +128,64 @@
                         <div class="input-group input-group-sm mb-3">
                             <div class="form-floating">
                                 <input type="number" class="form-control form-control-sm" id="param-01"
-                                    placeholder="Parameter 1" name="param_01" step="any" min="0.01" required>
+                                    placeholder="Parameter 1" name="param_01" step="0.01" min="0.01" required>
                                 <label for="param-01">Parameter 1</label>
                             </div>
                             <div class="form-floating">
                                 <input type="number" class="form-control form-control-sm" id="param-02"
-                                    placeholder="Parameter 2" name="param_02" step="any" min="0.01" required>
+                                    placeholder="Parameter 2" name="param_02" step="0.01" min="0.01" required>
                                 <label for="param-02">Parameter 2</label>
                             </div>
                         </div>
                         <div class="input-group mb-3">
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="param-03" placeholder="Parameter 3"
-                                    name="param_03" step="any" min="0.01" required>
+                                    name="param_03" step="0.01" min="0.01" required>
                                 <label for="param-03">Parameter 3</label>
                             </div>
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="param-04" placeholder="Parameter 4"
-                                    name="param_04" step="any" min="0.01" required>
+                                    name="param_04" step="0.01" min="0.01" required>
                                 <label for="param-04">Parameter 4</label>
                             </div>
                         </div>
                         <div class="input-group mb-3">
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="param-05" placeholder="Parameter 5"
-                                    name="param_05" step="any" min="0.01" required>
+                                    name="param_05" step="0.01" min="0.01" required>
                                 <label for="param-05">Parameter 5</label>
                             </div>
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="param-06" placeholder="Parameter 6"
-                                    name="param_06" step="any" min="0.01" required>
+                                    name="param_06" step="0.01" min="0.01" required>
                                 <label for="param-06">Parameter 6</label>
                             </div>
                         </div>
                         <div class="input-group mb-3">
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="param-07" placeholder="Parameter 7"
-                                    name="param_07" step="any" min="0.01" required>
+                                    name="param_07" step="0.01" min="0.01" required>
                                 <label for="param-07">Parameter 7</label>
                             </div>
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="param-08" placeholder="Parameter 8"
-                                    name="param_08" step="any" min="0.01" required>
+                                    name="param_08" step="0.01" min="0.01" required>
                                 <label for="param-08">Parameter 8</label>
                             </div>
                         </div>
                         <div class="input-group mb-3">
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="param-09" placeholder="Parameter 9"
-                                    name="param_09" step="any" min="0.01" required>
+                                    name="param_09" step="0.01" min="0.01" required>
                                 <label for="param-09">Parameter 9</label>
                             </div>
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="param-10" placeholder="Parameter 10"
-                                    name="param_10" step="any" min="0.01" required>
+                                    name="param_10" step="0.01" min="0.01" required>
                                 <label for="param-10">Parameter 10</label>
                             </div>
                         </div>
+                        <span class="text-danger">Note: If Parameter no need, please fill 99999</span>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -218,7 +219,6 @@
             });
         </script>
     @endif
-
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3 z-3"></div>
     <x-toast />
@@ -399,4 +399,24 @@
             }
         });
     </script>
+    @if ($pending)
+        <script>
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const tag = e.target.tagName.toLowerCase();
+                    if (['input', 'textarea', 'select'].includes(tag)) {
+                        const form = document.querySelector('.needs-validation');
+                        if (!form.checkValidity()) {
+                            e.preventDefault();
+                            const firstInvalid = form.querySelector(':invalid');
+                            if (firstInvalid) {
+                                firstInvalid.focus();
+                                firstInvalid.reportValidity();
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    @endif
 @endsection

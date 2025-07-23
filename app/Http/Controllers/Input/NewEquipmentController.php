@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Input;
 
 use App\Http\Controllers\Controller;
 use App\Models\Equipment;
+use App\Models\IncompleteInput;
 use App\Models\MasterList;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class NewEquipmentController extends Controller
             'id_num' => ['required', 'string', 'unique:master_lists,id_num'],
             'sn_num' => ['required', 'string'],
             'capacity' => ['required', 'string'],
-            'accuracy' => ['required', 'integer'],
+            'accuracy' => ['required', 'numeric'],
             'unit_id' => ['required', 'exists:units,id'],
             'brand' => ['required', 'string'],
             'calibration_type' => ['required', 'in:Internal,External'],
@@ -45,8 +46,13 @@ class NewEquipmentController extends Controller
 
         $master = MasterList::create($validated);
 
-        // Flag untuk memaksa modal acceptance criteria
-        session(['pending_acceptance' => $master->id_num]);
+        IncompleteInput::updateOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'master_list_id' => $master->id,
+            ],
+            ['stage' => 'standard'] // karena habis input master, sekarang wajib input standard
+        );
 
         return redirect()->route('print.label', $validated['id_num'])->with([
             'success' => 'The equipment was successfully added.',
