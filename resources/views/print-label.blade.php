@@ -75,7 +75,7 @@
                 width: 100%;
                 max-width: 3.5cm;
                 transform: translateY(-2px);
-                 line-height: 1.5;
+                line-height: 1.5;
             }
         }
     </style>
@@ -107,13 +107,14 @@
             {{ '*' . $equipment->id_num . '*' }}
         </p>
         <p class="text-center" style="justify-content: center; font-weight: bold;">
-                {{ $equipment->id_num }}</p>
+            {{ $equipment->id_num }}</p>
     </div>
     <script>
         window.onload = function() {
             window.print();
             setTimeout(() => {
-                window.location.href = "{{ route('dashboard', ['key' => 'menu-input']) }}";
+                window.location.href =
+                    "{{ route('dashboard', ['key' => 'menu-input']) }}";
             }, 1000); // Delay biar gak ke-redirect sebelum sempat print
         }
     </script>

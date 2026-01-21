@@ -152,7 +152,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             let route = document.referrer || "{{ route('report.menu') }}";
             if (route === "{{ url('/report/search') }}") {
-                route = "{{ route('report.menu') }}"
+                route = "{!! $returnUrl ?? route('report.menu') !!}";
+
             }
             const printButton = document.createElement('button');
             printButton.textContent = 'Print';
@@ -193,7 +194,7 @@
 
             backButton.addEventListener('click', function() {
                 setTimeout(() => {
-                    window.location.href = "{{ route('report.menu') }}";
+                    window.location.href = "{!! $returnUrl ?? route('report.menu') !!}";
                 }, 1000);
             });
 

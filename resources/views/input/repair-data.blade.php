@@ -306,7 +306,7 @@
                 $('#repair-form').attr('action',
                     `{{ url('/input/repair-data') }}/${num}`);
             } else {
-                $('#repair-form').attr('action', '{{ route('store.repair') }}');
+                $('#repair-form').attr('action', "{{ route('store.repair') }}");
             }
         })
 
@@ -341,7 +341,7 @@
         $('#id-num').on('focus', function() {
             $('#form-type').val('save');
             $('#repair-id').val('');
-            $('#repair-form').attr('action', '{{ route('store.repair') }}');
+            $('#repair-form').attr('action', "{{ route('store.repair') }}");
         });
     </script>
 @endsection

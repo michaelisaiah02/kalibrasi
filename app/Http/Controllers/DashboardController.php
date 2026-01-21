@@ -16,52 +16,64 @@ class DashboardController extends Controller
             return redirect()->route('dashboard')->with(['key' => $request->key]);
         }
 
-        $equipments = MasterList::with(['results' => function ($q) {
-            $q->latest('calibration_date')->limit(1);
-        }])->get();
+        $equipments = MasterList::with([
+            'results' => function ($q) {
+                $q->latest('calibration_date')->limit(1);
+            },
+        ])->get();
 
         $warnings = []; // utk soon & NG
         $dangers = []; // utk overdue
 
         foreach ($equipments as $eq) {
             $latest = $eq->results->first();
-
-            // jika belum pernah ada result, gunakan first_used & treat as OK
-            if (! $latest) {
-                $lastCal = Carbon::parse($eq->first_used);
-                $judg = 'OK';
-            } else {
-                $lastCal = Carbon::parse($latest->calibration_date);
-                $judg = $latest->judgement;
-            }
-
-            // skip Disposal
-            if ($judg === 'Disposal') {
+            // dump($latest);
+            // Skip if equipment is disposed
+            if ($latest && $latest->judgement === 'Disposal') {
                 continue;
             }
 
-            // hitung kapan due, dan sebulan sebelum
-            $freq = $eq->calibration_freq;
-            $dueDate = $lastCal->copy()->addMonths($freq);
-            $warnFrom = $dueDate->copy()->subMonth();
-            $now = Carbon::now();
-            // `The ${w.id_num} - ${w.name} device needs to be recalibrated (NG). Last: ${w.last_date}.`;
-            // bentuk pesan
-            $msg = "The equipment {$eq->id_num} - {$eq->sn_num} device needs to be recalibrated. Last calibrate: {$lastCal->format('d-m-Y')}.";
+            // Determine last calibration date and judgement
+            $lastCalDate = $latest
+                ? Carbon::parse($latest->calibration_date)
+                : Carbon::parse($eq->first_used);
 
-            if ($judg === 'NG' || $now->between($warnFrom, $dueDate)) {
-                // NG selalu warning, atau OK dalam sebulan ke depan
-                $warnings[] = $msg;
+            $judgement = $latest?->judgement ?? 'OK';
+
+            // Calculate due date and warning threshold
+            $dueDate = $lastCalDate->copy()->addMonths($eq->calibration_freq);
+            $warningDate = $dueDate->copy()->subMonth();
+            $now = Carbon::now();
+
+            // Build notification message
+            $baseMessage = sprintf(
+                'The equipment %s - %s needs to be recalibrated. Last calibrate: %s.',
+                $eq->id_num,
+                $eq->sn_num,
+                $lastCalDate->format('d-m-Y')
+            );
+
+            // Categorize alerts
+            if ($judgement === 'NG' || $now->between($warningDate, $dueDate)) {
+                $warnings[] = $baseMessage;
             } elseif ($now->gt($dueDate)) {
-                // sudah lewat due date
-                $dangers[] = $msg . " (should be calibrated before: {$dueDate->format('d-m-Y')})";
+                $dangers[] = sprintf(
+                    '%s (should be calibrated before: %s)',
+                    $baseMessage,
+                    $dueDate->format('d-m-Y')
+                );
             }
         }
+
+        // hitung warning dan danger
+        $count = [];
+        $count['warning'] = count($warnings);
+        $count['danger'] = count($dangers);
 
         $pending = IncompleteInput::forCurrentUser()->atStage('standard')->first();
         $masterList = $pending?->masterList;
 
-        return view('dashboard', compact('warnings', 'dangers', 'masterList', 'pending'));
+        return view('dashboard', compact('warnings', 'dangers', 'count', 'masterList', 'pending'));
     }
 
     public function store(Request $request)

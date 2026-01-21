@@ -19,12 +19,11 @@ use App\Http\Middleware\CheckRoleMinUser;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/dashboard');
+    return view('welcome');
 });
 Route::get('/ping', function () {
     return response()->json(['pong' => true]);
 })->name('ping');
-
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -32,77 +31,87 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/print-label/{id}', [PrintController::class, 'label'])->name('print.label');
-    Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth')->name('logout');
-    Route::middleware(CheckRoleMinUser::class)->group(function () {
+    Route::middleware(CheckRoleMinUser::class)->controller(APIController::class)->group(function () {
         // API data
-        Route::get('/count-equipments/{type_id}', [APIController::class, 'countEquipments'])->name('api.count.equipments');
-        Route::get('/get-masterlist/{id_num}', [APIController::class, 'getMasterList'])->name('api.get.masterlist');
-        Route::get('/get-actual-value/{id}', [APIController::class, 'getActualValue'])->name('api.get.actual.value');
-        Route::get('/get-repair-data/{id}', [APIController::class, 'getRepairData'])->name('api.get.repair.data');
+        Route::get('/count-equipments/{type_id}', 'countEquipments')->name('api.count.equipments');
+        Route::get('/get-masterlist/{id_num}', 'getMasterList')->name('api.get.masterlist');
+        Route::get('/get-actual-value/{id}', 'getActualValue')->name('api.get.actual.value');
+        Route::get('/get-repair-data/{id}', 'getRepairData')->name('api.get.repair.data');
     });
     Route::middleware(CheckIncompleteInput::class)->group(function () {
-        Route::get('/print-report-masterlist/{id}', [PrintController::class, 'reportMasterlist'])->name('print.report.masterlist');
-        Route::get('/print-report-repair/{id}', [PrintController::class, 'reportRepair'])->name('print.report.repair');
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/report', [ReportController::class, 'menu'])->name('report.menu');
-        Route::get('/report/search', [ReportController::class, 'search'])->name('report.search');
-        Route::post('/report/masterlist', [ReportController::class, 'masterlist'])->name('report.masterlist');
-        Route::post('/report/repairs', [ReportController::class, 'repairs'])->name('report.repairs');
+        Route::controller(PrintController::class)->group(function () {
+            Route::get('/print-report-masterlist/{id}', 'reportMasterlist')->name('print.report.masterlist');
+            Route::get('/print-report-repair/{id}', 'reportRepair')->name('print.report.repair');
+            Route::post('/update-masterlist-print/{result}', 'updateMasterListPrint')->name('update.masterlist.print');
+        });
+        Route::controller(ReportController::class)->group(function () {
+            Route::get('/report', 'menu')->name('report.menu');
+            Route::get('/report/search', 'search')->name('report.search');
+            Route::post('/report/masterlist', 'masterlist')->name('report.masterlist');
+            Route::post('/report/repairs', 'repairs')->name('report.repairs');
+        });
     });
 
     // hanya user ke atas
     Route::middleware(CheckRoleMinUser::class)->middleware(CheckIncompleteInput::class)->group(function () {
-        Route::get('/input/new-equipment', [NewEquipmentController::class, 'create'])->name('input.new.equipment');
-        Route::post('/input/new-equipment', [NewEquipmentController::class, 'store'])->name('store.equipment');
+        Route::controller(NewEquipmentController::class)->group(function () {
+            Route::get('/input/new-equipment', 'create')->name('input.new.equipment');
+            Route::post('/input/new-equipment', 'store')->name('store.equipment');
+        });
 
-        Route::get('/input/calibration-data', [CalibrationDataController::class, 'create'])->name('input.calibration.data');
-        Route::post('/input/calibration-data', [CalibrationDataController::class, 'store'])->name('store.calibration');
-        Route::post('/input/calibration-data/{id}', [CalibrationDataController::class, 'edit'])->name('edit.calibration');
+        Route::controller(CalibrationDataController::class)->group(function () {
+            Route::get('/input/calibration-data', 'create')->name('input.calibration.data');
+            Route::post('/input/calibration-data', 'store')->name('store.calibration');
+            Route::post('/input/calibration-data/{id}', 'edit')->name('edit.calibration');
+        });
 
-        Route::get('/input/repair-data', [RepairDataController::class, 'create'])->name('input.repair');
-        Route::post('/input/repair-data', [RepairDataController::class, 'store'])->name('store.repair');
-        Route::post('/input/repair-data/{id}', [RepairDataController::class, 'edit'])->name('edit.repair');
-
+        Route::controller(RepairDataController::class)->group(function () {
+            Route::get('/input/repair-data', 'create')->name('input.repair');
+            Route::post('/input/repair-data', 'store')->name('store.repair');
+            Route::post('/input/repair-data/{id}', 'edit')->name('edit.repair');
+        });
         Route::post('/standards/store', [DashboardController::class, 'store'])->name('standards.store');
 
         // hanya admin
         Route::middleware(CheckRoleIsAdmin::class)->group(function () {
-            // Route::resource('users', UserController::class);
-            Route::prefix('admin/users')->group(function () {
-                Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
-                Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
-                Route::post('/update-user/{id}', [UserController::class, 'update'])->name('admin.users.update');
-                Route::delete('/delete-user/{id}', [UserController::class, 'destroy']);
-                Route::get('/search', [UserController::class, 'search'])->name('admin.users.search');
+            Route::prefix('admin/users')->controller(UserController::class)->group(function () {
+                Route::get('/', 'index')->name('admin.users.index');
+                Route::post('/store', 'store')->name('admin.users.store');
+                Route::post('/update-user/{id}', 'update')->name('admin.users.update');
+                Route::delete('/delete-user/{id}', 'destroy');
+                Route::get('/search', 'search')->name('admin.users.search');
             });
-            Route::prefix('admin/standards')->group(function () {
-                Route::get('/', [StandardController::class, 'index'])->name('admin.standards.index');
-                Route::post('/update-standard/{id}', [StandardController::class, 'update'])->name('admin.standards.update');
-                Route::post('/store', [StandardController::class, 'store'])->name('admin.standards.store');
-                Route::delete('/delete-standard/{id}', [StandardController::class, 'destroy']);
-                Route::get('/search', [StandardController::class, 'search'])->name('admin.standards.search');
+            Route::prefix('admin/standards')->controller(StandardController::class)->group(function () {
+                Route::get('/', 'index')->name('admin.standards.index');
+                Route::post('/update-standard/{id}', 'update')->name('admin.standards.update');
+                Route::post('/store', 'store')->name('admin.standards.store');
+                Route::delete('/delete-standard/{id}', 'destroy');
+                Route::get('/search', 'search')->name('admin.standards.search');
             });
-            Route::prefix('admin/units')->group(function () {
-                Route::get('/', [UnitController::class, 'index'])->name('admin.units.index');
-                Route::post('/store', [UnitController::class, 'store'])->name('admin.units.store');
-                Route::post('/update-unit/{id}', [UnitController::class, 'update'])->name('admin.units.update');
-                Route::delete('/delete-unit/{id}', [UnitController::class, 'destroy']);
-                Route::get('/search', [UnitController::class, 'search'])->name('admin.units.search');
+            Route::prefix('admin/units')->controller(UnitController::class)->group(function () {
+                Route::get('/', 'index')->name('admin.units.index');
+                Route::post('/store', 'store')->name('admin.units.store');
+                Route::post('/update-unit/{id}', 'update')->name('admin.units.update');
+                Route::delete('/delete-unit/{id}', 'destroy');
+                Route::get('/search', 'search')->name('admin.units.search');
             });
-            Route::prefix('admin/equipments')->group(function () {
-                Route::get('/', [EquipmentController::class, 'index'])->name('admin.equipments.index');
-                Route::post('/store', [EquipmentController::class, 'store'])->name('admin.equipments.store');
-                Route::post('/update-equipment/{id}', [EquipmentController::class, 'update'])->name('admin.equipments.update');
-                Route::delete('/delete-equipment/{id}', [EquipmentController::class, 'destroy']);
-                Route::get('/search', [EquipmentController::class, 'search'])->name('admin.equipments.search');
+            Route::prefix('admin/equipments')->controller(EquipmentController::class)->group(function () {
+                Route::get('/', 'index')->name('admin.equipments.index');
+                Route::post('/store', 'store')->name('admin.equipments.store');
+                Route::post('/update-equipment/{id}', 'update')->name('admin.equipments.update');
+                Route::delete('/delete-equipment/{id}', 'destroy');
+                Route::get('/search', 'search')->name('admin.equipments.search');
             });
-            Route::prefix('admin/master-lists')->group(function () {
-                Route::get('/', [MasterListController::class, 'index'])->name('admin.master-lists.index');
-                Route::post('/store', [MasterListController::class, 'store'])->name('admin.master-lists.store');
-                Route::post('/update-master-list/{id}', [MasterListController::class, 'update'])->name('admin.master-lists.update');
-                Route::delete('/delete-master-list/{id}', [MasterListController::class, 'destroy']);
-                Route::get('/search', [MasterListController::class, 'search'])->name('admin.master-lists.search');
+            Route::prefix('admin/master-lists')->controller(MasterListController::class)->group(function () {
+                Route::get('/', 'index')->name('admin.master-lists.index');
+                Route::post('/store', 'store')->name('admin.master-lists.store');
+                Route::post('/update-master-list/{id}', 'update')->name('admin.master-lists.update');
+                Route::delete('/delete-master-list/{id}', 'destroy');
+                Route::get('/search', 'search')->name('admin.master-lists.search');
+                Route::get('/master/export', 'export')->name('admin.master-lists.export');
             });
         });
     });

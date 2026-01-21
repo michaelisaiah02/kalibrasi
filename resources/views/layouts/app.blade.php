@@ -34,7 +34,7 @@
                 <img src="{{ asset('image/logo-pt.png') }}" alt="Logo" class="mt-0 logo">
             </a>
             <div class="row text-center justify-content-center" id="title-section">
-                <p class="fw-bold align-self-center main-title">CALIBRATION APP</p>
+                <p class="fw-bold align-self-center main-title">KALIBRASI</p>
                 <p class="align-self-center main-title">PT. CATURINDO AGUNGJAYA RUBBER</p>
                 @if (!request()->is('login'))
                     <button id="title" class="btn btn-lg btn-outline-light fw-medium p-0 my-auto sub-judul"

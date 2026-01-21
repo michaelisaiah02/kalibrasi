@@ -40,7 +40,8 @@ class EquipmentController extends Controller
 
         $validated = $request->validate([
             'type_id' => [
-                'required', 'min:3',
+                'required',
+                'min:3',
                 Rule::unique('equipments', 'type_id')->ignore($equipment->id),
             ],
             'name' => ['required', 'string', 'max:255'],

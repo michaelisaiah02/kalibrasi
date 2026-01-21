@@ -51,8 +51,8 @@
                                 <span class="input-group-text bg-primary text-light">±</span>
                                 <input type="number"
                                     class="form-control @error('accuracy') is-invalid @enderror {{ old('accuracy') ? 'is-valid' : '' }}"
-                                    placeholder="± Kg / gr / ˚C / mm" id="accuracy" name="accuracy" step="0.01" min="0.01" required
-                                    value="{{ old('accuracy') }}">
+                                    placeholder="± Kg / gr / ˚C / mm" id="accuracy" name="accuracy" step="0.01"
+                                    min="0.01" required value="{{ old('accuracy') }}">
                             </div>
                         </div>
                         <div class="col-auto">

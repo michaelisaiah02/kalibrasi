@@ -13,14 +13,11 @@ class NewEquipmentController extends Controller
 {
     public function create()
     {
-        return view(
-            'input.new-equipment',
-            [
-                'title' => 'INPUT NEW EQUIPMENT',
-                'equipments' => Equipment::all(),
-                'units' => Unit::all(),
-            ]
-        );
+        return view('input.new-equipment', [
+            'title' => 'INPUT NEW EQUIPMENT',
+            'equipments' => Equipment::all(),
+            'units' => Unit::all(),
+        ]);
     }
 
     public function store(Request $request)

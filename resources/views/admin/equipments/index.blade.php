@@ -60,8 +60,8 @@
                     <input type="hidden" name="equipment_id" id="equipment-id">
                     <div class="mb-3">
                         <label for="type-id" class="form-label">Type ID</label>
-                        <input type="text" class="form-control" id="type-id" name="type_id" minlength="3" maxlength="3"
-                            autocomplete="off" required>
+                        <input type="text" class="form-control" id="type-id" name="type_id" minlength="3"
+                            maxlength="3" autocomplete="off" required>
                         <div class="invalid-feedback">Type ID is required and must be exactly 3 characters.</div>
                     </div>
                     <div class="mb-3">
@@ -146,7 +146,8 @@
                 $('#equipment-id').val(id);
                 $('#name').val($(this).data('name'));
                 $('#type-id').val($(this).data('type-id'));
-                $('#equipmentForm').attr('action', `{{ url('admin/equipments/update-equipment') }}/${id}`);
+                $('#equipmentForm').attr('action',
+                    `{{ url('admin/equipments/update-equipment') }}/${id}`);
                 new bootstrap.Modal(document.getElementById('equipmentModal')).show();
             });
 
